@@ -306,8 +306,14 @@ def build_home(site, projects):
         cards.append('<p class="empty">First project coming soon.</p>')
     links = "".join(f'<a href="{esc(l["url"])}" rel="me noopener">{esc(l["label"])}</a>' for l in site.get("links", []))
     bio = "".join(f"<p>{esc(p)}</p>" for p in site.get("bio", []))
+    edu = "".join(
+        f'<li><span class="edu-degree">{esc(e["degree"])}</span>'
+        f'<span class="edu-school">{esc(e["school"])}</span>'
+        f'<span class="edu-year">{esc(e.get("year", ""))}</span></li>'
+        for e in site.get("education", []))
+    edu = f'<ul class="edu">{edu}</ul>' if edu else ""
     page = render("home.html", name=esc(site["name"]), role=esc(site.get("role", "")),
-                  bio=bio, links=links, cards="".join(cards), count=len(projects))
+                  bio=bio, education=edu, links=links, cards="".join(cards), count=len(projects))
     (OUT / "index.html").write_text(page)
     print("  built index.html")
 

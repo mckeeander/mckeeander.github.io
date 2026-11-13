@@ -2,10 +2,13 @@
   "name": "Ander McKee",
   "role": "Data science student",
   "bio": [
-    "Placeholder bio: two to four sentences about your school, your program and what kinds of questions you like answering with data.",
-    "Each project below walks through the decisions I made and why, alongside the code and its output."
+    "I enjoy using my background in graphic design to make socially important data visual and accessible."
   ],
   "links": [
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/trevorjmckee/"
+    },
     {
       "label": "GitHub",
       "url": "https://github.com/mckeeander"
@@ -36,6 +39,18 @@
       ],
       "date": "2026-11",
       "draft": true
+    }
+  ],
+  "education": [
+    {
+      "degree": "M.S. Data Science",
+      "school": "Bellevue University",
+      "year": "Expected 2028"
+    },
+    {
+      "degree": "B.F.A. Communication Design",
+      "school": "Washington University in St. Louis",
+      "year": "2021"
     }
   ]
 }
