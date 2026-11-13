@@ -1,20 +1,39 @@
 {
-  "name": "Your Name",
+  "name": "Ander McKee",
   "role": "Data science student",
   "bio": [
     "Placeholder bio: two to four sentences about your school, your program and what kinds of questions you like answering with data.",
     "Each project below walks through the decisions I made and why, alongside the code and its output."
   ],
   "links": [
-    { "label": "GitHub", "url": "https://github.com/mckeeander" }
+    {
+      "label": "GitHub",
+      "url": "https://github.com/mckeeander"
+    }
   ],
   "projects": [
+    {
+      "slug": "bechdel",
+      "notebook": "projects/bechdel/notebooks/bechdel_portfolio.ipynb",
+      "title": "What 798 Films Say About Representation and Revenue",
+      "summary": "Films that pass the Bechdel test look no different at the box office until you account for the smaller budgets they're given. Then they earn about 22% more.",
+      "tags": [
+        "Python",
+        "Regression",
+        "Clustering",
+        "Classification"
+      ],
+      "date": "Summer 2026"
+    },
     {
       "slug": "template-demo",
       "notebook": "notebooks/template-demo.ipynb",
       "title": "Page Template Demo",
       "summary": "A sample notebook with made-up data, showing how prose, code, numbers, tables and charts look on a project page.",
-      "tags": ["Template", "Sample data"],
+      "tags": [
+        "Template",
+        "Sample data"
+      ],
       "date": "2026-11",
       "draft": true
     }

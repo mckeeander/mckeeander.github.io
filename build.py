@@ -68,7 +68,8 @@ def md_to_html(source):
         stash.append(m.group(0))
         return f"MATHSTASH{len(stash) - 1}X"
 
-    protected = MATH.sub(keep, source)
+    # \$ is a literal dollar sign (as in Jupyter), never a math delimiter.
+    protected = MATH.sub(keep, source.replace("\\$", "DOLLARSIGNX"))
     md = markdown.Markdown(
         extensions=["fenced_code", "tables", "toc", "sane_lists", "codehilite"],
         extension_configs={
@@ -78,6 +79,7 @@ def md_to_html(source):
     )
     out = md.convert(protected)
     out = re.sub(r"MATHSTASH(\d+)X", lambda m: esc(stash[int(m.group(1))], quote=False), out)
+    out = out.replace("DOLLARSIGNX", '<span class="usd">$</span>')
     return out, md.toc_tokens, bool(stash)
 
 
@@ -142,6 +144,18 @@ def vega_spec(data):
     return spec if "$schema" in spec else None
 
 
+def merge_index_header(table):
+    """pandas puts a named index on its own header row; fold it into the row above."""
+    m = re.search(r"<thead>\s*<tr[^>]*>(.*?)</tr>\s*<tr[^>]*>(.*?)</tr>\s*</thead>", table, re.S)
+    if not m:
+        return table
+    second = re.findall(r"<th[^>]*>(.*?)</th>", m.group(2), re.S)
+    if not second or any(c.strip() for c in second[1:]):
+        return table
+    first = re.sub(r"<th[^>]*>\s*</th>", f'<th class="idx">{second[0]}</th>', m.group(1), count=1)
+    return table[:m.start()] + f"<thead><tr>{first}</tr></thead>" + table[m.end():]
+
+
 def text_of(value):
     return "".join(value) if isinstance(value, list) else value
 
@@ -196,6 +210,7 @@ class Outputs:
             table = re.sub(r"<style.*?</style>", "", table, flags=re.S)
             table = re.sub(r'\s(border="\d+"|class="dataframe")', "", table)
             table = table.replace("<table", '<table class="df"', 1)
+            table = merge_index_header(table)
             return f'<figure class="out-table"><div class="table-scroll">{table}</div>{cap}</figure>'
 
         if "text/plain" in data:

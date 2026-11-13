@@ -22,11 +22,11 @@
       titleColor: INK_2, titleFont: SANS, titleFontSize: 12, titleFontWeight: 500, titlePadding: 10,
     },
     axisX: { grid: false, tickSize: 4 },
-    axisY: { domain: false, ticks: false, labelPadding: 8 },
+    axisY: { domain: false, ticks: false, labelPadding: 8, labelLimit: 200 },
     axisBand: { grid: false },
     legend: {
       labelColor: INK_2, labelFont: SANS, labelFontSize: 12, titleColor: INK_2, titleFont: SANS,
-      titleFontSize: 12, titleFontWeight: 500, symbolType: "circle", symbolSize: 90, orient: "top", direction: "horizontal",
+      titleFontSize: 12, titleFontWeight: 500, symbolType: "circle", symbolSize: 90, orient: "top", direction: "horizontal", labelLimit: 280, columns: 0,
     },
     header: { labelColor: INK_2, titleColor: INK, labelFont: SANS, titleFont: SANS },
     range: { category: CATEGORY, ramp: SEQUENTIAL, heatmap: SEQUENTIAL, diverging: DIVERGING },
@@ -45,13 +45,36 @@
   // A simple chart fills its card's width; facets and concatenations keep their own sizes.
   const fitsWidth = (s) => !(s.facet || s.hconcat || s.vconcat || s.concat || s.repeat) && (s.width === undefined || s.width === "container");
 
+  // Chart titles become page text so they wrap on narrow screens.
+  const liftTitle = (el, spec) => {
+    const t = spec.title;
+    if (!t) return;
+    const text = typeof t === "string" || Array.isArray(t) ? t : t.text;
+    const sub = typeof t === "object" && !Array.isArray(t) ? t.subtitle : null;
+    const h = document.createElement("div");
+    h.className = "chart-title";
+    h.textContent = [].concat(text).join(" ");
+    if (sub) { const s = document.createElement("div"); s.className = "chart-subtitle"; s.textContent = [].concat(sub).join(" "); h.append(s); }
+    el.before(h);
+    delete spec.title;
+  };
+
+  // Label room scales with the card, so phone charts keep a usable plot area.
+  const sized = (w) => ({
+    ...theme,
+    axis: { ...theme.axis, titleLimit: Math.max(120, w - 48) },
+    axisY: { ...theme.axisY, labelLimit: Math.round(Math.min(200, w * 0.36)) },
+    legend: { ...theme.legend, labelLimit: Math.round(w * 0.85), columns: w < 520 ? 1 : 0 },
+  });
+
   const draw = (el) => {
     const spec = JSON.parse(el.querySelector("script").textContent);
+    liftTitle(el, spec);
     if (fitsWidth(spec)) {
       spec.width = "container";
       spec.autosize = { type: "fit-x", contains: "padding" };
     }
-    vegaEmbed(el, spec, { config: theme, actions: false, renderer: "svg", tooltip: { theme: "dark" } })
+    vegaEmbed(el, spec, { config: sized(el.clientWidth), actions: false, renderer: "svg", tooltip: { theme: "dark" } })
       .catch((err) => { el.textContent = "Chart failed to load."; console.error(err); });
   };
 
