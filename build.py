@@ -309,7 +309,9 @@ def build_home(site, projects):
     edu = "".join(
         f'<li><span class="edu-degree">{esc(e["degree"])}</span>'
         f'<span class="edu-school">{esc(e["school"])}</span>'
-        f'<span class="edu-year">{esc(e.get("year", ""))}</span></li>'
+        f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
+        + (f'<span class="edu-minor">{esc(e["minors"])}</span>' if e.get("minors") else "")
+        + "</li>"
         for e in site.get("education", []))
     edu = f'<ul class="edu">{edu}</ul>' if edu else ""
     page = render("home.html", name=esc(site["name"]), role=esc(site.get("role", "")),
