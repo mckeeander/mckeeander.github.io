@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{name}} · Data Science Projects</title>
+<meta name="description" content="{{role}}: data science projects with the reasoning, code and results.">
+<meta property="og:title" content="{{name}} · Data Science Projects">
+<meta property="og:description" content="{{role}}: data science projects with the reasoning, code and results.">
+<meta name="theme-color" content="#0b0c0f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="home">
+<div class="glow" aria-hidden="true"></div>
+<main class="wrap">
+  <header class="intro">
+    <p class="eyebrow reveal">{{role}}</p>
+    <h1 class="reveal">{{name}}</h1>
+    <div class="bio reveal">{{bio}}</div>
+    <nav class="links reveal">{{links}}</nav>
+  </header>
+
+  <section class="projects" aria-labelledby="projects-h">
+    <div class="section-head reveal">
+      <h2 id="projects-h">Projects</h2>
+      <span class="count">{{count}}</span>
+    </div>
+    <div class="grid">{{cards}}</div>
+  </section>
+</main>
+<footer class="foot wrap">Built with Jupyter notebooks and a little Python.</footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>
