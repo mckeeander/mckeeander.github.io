@@ -1,0 +1,24 @@
+column,source,description
+imdb_id,Pudding meta_data7,"IMDb id, tt+7 digits; primary key; join key for Bechdel"
+script_id,Pudding,Pudding's internal film id (bridges character_list5 to meta_data7)
+title,Pudding meta_data7,film title as recorded by Pudding
+year,Pudding meta_data7,release year per Pudding; window filter 1990-2015 applied
+gross_infl_adj_musd,Pudding meta_data7,"domestic gross, inflation-adjusted $M (2016 basis); robustness outcome only"
+total_words,derived: character_list5,"sum of words over speaking characters (gender m/f, words>0)"
+f_words,derived: character_list5,sum of words spoken by female-coded characters
+n_characters,derived: character_list5,number of speaking characters after exclusions
+n_female,derived: character_list5,number of female-coded speaking characters
+pct_female_dialogue,derived,f_words / total_words (0-1); M2 predictor
+pct_female_characters,derived,n_female / n_characters (0-1)
+female_lead,derived,True if the character with the most words is female-coded
+bechdel_rating,Bechdel mirror 2021,0-3 ordinal: 2+ women / who talk / about something besides a man
+bechdel_year,Bechdel mirror 2021,year per bechdeltest.com (validation: 99.9% within +/-1 of Pudding year)
+bechdel_pass,derived,bechdel_rating == 3; M1 primary predictor
+production_budget,Numbers union,"production budget, nominal USD; central control (log10 in models)"
+domestic_gross,Numbers union,"US/Canada gross, nominal USD; PRIMARY outcome (log10)"
+worldwide_gross,Numbers union,"worldwide gross, nominal USD; robustness outcome R1"
+distributor,Numbers union (TT rows only),distributor; missing for WWU-sourced rows
+mpaa_rating,Numbers union (TT rows only),MPAA rating; missing for WWU-sourced rows
+genre,Numbers union (TT rows only),single primary genre; robustness control R4 (N=711)
+source,Numbers union,which mirror the budget row came from (tidytuesday_2018 / wwu_mirror_2023)
+match_method,04 fuzzy join,audit: exact / year_pm1 / fuzzy — how the Numbers row was matched
