@@ -1,0 +1,11 @@
+# DSC530 final project — Film representation vs. box office (1990–2015)
+# Direct dependencies, pinned to the versions installed 2026-07-04 (Python 3.13.5).
+# Recreate with:  python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+jupyterlab==4.6.1
+pandas==3.0.3
+requests==2.34.2
+matplotlib==3.11.0
+rapidfuzz==3.14.5
+statsmodels==0.14.6  # added 2026-07-05 for Phase 7 (OLS w/ HC3 robust SEs)
+scikit-learn==1.9.0  # added 2026-08-19 for EDA tasks 5b/6a/6b (classification, clustering, ML+CV)
+seaborn==0.13.2      # added 2026-08-19 for EDA task 2b(iii) missingness heatmap + pair plots
