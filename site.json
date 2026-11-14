@@ -51,7 +51,17 @@
       "degree": "B.F.A. Communication Design",
       "school": "Washington University in St. Louis",
       "year": "2021",
-      "minors": "Minors in Human-Computer Interaction and Art History & Archaeology"
+      "minors": [
+        {
+          "label": "Human-Computer Interaction",
+          "url": "https://samfoxschool.washu.edu/academics/college-of-art/minors/hci"
+        },
+        {
+          "label": "Art History & Archaeology",
+          "url": "https://artsci.washu.edu/explore-academics/art-history-and-archaeology-minor"
+        }
+      ],
+      "division": "Sam Fox School of Design & Visual Arts"
     }
   ]
 }
