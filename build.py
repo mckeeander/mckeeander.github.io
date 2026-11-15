@@ -306,23 +306,11 @@ def build_home(site, projects):
         cards.append('<p class="empty">First project coming soon.</p>')
     links = "".join(f'<a href="{esc(l["url"])}" rel="me noopener">{esc(l["label"])}</a>' for l in site.get("links", []))
     bio = "".join(f"<p>{esc(p)}</p>" for p in site.get("bio", []))
-    def minors(e):
-        items = e.get("minors") or []
-        if not items:
-            return ""
-        chips = "".join(
-            f'<a class="minor-chip" href="{esc(m["url"])}" target="_blank" rel="noopener">'
-            f'{esc(m["label"])}<span class="ext" aria-hidden="true">&#8599;</span>'
-            f'<span class="sr-only"> (opens in a new tab)</span></a>'
-            for m in items)
-        return f'<div class="edu-minors"><span class="edu-minors-label">Minors</span>{chips}</div>'
-
     edu = "".join(
         f'<li><span class="edu-degree">{esc(e["degree"])}</span>'
         f'<span class="edu-school">{esc(e["school"])}</span>'
         f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
-        + (f'<span class="edu-division">{esc(e["division"])}</span>' if e.get("division") else "")
-        + minors(e)
+        + (f'<span class="edu-note">{esc(e["note"])}</span>' if e.get("note") else "")
         + "</li>"
         for e in site.get("education", []))
     edu = f'<ul class="edu">{edu}</ul>' if edu else ""

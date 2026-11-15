@@ -84,18 +84,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .edu li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding-left: 14px; border-left: 2px solid var(--border-strong); }
 .edu-degree { font-weight: 600; color: var(--text); }
 .edu-school { grid-column: 1; color: var(--text-2); font-size: 15px; }
-.edu-division { grid-column: 1; color: var(--muted); font-size: 14px; }
-.edu-minors { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
-.edu-minors-label { margin-right: 4px; font: 500 12px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.minor-chip {
-  display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;
-  font-size: 13px; font-weight: 500; color: var(--text-2); background: var(--surface); border: 1px solid var(--border);
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
-}
-.minor-chip:hover { text-decoration: none; color: var(--text); border-color: var(--accent); background: var(--accent-dim); }
-.minor-chip .ext { font-size: 11px; color: var(--muted); transition: transform 0.2s var(--ease), color 0.2s; }
-.minor-chip:hover .ext { color: var(--accent); transform: translate(1px, -1px); }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.edu-note { grid-column: 1; color: var(--muted); font-size: 14px; }
 .edu-year { grid-column: 2; grid-row: 1; font: 500 13px var(--mono); color: var(--muted); align-self: center; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .links a {
