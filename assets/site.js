@@ -25,6 +25,22 @@
     });
   });
 
+  // ---- link chips: tell the border glint where each chip sits in the row ----
+  const linkRow = document.querySelector(".links");
+  if (linkRow) {
+    const place = () => {
+      const row = linkRow.getBoundingClientRect();
+      const chips = [...linkRow.querySelectorAll("a")];
+      const right = Math.max(...chips.map((a) => a.getBoundingClientRect().right));
+      linkRow.style.setProperty("--span", `${right - row.left}px`);
+      linkRow.querySelectorAll("a").forEach((a) =>
+        a.style.setProperty("--off", `${a.getBoundingClientRect().left - row.left}px`));
+    };
+    place();
+    addEventListener("resize", place);
+    document.fonts && document.fonts.ready.then(place);
+  }
+
   // ---- code blocks: fold / expand / copy ----
   const LABELS = {
     preview: (n) => `Show all ${n} lines`,
