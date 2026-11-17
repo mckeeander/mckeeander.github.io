@@ -1,6 +1,6 @@
 // Dark theme for every Altair / Vega-Lite chart on the site.
 // Categorical colours are the dark steps of a palette checked for colour-blind
-// separation and 3:1 contrast against the chart card (#15171c). Use them in order.
+// separation and 3:1 contrast against the chart card (#1a1d23). Use them in order.
 (() => {
   const CATEGORY = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9", "#e66767"];
   const SEQUENTIAL = ["#184f95", "#1c5cab", "#256abf", "#2a78d6", "#3987e5", "#5598e7", "#6da7ec", "#86b6ef", "#9ec5f4", "#b7d3f6"];
@@ -31,13 +31,13 @@
     header: { labelColor: INK_2, titleColor: INK, labelFont: SANS, titleFont: SANS },
     range: { category: CATEGORY, ramp: SEQUENTIAL, heatmap: SEQUENTIAL, diverging: DIVERGING },
     mark: { color: CATEGORY[0], tooltip: { content: "encoding" } },
-    bar: { color: CATEGORY[0], cornerRadiusEnd: 4, stroke: "#15171c", strokeWidth: 0 },
+    bar: { color: CATEGORY[0], cornerRadiusEnd: 4, stroke: "#1a1d23", strokeWidth: 0 },
     rect: { cornerRadius: 2 },
-    arc: { stroke: "#15171c", strokeWidth: 2 },
+    arc: { stroke: "#1a1d23", strokeWidth: 2 },
     line: { color: CATEGORY[0], strokeWidth: 2, strokeCap: "round", strokeJoin: "round" },
     area: { color: CATEGORY[0], opacity: 0.85, line: false },
-    point: { color: CATEGORY[0], size: 64, filled: true, stroke: "#15171c", strokeWidth: 1.5 },
-    circle: { size: 64, stroke: "#15171c", strokeWidth: 1.5 },
+    point: { color: CATEGORY[0], size: 64, filled: true, stroke: "#1a1d23", strokeWidth: 1.5 },
+    circle: { size: 64, stroke: "#1a1d23", strokeWidth: 1.5 },
     rule: { color: MUTED },
     text: { color: INK_2, font: SANS, fontSize: 12 },
   };

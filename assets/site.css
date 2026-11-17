@@ -1,11 +1,11 @@
 /* ============ tokens ============ */
 :root {
   color-scheme: dark;
-  --bg: #0b0c0f;
-  --surface: #15171c;
-  --surface-2: #1b1e24;
-  --border: #262a32;
-  --border-strong: #353a45;
+  --bg: #121419;
+  --surface: #1a1d23;
+  --surface-2: #21252c;
+  --border: #2c313a;
+  --border-strong: #3b414d;
   --text: #e8e9ec;
   --text-2: #a9adb8;
   --muted: #747a87;
@@ -13,7 +13,7 @@
   --accent-dim: rgba(138, 180, 255, 0.14);
 
   /* code (One Dark-ish) */
-  --code-bg: #111318;
+  --code-bg: #0e1014;
   --c-keyword: #c678dd;
   --c-string: #98c379;
   --c-number: #d19a66;
@@ -50,11 +50,12 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (min-width: 700px) { .wrap { padding: 0 32px; } }
 
 .glow {
-  position: fixed; inset: -20vh -10vw auto; height: 70vh; z-index: -1; pointer-events: none;
+  position: absolute; inset: -30vh -20vw auto; height: 95vh; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(40% 50% at 20% 30%, rgba(80, 120, 220, 0.16), transparent 70%),
-    radial-gradient(35% 45% at 80% 10%, rgba(140, 90, 210, 0.10), transparent 70%);
-  filter: blur(10px);
+    radial-gradient(45% 55% at 18% 32%, rgba(70, 120, 235, 0.34), transparent 72%),
+    radial-gradient(30% 40% at 30% 40%, rgba(110, 160, 255, 0.12), transparent 70%),
+    radial-gradient(35% 45% at 82% 12%, rgba(140, 90, 210, 0.13), transparent 70%);
+  filter: blur(24px);
 }
 
 /* ============ page transitions ============ */
@@ -82,7 +83,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .bio p { margin: 0 0 12px; font-size: 18px; color: var(--text-2); }
 .edu-card {
   margin-top: 28px; padding: 18px 20px 6px; border-radius: var(--radius);
-  background: #08090c;
+  background: #0b0c10;
   border: 1px solid rgba(255, 255, 255, 0.035);
   box-shadow:
     inset 0 2px 6px rgba(0, 0, 0, 0.65),
@@ -143,7 +144,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ============ project page ============ */
 .topbar {
   position: sticky; top: 0; z-index: 10; height: 56px; display: flex; align-items: center; padding: 0 16px;
-  background: rgba(11, 12, 15, 0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: rgba(18, 20, 25, 0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid transparent; transition: border-color 0.2s;
 }
 .topbar.scrolled { border-bottom-color: var(--border); }
@@ -195,7 +196,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .cell { margin: 8px 0 32px; display: flex; flex-direction: column; gap: 12px; }
 
 .code { border: 1px solid var(--border); border-radius: 12px; background: var(--code-bg); overflow: hidden; }
-.code-bar { display: flex; align-items: center; justify-content: space-between; height: 38px; padding: 0 8px 0 14px; border-bottom: 1px solid var(--border); background: #14161b; }
+.code-bar { display: flex; align-items: center; justify-content: space-between; height: 38px; padding: 0 8px 0 14px; border-bottom: 1px solid var(--border); background: #13151a; }
 .code-lang { font: 500 12px var(--mono); color: var(--muted); display: flex; align-items: center; gap: 8px; }
 .code-lang::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c-function); opacity: 0.8; }
 .code-actions { display: flex; gap: 4px; }
@@ -273,7 +274,7 @@ table.df tbody tr:hover > * { background: rgba(255, 255, 255, 0.025); }
 /* chart tooltip (vega-tooltip) */
 #vg-tooltip-element.vg-tooltip {
   padding: 8px 12px !important; border-radius: 10px !important; border: 1px solid var(--border-strong) !important;
-  background: rgba(27, 30, 36, 0.96) !important; color: var(--text) !important;
+  background: rgba(33, 37, 44, 0.97) !important; color: var(--text) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important; font: 13px/1.45 var(--sans) !important;
 }
 #vg-tooltip-element table tr td.key { color: var(--muted) !important; padding-right: 10px; }
