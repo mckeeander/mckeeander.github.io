@@ -12,6 +12,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Sans:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/site.css">
+<script>
+  // Back/forward: let the browser's own gesture animate; skip the page fade.
+  addEventListener("pagereveal", (e) => {
+    if (!e.viewTransition) return;
+    const t = window.navigation && navigation.activation && navigation.activation.navigationType;
+    const nav = performance.getEntriesByType("navigation")[0];
+    if (t === "traverse" || (!t && nav && nav.type === "back_forward")) e.viewTransition.skipTransition();
+  });
+</script>
 </head>
 <body class="home">
 <div class="glow" aria-hidden="true"></div>
@@ -27,7 +36,6 @@
   <section class="projects" aria-labelledby="projects-h">
     <div class="section-head reveal">
       <h2 id="projects-h">Projects</h2>
-      <span class="count">{{count}}</span>
     </div>
     <div class="grid">{{cards}}</div>
   </section>

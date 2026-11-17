@@ -296,9 +296,9 @@ def build_home(site, projects):
         tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in p.get("tags", []))
         draft = '<span class="tag tag-draft">Draft</span>' if p.get("draft") else ""
         cards.append(f"""
-<a class="card reveal" href="projects/{p['slug']}/" style="--i:{i}; view-transition-name: card-{p['slug']}">
+<a class="card reveal" href="projects/{p['slug']}/" style="--i:{i}">
   <div class="card-tags">{draft}{tags}</div>
-  <h3 style="view-transition-name: title-{p['slug']}">{esc(p['title'])}</h3>
+  <h3>{esc(p['title'])}</h3>
   <p>{esc(p.get('summary', ''))}</p>
   <div class="card-foot"><span>{esc(p.get('date', ''))}</span><span class="card-go">Read the project <span aria-hidden="true">&rarr;</span></span></div>
 </a>""")
@@ -310,7 +310,7 @@ def build_home(site, projects):
         f'<li><span class="edu-degree">{esc(e["degree"])}</span>'
         f'<span class="edu-school">{esc(e["school"])}</span>'
         f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
-        + (f'<span class="edu-note">{esc(e["note"])}</span>' if e.get("note") else "")
+        + (f'<span class="edu-note">Minor in <span class="edu-chip">{esc(e["minor"])}</span></span>' if e.get("minor") else "")
         + "</li>"
         for e in site.get("education", []))
     edu = (f'<section class="edu-card" aria-labelledby="edu-h"><h2 id="edu-h" class="edu-label">Education</h2>'

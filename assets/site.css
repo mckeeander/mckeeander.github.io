@@ -63,19 +63,20 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ============ page transitions ============ */
 @view-transition { navigation: auto; }
-::view-transition-group(*) { animation-duration: 0.45s; animation-timing-function: var(--ease); }
-::view-transition-old(root) { animation: 0.25s var(--ease) both vt-out; }
-::view-transition-new(root) { animation: 0.4s var(--ease) both vt-in; }
-@keyframes vt-out { to { opacity: 0; transform: translateY(-8px); } }
-@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+/* One quiet fade: the old page leaves, then the new one arrives, so they never overlap. */
+::view-transition-old(root) { animation: 140ms ease-out both vt-out; }
+::view-transition-new(root) { animation: 240ms var(--ease) 120ms both vt-in; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(6px); } }
 
-/* scroll-in reveal (only once JS has marked the page ready) */
-.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
-.js .reveal.in { opacity: 1; transform: none; }
+/* Scroll-in reveal, only for content that starts below the fold (site.js marks it). */
+.reveal { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
+.reveal.pending { opacity: 0; transform: translateY(14px); }
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
-  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal.pending { opacity: 1; transform: none; }
+  .reveal { transition: none; }
 }
 
 /* ============ home ============ */
@@ -87,8 +88,8 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .bio p { margin: 0 0 12px; font-size: 18px; color: var(--text-2); }
 .edu-card {
   margin-top: 28px; padding: 18px 20px 6px; border-radius: var(--radius);
-  background: #0f1116;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: #13151b;
+  border: 1px solid rgba(255, 255, 255, 0.045);
   box-shadow:
     inset 0 2px 5px rgba(0, 0, 0, 0.5),
     inset 0 10px 22px -8px rgba(0, 0, 0, 0.4),
@@ -101,6 +102,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .edu-degree { font-weight: 600; color: var(--text); }
 .edu-school { grid-column: 1; color: var(--text-2); font-size: 15px; }
 .edu-note { grid-column: 1; color: var(--muted); font-size: 14px; }
+.edu-chip {
+  display: inline-block; margin-left: 4px; padding: 1px 9px; border-radius: 999px;
+  border: 1px solid rgba(138, 180, 255, 0.28); color: var(--text-2); font-size: 13px; line-height: 1.5;
+}
 .edu-year { grid-column: 2; grid-row: 1; font: 500 13px var(--mono); color: var(--muted); align-self: center; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .links a {
@@ -125,12 +130,11 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
 }
-@keyframes glint { 0% { --glint: 0; } 52%, 100% { --glint: 1; } }
+@keyframes glint { 0% { --glint: 0; } 44%, 100% { --glint: 1; } }
 @media (prefers-reduced-motion: reduce) { .links { animation: none; } .links a::after { display: none; } }
 
 .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; }
 .section-head h2 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
-.count { font: 500 13px var(--mono); color: var(--muted); }
 
 .grid { display: grid; gap: 16px; grid-template-columns: 1fr; padding-bottom: 80px; }
 @media (min-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }

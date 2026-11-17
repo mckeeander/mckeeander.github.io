@@ -13,6 +13,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Sans:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../assets/site.css">
 {{head_extra}}
+<script>
+  // Back/forward: let the browser's own gesture animate; skip the page fade.
+  addEventListener("pagereveal", (e) => {
+    if (!e.viewTransition) return;
+    const t = window.navigation && navigation.activation && navigation.activation.navigationType;
+    const nav = performance.getEntriesByType("navigation")[0];
+    if (t === "traverse" || (!t && nav && nav.type === "back_forward")) e.viewTransition.skipTransition();
+  });
+</script>
 </head>
 <body class="project">
 <div class="glow" aria-hidden="true"></div>
@@ -21,9 +30,9 @@
   <div class="progress" aria-hidden="true"><span></span></div>
 </div>
 
-<header class="proj-hero wrap" style="view-transition-name: card-{{slug}}">
+<header class="proj-hero wrap">
   <div class="card-tags">{{tags}}</div>
-  <h1 style="view-transition-name: title-{{slug}}">{{title}}</h1>
+  <h1>{{title}}</h1>
   <p class="lede">{{summary}}</p>
   <p class="meta"><span>{{date}}</span><span>{{language}}</span></p>
 </header>
