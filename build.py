@@ -306,11 +306,17 @@ def build_home(site, projects):
         cards.append('<p class="empty">First project coming soon.</p>')
     links = "".join(f'<a href="{esc(l["url"])}" rel="me noopener">{esc(l["label"])}</a>' for l in site.get("links", []))
     bio = "".join(f"<p>{esc(p)}</p>" for p in site.get("bio", []))
+    def linked(text, url, cls=""):
+        attrs = f' class="{cls}"' if cls else ""
+        if not url:
+            return f"<span{attrs}>{esc(text)}</span>"
+        return f'<a{attrs} href="{esc(url)}" target="_blank" rel="noopener">{esc(text)}</a>'
+
     edu = "".join(
-        f'<li><span class="edu-degree">{esc(e["degree"])}</span>'
+        f'<li><span class="edu-degree">{linked(e["degree"], e.get("url"))}</span>'
         f'<span class="edu-school">{esc(e["school"])}</span>'
         f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
-        + (f'<span class="edu-note">Minor in <span class="edu-chip">{esc(e["minor"])}</span></span>' if e.get("minor") else "")
+        + (f'<span class="edu-note">Minor{linked(e["minor"], e.get("minor_url"), "edu-chip")}</span>' if e.get("minor") else "")
         + "</li>"
         for e in site.get("education", []))
     edu = (f'<section class="edu-card" aria-labelledby="edu-h"><h2 id="edu-h" class="edu-label">Education</h2>'

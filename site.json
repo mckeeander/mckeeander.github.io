@@ -45,13 +45,16 @@
     {
       "degree": "M.S. Data Science",
       "school": "Bellevue University",
-      "year": "Expected 2028"
+      "year": "Expected 2028",
+      "url": "https://www.bellevue.edu/programs/masters-degrees/data-science/online/"
     },
     {
       "degree": "B.F.A. Communication Design",
       "school": "Sam Fox School of Design & Visual Arts at WashU",
       "year": "2021",
-      "minor": "Human-Computer Interaction"
+      "minor": "Human-Computer Interaction",
+      "url": "https://samfoxschool.washu.edu/academics/college-of-art/bfa-ba-in-studio-art-and-design/communication-design",
+      "minor_url": "https://samfoxschool.washu.edu/academics/college-of-art/minors/hci"
     }
   ]
 }
