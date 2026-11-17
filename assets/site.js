@@ -5,19 +5,6 @@
   // iOS Safari only shows :active (press) styles when the page listens for touches.
   document.addEventListener("touchstart", () => {}, { passive: true });
 
-  // ---- scroll-in reveal: only what starts below the fold fades in ----
-  const items = [...document.querySelectorAll(".reveal")];
-  if ("IntersectionObserver" in window && !reduce) {
-    const below = items.filter((el) => el.getBoundingClientRect().top > innerHeight * 0.94);
-    below.forEach((el) => el.classList.add("pending"));
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting) { e.target.classList.remove("pending"); io.unobserve(e.target); }
-      }
-    }, { rootMargin: "0px 0px -6% 0px" });
-    below.forEach((el) => io.observe(el));
-  }
-
   // ---- card spotlight follows the pointer; a tap or click anywhere else clears it ----
   const cards = [...document.querySelectorAll(".card")];
   cards.forEach((card) => {
