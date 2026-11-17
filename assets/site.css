@@ -191,11 +191,21 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
 .progress span { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(var(--p, 0)); }
 
-.proj-hero { padding-top: 56px; padding-bottom: 40px; }
-.proj-hero h1 { margin: 16px 0 14px; font-family: var(--display); font-size: clamp(36px, 6.2vw, 56px); font-weight: 600; line-height: 1.06; letter-spacing: -0.015em; max-width: 820px; width: fit-content; }
+.proj-head { padding-top: 40px; padding-bottom: 48px; }
+.proj-hero {
+  max-width: 820px; padding: 28px 24px 0; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--border);
+}
+@media (min-width: 700px) { .proj-hero { padding: 36px 36px 0; } }
+.proj-hero h1 { margin: 18px 0 14px; font-family: var(--display); font-size: clamp(36px, 6.2vw, 56px); font-weight: 600; line-height: 1.06; letter-spacing: -0.015em; max-width: 820px; width: fit-content; }
 .lede { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.55; color: var(--text-2); max-width: 680px; }
-.meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 0; font: 500 12px/1.4 var(--mono); color: var(--muted); }
-.meta span { padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border-strong); }
+/* Card footer: date and language as a quiet line, like the home page card. */
+.meta {
+  display: flex; flex-wrap: wrap; margin: 24px -24px 0; padding: 14px 24px 16px;
+  border-top: 1px solid var(--border); font-size: 14px; color: var(--muted);
+}
+@media (min-width: 700px) { .meta { margin: 28px -36px 0; padding: 16px 36px 18px; } }
+.meta span + span::before { content: "·"; margin: 0 10px; color: var(--border-strong); }
 .meta span:empty { display: none; }
 
 .proj-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; padding-bottom: 96px; }
