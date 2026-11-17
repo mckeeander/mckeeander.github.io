@@ -115,11 +115,11 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 .edu-year { grid-column: 2; grid-row: 1; font: 500 13px var(--mono); color: var(--muted); align-self: center; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .links a {
-  padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px;
-  color: var(--text); font-size: 14px; font-weight: 500; background: var(--surface);
+  padding: 8px 14px; border: 1px solid #5a616e; border-radius: 999px;
+  color: var(--text); font-size: 14px; font-weight: 500; background: transparent;
   transition: border-color 0.2s, background 0.2s;
 }
-.links a:hover { text-decoration: none; border-color: var(--border-strong); background: var(--surface-2); }
+.links a:hover, .links a:active { text-decoration: none; border-color: #8a91a0; background: rgba(255, 255, 255, 0.05); }
 
 /* A thin band of light that sweeps along the chips' borders, left to right across both,
    then rests. Each chip offsets the band by its own position (set in site.js). */
@@ -129,9 +129,9 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 .links a::after {
   content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
   background: linear-gradient(100deg,
-    transparent calc(var(--glint) * (var(--span, 240px) + 160px) - 80px - var(--off, 0px) - 46px),
-    rgba(170, 200, 255, 0.95) calc(var(--glint) * (var(--span, 240px) + 160px) - 80px - var(--off, 0px)),
-    transparent calc(var(--glint) * (var(--span, 240px) + 160px) - 80px - var(--off, 0px) + 46px));
+    transparent calc(var(--glint) * (var(--span, 240px) + 160px) - 80px - var(--off, 0px) - 56px),
+    rgba(205, 222, 255, 1) calc(var(--glint) * (var(--span, 240px) + 160px) - 80px - var(--off, 0px)),
+    transparent calc(var(--glint) * (var(--span, 240px) + 160px) - 80px - var(--off, 0px) + 56px));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
