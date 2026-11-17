@@ -16,14 +16,24 @@
     below.forEach((el) => io.observe(el));
   }
 
-  // ---- card spotlight follows the pointer ----
-  document.querySelectorAll(".card").forEach((card) => {
-    card.addEventListener("pointermove", (e) => {
+  // ---- card spotlight follows the pointer; a tap or click anywhere else clears it ----
+  const cards = [...document.querySelectorAll(".card")];
+  cards.forEach((card) => {
+    const light = (e) => {
       const r = card.getBoundingClientRect();
       card.style.setProperty("--mx", `${e.clientX - r.left}px`);
       card.style.setProperty("--my", `${e.clientY - r.top}px`);
-    });
+      card.classList.add("lit");
+    };
+    card.addEventListener("pointermove", light);
+    card.addEventListener("pointerdown", light);
+    card.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") card.classList.remove("lit"); });
   });
+  document.addEventListener("pointerdown", (e) => {
+    cards.forEach((card) => { if (!card.contains(e.target)) card.classList.remove("lit"); });
+  });
+  // Coming back with the Back button restores the page as it was left; start unlit.
+  addEventListener("pageshow", () => cards.forEach((card) => card.classList.remove("lit")));
 
   // ---- link chips: tell the border glint where each chip sits in the row ----
   const linkRow = document.querySelector(".links");
@@ -41,7 +51,7 @@
     document.fonts && document.fonts.ready.then(place);
   }
 
-  // ---- code blocks: fold / expand / copy ----
+  // ---- code blocks: fold / expand ----
   const LABELS = {
     preview: (n) => `Show all ${n} lines`,
     expanded: () => "Show less",
@@ -66,17 +76,6 @@
       if (was === "expanded") block.scrollIntoView({ block: "nearest", behavior: reduce ? "auto" : "smooth" });
     });
 
-    const copy = block.querySelector(".code-copy");
-    copy.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(block.querySelector("code").innerText);
-        copy.textContent = "Copied";
-        copy.classList.add("done");
-      } catch {
-        copy.textContent = "Press Ctrl+C";
-      }
-      setTimeout(() => { copy.textContent = "Copy"; copy.classList.remove("done"); }, 1600);
-    });
   });
 
   // ---- project page: reading progress, top bar edge, table of contents ----

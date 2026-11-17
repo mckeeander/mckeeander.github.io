@@ -112,7 +112,6 @@ def code_block(code, language, collapsed):
     <span class="code-lang">{esc(label)}</span>
     <span class="code-actions">
       <button class="code-toggle" type="button"></button>
-      <button class="code-copy" type="button" aria-label="Copy code">Copy</button>
     </span>
   </div>
   <pre class="hl"><code>{highlight_code(code, language)}</code></pre>
@@ -270,7 +269,9 @@ def build_project(project, site, drafts):
         scripts += [f'<script src="{KATEX}/katex.min.js" defer></script>',
                     f'<script src="{KATEX}/contrib/auto-render.min.js" defer></script>']
 
-    tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in project.get("tags", []))
+    lang_label = {"python": "Python", "r": "R"}.get(language, language)
+    tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in project.get("tags", [])
+                   if t.lower() != lang_label.lower())
     page = render(
         "project.html",
         title=esc(project["title"]),
@@ -284,10 +285,17 @@ def build_project(project, site, drafts):
         toc_class="" if toc else "no-toc",
         body="\n".join(blocks),
         head_extra=head_extra,
+        credits=credits_html(site),
         scripts="\n".join(scripts),
     )
     (out_dir / "index.html").write_text(page)
     print(f"  built projects/{slug}/  ({outputs.charts} charts, {outputs.figures} images)")
+
+
+def credits_html(site):
+    parts = [f'{esc(c["role"])} set in <a class="credit" href="{esc(c["url"])}" target="_blank" rel="noopener">'
+             f'{esc(c["font"])}</a> by {esc(c["by"])}' for c in site.get("credits", [])]
+    return f"<p>{'. '.join(parts)}.</p>" if parts else ""
 
 
 def build_home(site, projects):
@@ -321,7 +329,7 @@ def build_home(site, projects):
         for e in site.get("education", []))
     edu = (f'<section class="edu-card" aria-labelledby="edu-h"><h2 id="edu-h" class="edu-label">Education</h2>'
            f'<ul class="edu">{edu}</ul></section>') if edu else ""
-    page = render("home.html", name=esc(site["name"]), role=esc(site.get("role", "")),
+    page = render("home.html", credits=credits_html(site), name=esc(site["name"]), role=esc(site.get("role", "")),
                   bio=bio, education=edu, links=links, cards="".join(cards), count=len(projects))
     (OUT / "index.html").write_text(page)
     print("  built index.html")

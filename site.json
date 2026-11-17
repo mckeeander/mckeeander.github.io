@@ -56,5 +56,19 @@
       "url": "https://samfoxschool.washu.edu/academics/college-of-art/bfa-ba-in-studio-art-and-design/communication-design",
       "minor_url": "https://samfoxschool.washu.edu/academics/college-of-art/minors/hci"
     }
+  ],
+  "credits": [
+    {
+      "role": "Headings",
+      "font": "Instrument Sans",
+      "by": "Rodrigo Fuenzalida & Jordan Egstad",
+      "url": "https://fonts.google.com/specimen/Instrument+Sans"
+    },
+    {
+      "role": "Text",
+      "font": "Inter",
+      "by": "Rasmus Andersson",
+      "url": "https://rsms.me/inter/"
+    }
   ]
 }
