@@ -25,8 +25,9 @@
   --c-name: #dfe3ea;
   --c-attr: #e06c75;
 
-  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --display: "Instrument Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --sans: "Hanken Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --display: "Instrument Sans", "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --radius: 14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -81,8 +82,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (min-width: 700px) { .intro { padding: 140px 0 72px; } }
 .eyebrow { margin: 0 0 12px; font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .intro h1, .proj-hero h1, .card h3 { text-wrap: balance; }
+.bio p, .lede, .prose p, .prose li, .card p { text-wrap: pretty; }
 .intro h1 { margin: 0 0 20px; font-family: var(--display); font-size: clamp(42px, 8.4vw, 72px); line-height: 1.02; font-weight: 600; letter-spacing: -0.02em; }
-.bio p { margin: 0 0 12px; font-size: 18px; color: var(--text-2); }
+.bio p { margin: 0 0 12px; font-family: var(--serif); font-size: 20px; line-height: 1.55; color: var(--text-2); }
 .edu-card {
   margin-top: 28px; padding: 18px 20px 6px; border-radius: var(--radius);
   background: #13151b;
@@ -129,11 +131,11 @@ a.edu-chip:hover { border-color: rgba(138, 180, 255, 0.5); }
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
 }
-@keyframes glint { 0% { --glint: 0; } 44%, 100% { --glint: 1; } }
+@keyframes glint { 0% { --glint: 0; } 36%, 100% { --glint: 1; } }
 @media (prefers-reduced-motion: reduce) { .links { animation: none; } .links a::after { display: none; } }
 
 .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; }
-.section-head h2 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
+.section-head h2 { margin: 0; font-family: var(--display); font-size: 21px; font-weight: 600; letter-spacing: -0.005em; }
 
 .grid { display: grid; gap: 16px; grid-template-columns: 1fr; padding-bottom: 80px; }
 @media (min-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
@@ -188,7 +190,7 @@ a.edu-chip:hover { border-color: rgba(138, 180, 255, 0.5); }
 
 .proj-hero { padding-top: 56px; padding-bottom: 40px; }
 .proj-hero h1 { margin: 16px 0 14px; font-family: var(--display); font-size: clamp(36px, 6.2vw, 56px); font-weight: 600; line-height: 1.06; letter-spacing: -0.015em; max-width: 820px; width: fit-content; }
-.lede { margin: 0; font-size: 19px; color: var(--text-2); max-width: 680px; }
+.lede { margin: 0; font-family: var(--serif); font-size: 20px; line-height: 1.55; color: var(--text-2); max-width: 680px; }
 .meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 0; font: 500 12px/1.4 var(--mono); color: var(--muted); }
 .meta span { padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border-strong); }
 .meta span:empty { display: none; }
@@ -209,9 +211,10 @@ a.edu-chip:hover { border-color: rgba(138, 180, 255, 0.5); }
 /* prose */
 .prose { font-size: 17px; }
 .prose > :first-child { margin-top: 0; }
-.prose h2 { margin: 56px 0 16px; font-size: 26px; line-height: 1.25; letter-spacing: -0.02em; }
-.prose h3 { margin: 36px 0 12px; font-size: 19px; letter-spacing: -0.01em; }
-.prose p, .prose ul, .prose ol { margin: 0 0 16px; color: #cfd2d9; }
+.prose h2 { margin: 56px 0 16px; font-family: var(--display); font-size: 27px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; }
+.prose h3 { margin: 36px 0 12px; font-family: var(--display); font-size: 20px; font-weight: 600; letter-spacing: -0.005em; }
+.prose p, .prose ul, .prose ol { margin: 0 0 16px; color: #d3d6dc; }
+.prose p, .prose li, .prose blockquote { font-family: var(--serif); font-size: 18px; line-height: 1.65; }
 .prose li { margin-bottom: 6px; }
 .prose strong { color: var(--text); font-weight: 600; }
 .prose blockquote { margin: 24px 0; padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; color: var(--text-2); }

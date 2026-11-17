@@ -7,7 +7,7 @@
   const DIVERGING = ["#d95926", "#a0644c", "#5b606b", "#4f78b3", "#3987e5"];
 
   const INK = "#e8e9ec", INK_2 = "#a9adb8", MUTED = "#747a87", GRID = "#252932", DOMAIN = "#3a3f4a";
-  const SANS = "Inter, ui-sans-serif, system-ui, sans-serif";
+  const SANS = "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif";
   const MONO = "JetBrains Mono, ui-monospace, monospace";
 
   const theme = {
