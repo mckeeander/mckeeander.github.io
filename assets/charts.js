@@ -78,6 +78,14 @@
       .catch((err) => { el.textContent = "Chart failed to load."; console.error(err); });
   };
 
+  // Touch screens: a tapped tooltip would otherwise stay put. Hide it on scroll or a tap elsewhere.
+  const hideTip = () => {
+    const tip = document.getElementById("vg-tooltip-element");
+    if (tip) tip.classList.remove("visible");
+  };
+  addEventListener("scroll", hideTip, { passive: true });
+  document.addEventListener("pointerdown", (e) => { if (!e.target.closest(".chart")) hideTip(); });
+
   const start = () => document.querySelectorAll("[data-chart]").forEach(draw);
   if (window.vegaEmbed) start(); else addEventListener("load", start);
 })();

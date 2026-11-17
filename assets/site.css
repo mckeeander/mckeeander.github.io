@@ -214,13 +214,13 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 /* prose */
 .prose { font-size: 17px; max-width: 660px; }
 .prose > :first-child { margin-top: 0; }
-.prose h2 { margin: 56px 0 16px; font-family: var(--display); font-size: 27px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; }
+.prose h2 { margin: 72px 0 20px; padding-top: 28px; border-top: 1px solid var(--border); font-family: var(--display); font-size: 27px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; }
 .prose h3 { margin: 36px 0 12px; font-family: var(--display); font-size: 20px; font-weight: 600; letter-spacing: -0.005em; }
-.prose p, .prose ul, .prose ol { margin: 0 0 22px; color: #d3d6dc; }
+.prose p, .prose ul, .prose ol { margin: 0 0 24px; color: #d3d6dc; }
 .prose p, .prose li, .prose blockquote { font-family: var(--serif); font-size: 17px; line-height: 1.65; }
 .prose li { margin-bottom: 6px; }
 .prose strong { color: var(--text); font-weight: 600; }
-.prose blockquote { margin: 24px 0; padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; color: var(--text-2); }
+.prose blockquote { margin: 32px 0; padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; color: var(--text-2); }
 .prose blockquote p:last-child { margin: 0; }
 .prose :not(pre) > code { padding: 2px 6px; font: 0.88em var(--mono); background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; color: #e3c79a; }
 /* Tables in the write-up sit in their own panel, like the data tables. */
@@ -255,7 +255,7 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 .katex { font-size: 1.05em; }
 
 /* cells */
-.cell { margin: 8px 0 32px; display: flex; flex-direction: column; gap: 12px; }
+.cell { margin: 12px 0 40px; display: flex; flex-direction: column; gap: 12px; }
 
 .code { border: 1px solid var(--border); border-radius: 12px; background: var(--code-bg); overflow: hidden; }
 .code-bar { display: flex; align-items: center; justify-content: space-between; height: 38px; padding: 0 8px 0 14px; border-bottom: 1px solid var(--border); background: #13151a; }
@@ -298,10 +298,12 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 /* outputs */
 .out-text {
   margin: 0; padding: 14px 18px; overflow-x: auto;
+  white-space: pre-wrap; overflow-wrap: anywhere;
   font: 13px/1.6 var(--mono); color: var(--text-2);
   background: transparent; border: 1px dashed var(--border); border-radius: 12px;
 }
 .out-text.err { color: #e6a06e; }
+.out-text.tabular { white-space: pre; overflow-wrap: normal; }
 
 .out-result {
   display: inline-flex; flex-direction: column; gap: 4px; align-self: flex-start;

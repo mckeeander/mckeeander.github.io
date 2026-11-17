@@ -169,6 +169,13 @@ def merge_index_header(table):
     return table[:m.start()] + f"<thead><tr>{first}</tr></thead>" + table[m.end():]
 
 
+def tabular(text):
+    """Column-aligned output (tables, model summaries) keeps its layout and scrolls sideways;
+    everything else wraps."""
+    aligned = re.search(r"\S {2,}\S", text) or re.search(r"^[=\-]{8,}$", text, re.M)
+    return " tabular" if aligned else ""
+
+
 def text_of(value):
     return "".join(value) if isinstance(value, list) else value
 
@@ -196,7 +203,7 @@ class Outputs:
             if not text:
                 return ""
             cls = "out-text err" if output.get("name") == "stderr" else "out-text"
-            return f'<pre class="{cls}">{esc(text)}</pre>'
+            return f'<pre class="{cls}{tabular(text)}">{esc(text)}</pre>'
 
         if kind == "error":
             print(f"  ! {self.slug}: a cell raised {output.get('ename')}; left off the page", file=sys.stderr)
@@ -233,7 +240,7 @@ class Outputs:
                 label = opts.get("label")
                 lab = f'<span class="result-label">{esc(label)}</span>' if isinstance(label, str) else ""
                 return f'<div class="out-result">{lab}<span class="result-value">{esc(text.strip(chr(39)))}</span></div>'
-            return f'<pre class="out-text">{esc(text)}</pre>'
+            return f'<pre class="out-text{tabular(text)}">{esc(text)}</pre>'
 
         return ""
 
