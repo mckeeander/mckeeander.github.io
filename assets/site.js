@@ -2,6 +2,8 @@
   const root = document.documentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   root.classList.add("js");
+  // iOS Safari only shows :active (press) styles when the page listens for touches.
+  document.addEventListener("touchstart", () => {}, { passive: true });
 
   // ---- scroll-in reveal: only what starts below the fold fades in ----
   const items = [...document.querySelectorAll(".reveal")];
