@@ -50,12 +50,14 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (min-width: 700px) { .wrap { padding: 0 32px; } }
 
 .glow {
-  position: absolute; inset: -30vh -20vw auto; height: 95vh; z-index: -1; pointer-events: none;
+  position: absolute; top: 0; left: 0; right: 0; height: 130vh; max-height: 1200px;
+  z-index: -1; pointer-events: none;
   background:
-    radial-gradient(45% 55% at 18% 32%, rgba(70, 120, 235, 0.34), transparent 72%),
-    radial-gradient(30% 40% at 30% 40%, rgba(110, 160, 255, 0.12), transparent 70%),
-    radial-gradient(35% 45% at 82% 12%, rgba(140, 90, 210, 0.13), transparent 70%);
-  filter: blur(24px);
+    radial-gradient(ellipse 110% 75% at 10% 32%, rgba(70, 120, 235, 0.24), rgba(70, 120, 235, 0.11) 40%, rgba(70, 120, 235, 0.03) 68%, transparent 85%),
+    radial-gradient(ellipse 80% 55% at 95% 12%, rgba(140, 95, 215, 0.09), transparent 70%);
+  /* Fade in from the very top (no edge against the browser bar) and out toward the content. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 50%, transparent 100%);
 }
 
 /* ============ page transitions ============ */
