@@ -24,18 +24,18 @@
 </head>
 <body class="home">
 <main class="wrap">
-  <header class="intro">
-    <p class="eyebrow reveal">{{role}}</p>
-    <h1 class="reveal">{{name}}</h1>
-    <div class="bio reveal">{{bio}}</div>
-    <div class="reveal">{{education}}</div>
-    <nav class="links reveal">{{links}}</nav>
-  </header>
+  <div class="hero">
+    <header class="intro">
+      <p class="eyebrow">{{role}}</p>
+      <h1>{{name}}</h1>
+      <div class="bio">{{bio}}</div>
+      <nav class="links" aria-label="Elsewhere">{{links}}</nav>
+    </header>
+    {{education}}
+  </div>
 
-  <section class="projects" aria-labelledby="projects-h">
-    <div class="section-head reveal">
-      <h2 id="projects-h">Projects</h2>
-    </div>
+  <section class="home-section projects" aria-labelledby="projects-h">
+    <h2 id="projects-h" class="section-label">Projects</h2>
     <div class="grid">{{cards}}</div>
   </section>
 </main>

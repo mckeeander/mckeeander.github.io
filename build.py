@@ -341,8 +341,9 @@ def build_home(site, projects):
         + (f'<span class="edu-note">Minor{linked(e["minor"], e.get("minor_url"), "edu-chip")}</span>' if e.get("minor") else "")
         + "</li>"
         for e in site.get("education", []))
-    edu = (f'<section class="edu-card" aria-labelledby="edu-h"><h2 id="edu-h" class="edu-label">Education</h2>'
-           f'<ul class="edu">{edu}</ul></section>') if edu else ""
+    edu = (f'<section class="home-section edu-section" aria-labelledby="edu-h">'
+           f'<h2 id="edu-h" class="section-label">Education</h2>'
+           f'<div class="edu-card"><ul class="edu">{edu}</ul></div></section>') if edu else ""
     page = render("home.html", credits=credits_html(site), name=esc(site["name"]), role=esc(site.get("role", "")),
                   bio=bio, education=edu, links=links, cards="".join(cards), count=len(projects))
     (OUT / "index.html").write_text(page)

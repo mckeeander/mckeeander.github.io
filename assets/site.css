@@ -73,15 +73,26 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 
 /* ============ home ============ */
-.intro { padding: 96px 0 56px; max-width: 680px; }
-@media (min-width: 700px) { .intro { padding: 140px 0 72px; } }
+/* Home: the header block (you + links) beside Education on wide screens, stacked on phones. */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; padding: 96px 0 64px; }
+@media (min-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; align-items: start; padding: 140px 0 80px; }
+}
+.intro { max-width: 600px; }
+
+/* One header style for every home section: small label, then a hairline to the edge. */
+.section-label {
+  display: flex; align-items: center; gap: 14px; margin: 0 0 16px;
+  font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+}
+.section-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 .eyebrow { margin: 0 0 12px; font: 500 13px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .intro h1, .proj-hero h1, .card h3 { text-wrap: balance; }
 .bio p, .lede, .prose p, .prose li, .card p { text-wrap: pretty; }
 .intro h1 { margin: 0 0 20px; font-family: var(--display); font-size: clamp(42px, 8.4vw, 72px); line-height: 1.02; font-weight: 600; letter-spacing: -0.02em; }
 .bio p { margin: 0 0 12px; font-size: 18px; color: var(--text-2); }
 .edu-card {
-  margin-top: 28px; padding: 18px 20px 6px; border-radius: var(--radius);
+  padding: 6px 20px; border-radius: var(--radius);
   background: #16181e;
   border: 1px solid rgba(255, 255, 255, 0.045);
   box-shadow:
@@ -89,7 +100,6 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
     inset 0 10px 22px -8px rgba(0, 0, 0, 0.4),
     0 1px 0 rgba(255, 255, 255, 0.05);
 }
-.edu-label { margin: 0 0 4px; font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .edu { list-style: none; margin: 0; padding: 0; }
 .edu li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 12px 0; }
 .edu li + li { border-top: 1px solid var(--border); }
@@ -106,7 +116,7 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
   border-color: #7a8190; color: var(--text); background-color: rgba(255, 255, 255, 0.05);
 }
 .edu-year { grid-column: 2; grid-row: 1; font: 500 13px var(--mono); color: var(--muted); align-self: center; }
-.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .links a {
   padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px;
   color: var(--text); font-size: 14px; font-weight: 500; background: var(--surface);
@@ -132,8 +142,6 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 @keyframes glint { 0% { --glint: 0; } 36%, 100% { --glint: 1; } }
 @media (prefers-reduced-motion: reduce) { .links { animation: none; } .links a::after { display: none; } }
 
-.section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; }
-.section-head h2 { margin: 0; font-family: var(--display); font-size: 21px; font-weight: 600; letter-spacing: -0.005em; }
 
 .grid { display: grid; gap: 16px; grid-template-columns: 1fr; padding-bottom: 80px; }
 @media (min-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
