@@ -73,12 +73,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 
 /* ============ home ============ */
-/* Home: the header block (you + links) beside Education on wide screens, stacked on phones. */
-.hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; padding: 96px 0 64px; }
-@media (min-width: 960px) {
-  .hero { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; align-items: start; padding: 140px 0 80px; }
-}
-.intro { max-width: 600px; }
+/* Home: the header block (you + links), then Education, in one column. */
+.hero { display: grid; gap: 48px; padding: 96px 0 64px; max-width: 680px; }
+@media (min-width: 700px) { .hero { padding: 140px 0 80px; } }
 
 /* One header style for every home section: small label, then a hairline to the edge. */
 .section-label {
