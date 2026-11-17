@@ -80,7 +80,21 @@ def md_to_html(source):
     out = md.convert(protected)
     out = re.sub(r"MATHSTASH(\d+)X", lambda m: esc(stash[int(m.group(1))], quote=False), out)
     out = out.replace("DOLLARSIGNX", '<span class="usd">$</span>')
+    out = label_table_cells(out)
     return out, md.toc_tokens, bool(stash)
+
+
+def label_table_cells(html_text):
+    """Give each table cell its column name, so narrow screens can stack rows as cards."""
+    def one(table):
+        heads = [re.sub(r"<[^>]+>", "", h).strip() for h in re.findall(r"<th[^>]*>(.*?)</th>", table.group(0), re.S)]
+        if not heads:
+            return table.group(0)
+        def row(r):
+            cells = iter(heads)
+            return re.sub(r"<td(?=[\s>])", lambda m: f'<td data-label="{esc(next(cells, ""))}"', r.group(0))
+        return re.sub(r"<tr>.*?</tr>", row, table.group(0), flags=re.S)
+    return re.sub(r"<table>.*?</table>", one, html_text, flags=re.S)
 
 
 # ---------- code ----------
@@ -322,7 +336,7 @@ def build_home(site, projects):
 
     edu = "".join(
         f'<li><span class="edu-degree">{linked(e["degree"], e.get("url"))}</span>'
-        f'<span class="edu-school">{esc(e["school"])}</span>'
+        f'<span class="edu-school">{linked(e["school"], e.get("school_url"))}</span>'
         f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
         + (f'<span class="edu-note">Minor{linked(e["minor"], e.get("minor_url"), "edu-chip")}</span>' if e.get("minor") else "")
         + "</li>"
