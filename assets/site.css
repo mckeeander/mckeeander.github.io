@@ -114,7 +114,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
     color: transparent;
     background: linear-gradient(100deg, var(--base) 40%, #a9c8ff 50%, var(--base) 60%) 100% 0 / 260% 100% no-repeat;
     -webkit-background-clip: text; background-clip: text;
-    animation: edu-glint 0.9s cubic-bezier(0.45, 0, 0.25, 1) both;
+    animation: edu-glint 1.9s linear infinite;
   }
   a.edu-chip { position: relative; }
   a.edu-chip::after {
@@ -124,9 +124,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
     opacity: 0;
   }
-  a.edu-chip:hover::after { opacity: 1; animation: edu-glint 0.9s cubic-bezier(0.45, 0, 0.25, 1) both; }
+  a.edu-chip:hover::after { opacity: 1; animation: edu-glint 1.9s linear infinite; }
 }
-@keyframes edu-glint { from { background-position: 100% 0; } to { background-position: 0 0; } }
+/* 1.2 s sweep, eased, then a 0.7 s rest; repeats while the pointer stays. */
+@keyframes edu-glint {
+  0% { background-position: 100% 0; animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); }
+  63%, 100% { background-position: 0 0; }
+}
 .edu-chip {
   display: inline-block; margin-left: 6px; padding: 1px 9px; border-radius: 999px;
   border: 1px solid #4a505c; color: inherit; font-size: 13px; line-height: 1.5;
