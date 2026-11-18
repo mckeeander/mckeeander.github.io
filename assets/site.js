@@ -74,7 +74,6 @@
     const onScroll = () => {
       const max = root.scrollHeight - innerHeight;
       progress.style.setProperty("--p", max > 0 ? Math.min(1, scrollY / max) : 0);
-      bar.classList.toggle("scrolled", scrollY > 8);
     };
     addEventListener("scroll", onScroll, { passive: true });
     onScroll();

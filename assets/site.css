@@ -179,16 +179,20 @@ a.edu-chip:hover, a.edu-chip:active, a.edu-chip:focus-visible {
 .foot::before { content: ""; display: block; margin-bottom: 28px; border-top: 1px solid var(--border); }
 
 /* ============ project page ============ */
+/* The header is solid at the top (the same colour Safari paints its status bar) and fades
+   into the page at the bottom, so there is one soft edge instead of two hard ones. */
 .topbar {
   position: sticky; top: 0; z-index: 10; height: 56px; display: flex; align-items: center; padding: 0 16px;
-  background: rgba(18, 20, 25, 0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+  isolation: isolate;
 }
-.topbar.scrolled { border-bottom-color: var(--border); }
+.topbar::before {
+  content: ""; position: absolute; inset: 0 0 -28px; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 45%, rgba(18, 20, 25, 0.85) 68%, rgba(18, 20, 25, 0) 100%);
+}
 @media (min-width: 700px) { .topbar { padding: 0 32px; } }
 .back { color: var(--text-2); font-size: 14px; font-weight: 500; }
 .back:hover { color: var(--text); text-decoration: none; }
-.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
+.progress { position: absolute; left: 0; right: 0; top: 0; height: 2px; }
 .progress span { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(var(--p, 0)); }
 
 .proj-head { padding-top: 40px; padding-bottom: 48px; }
