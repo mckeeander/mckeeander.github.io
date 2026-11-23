@@ -1,45 +1,47 @@
-# Dark matplotlib style that matches the site. In a notebook:
+# Paper matplotlib style that matches the site. In a notebook:
 #   import matplotlib.pyplot as plt
 #   plt.style.use("portfolio.mplstyle")
-figure.facecolor: none
-axes.facecolor: none
-savefig.facecolor: none
-savefig.transparent: True
+figure.facecolor: fbfaf8
+axes.facecolor: fbfaf8
+savefig.facecolor: fbfaf8
+savefig.transparent: False
 figure.dpi: 110
 savefig.dpi: 200
 figure.figsize: 8, 4.5
 figure.constrained_layout.use: True
 
 font.family: sans-serif
-font.sans-serif: Inter, Helvetica Neue, Arial, DejaVu Sans
+font.sans-serif: Archivo, Helvetica Neue, Arial, DejaVu Sans
 font.size: 11
-text.color: e8e9ec
+text.color: 111111
 
-axes.edgecolor: 3a3f4a
-axes.labelcolor: a9adb8
-axes.titlecolor: e8e9ec
+axes.edgecolor: 111111
+axes.linewidth: 1.2
+axes.labelcolor: 3d3c39
+axes.titlecolor: 111111
 axes.titlesize: 13
-axes.titleweight: semibold
+axes.titleweight: bold
 axes.titlelocation: left
 axes.titlepad: 12
 axes.labelpad: 8
 axes.spines.top: False
 axes.spines.right: False
+axes.spines.left: False
 axes.grid: True
 axes.grid.axis: y
 axes.axisbelow: True
-axes.prop_cycle: cycler('color', ['3987e5', 'd95926', '199e70', 'c98500', 'd55181', '008300', '9085e9', 'e66767'])
+axes.prop_cycle: cycler('color', ['2340ff', 'eb6834', '1baf7a', 'eda100', 'e87ba4', '008300', '6250d6', 'e34948'])
 
-grid.color: 252932
+grid.color: e2e0da
 grid.linewidth: 0.8
-xtick.color: 3a3f4a
-ytick.color: 3a3f4a
-xtick.labelcolor: a9adb8
-ytick.labelcolor: a9adb8
+xtick.color: 111111
+ytick.color: 111111
+xtick.labelcolor: 3d3c39
+ytick.labelcolor: 3d3c39
 ytick.left: False
 
 lines.linewidth: 2
 lines.markersize: 7
 patch.edgecolor: none
 legend.frameon: False
-legend.labelcolor: a9adb8
+legend.labelcolor: 3d3c39
