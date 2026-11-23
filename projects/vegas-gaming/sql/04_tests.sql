@@ -27,3 +27,9 @@ WHERE area_key = 'strip' AND game IN ('Blackjack', 'Craps', 'Roulette') AND (hol
 
 -- test: shares in the game mix sum to 1
 SELECT month, area_key, sum(share) FROM v_game_mix GROUP BY ALL HAVING abs(sum(share) - 1) > 1e-9;
+
+-- test: every month in the spine has an inflation factor
+SELECT month FROM dim_cpi WHERE to_2025_dollars IS NULL;
+
+-- test: every area maps to a market
+SELECT DISTINCT area_key FROM v_area_annual WHERE market = 'other' AND area_key IN ('strip', 'downtown', 'boulder', 'north_lv', 'clark_rest');

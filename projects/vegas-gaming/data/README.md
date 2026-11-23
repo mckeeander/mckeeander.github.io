@@ -11,6 +11,7 @@ python scripts/fetch_ngcb.py      # download any new NGCB monthly reports
 python scripts/parse_ngcb.py      # ~15 min for all years; exits non-zero if a report fails validation
 python scripts/lvcva.py           # download and parse the LVCVA workbooks
 python scripts/crosscheck.py      # NGCB vs LVCVA gaming revenue
+python scripts/fetch_extra.py     # CPI, Clark County population, LVCVA annual history
 python scripts/build_db.py        # DuckDB model + data tests + dashboard JSON
 ```
 
@@ -34,6 +35,9 @@ python scripts/build_db.py        # DuckDB model + data tests + dashboard JSON
 | `ngcb_checks.csv` | month × area | result of every validation check |
 | `lvcva_monthly.csv` | month | visitors, convention attendance, room inventory, occupancy (all / weekend / midweek / Strip / downtown), ADR, RevPAR, room nights, air passengers, gaming revenue (Clark County, Strip, downtown, Boulder); `*_flag` = `r` revised or `e` estimate, as printed |
 | `crosscheck.csv` | month × area | NGCB total gaming vs. the LVCVA's gaming revenue |
+| `cpi_monthly.csv` | month | CPI-U, U.S. city average, not seasonally adjusted (BLS CUUR0000SA0); Oct 2025 was never published and is interpolated in SQL |
+| `clark_population.csv` | year | Census Bureau population estimates, Clark County (vintage 2020 for 2010–19, vintage 2025 for 2020–25) |
+| `lvcva_annual.csv` | year | LVCVA Historic Tourism Statistics, 1970 on: visitors, convention attendance, room inventory, occupancy |
 
 ## Sources
 
@@ -71,5 +75,7 @@ Cross-check with the LVCVA: 112 of 186 Strip/downtown months match to the dollar
 - **Oct 2026 onward**: not yet published at the time of writing.
 - Small areas show games as a single "Other" row ("unit detail is shown separately only
   when there are 3 or more licensed locations").
+- Inflation uses the national CPI-U; Las Vegas prices may differ. Money compared across years is in 2025 dollars.
+- The "locals market" is the Boulder Strip, North Las Vegas and the rest of Clark County (incl. Henderson); it is a proxy, since no public data splits bets between residents and tourists.
 - Game categories change over time (e.g. Megabucks discontinued, Ultimate Texas Hold'em
   added, mobile sports reported separately from 2024); `game_raw` keeps the printed name.

@@ -27,6 +27,12 @@ EXPORTS = {
     "strip_tourism": "SELECT * FROM v_strip_tourism ORDER BY month",
     "seasonality": "SELECT * FROM v_seasonality WHERE area_key IN ('statewide','strip','downtown') ORDER BY area_key, month_num",
     "kpi_latest": "SELECT * FROM v_kpi_latest",
+    "market_per_resident": "SELECT * FROM v_market_per_resident ORDER BY year",
+    "covid_recovery": "SELECT * FROM v_covid_recovery ORDER BY month",
+    "visitors_annual": "SELECT * FROM v_visitors_annual ORDER BY year",
+    "strip_rooms_annual": "SELECT * FROM v_strip_rooms_annual ORDER BY year",
+    "table_economics": "SELECT * FROM v_table_economics ORDER BY game, year",
+    "baccarat_by_year": "SELECT * FROM v_baccarat_by_year ORDER BY year",
 }
 
 

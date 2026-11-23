@@ -64,3 +64,27 @@ SELECT CAST(month || '-01' AS DATE) AS month,
        room_nights, air_passengers,
        (coalesce(visitors_flag, '') = 'r') AS visitors_revised
 FROM raw_lvcva;
+
+-- Inflation: CPI-U by month, gaps interpolated (BLS did not publish Oct 2025), and the
+-- factor that converts each month's dollars to 2025 dollars (2025 average CPI).
+CREATE OR REPLACE TABLE dim_cpi AS
+WITH c AS (
+    SELECT m.month, r.cpi_u
+    FROM dim_month m LEFT JOIN raw_cpi r ON CAST(r.month || '-01' AS DATE) = m.month
+),
+filled AS (
+    SELECT month,
+           coalesce(cpi_u,
+                    (lag(cpi_u IGNORE NULLS) OVER (ORDER BY month) + lead(cpi_u IGNORE NULLS) OVER (ORDER BY month)) / 2,
+                    lag(cpi_u IGNORE NULLS) OVER (ORDER BY month)) AS cpi_u,
+           cpi_u IS NULL AS interpolated
+    FROM c
+)
+SELECT month, cpi_u, interpolated,
+       (SELECT avg(cpi_u) FROM filled WHERE year(month) = 2025) / cpi_u AS to_2025_dollars
+FROM filled;
+
+-- Annual context: Clark County population and the LVCVA's annual history (visitors since 1970).
+CREATE OR REPLACE TABLE dim_population AS SELECT year, population FROM raw_population;
+CREATE OR REPLACE TABLE fct_tourism_year AS
+SELECT year, visitors, convention_attendance, room_inventory, occupancy FROM raw_lvcva_annual;

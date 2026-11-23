@@ -12,20 +12,31 @@ SELECT * FROM read_csv('data/processed/ngcb_totals.csv', header = true, types = 
 CREATE OR REPLACE TABLE raw_lvcva AS
 SELECT * FROM read_csv('data/processed/lvcva_monthly.csv', header = true, types = {'month': 'VARCHAR'});
 
+-- Context (scripts/fetch_extra.py): inflation, population, LVCVA annual history.
+CREATE OR REPLACE TABLE raw_cpi AS
+SELECT * FROM read_csv('data/processed/cpi_monthly.csv', header = true, types = {'month': 'VARCHAR', 'cpi_u': 'DOUBLE'});
+CREATE OR REPLACE TABLE raw_population AS
+SELECT * FROM read_csv('data/processed/clark_population.csv', header = true);
+CREATE OR REPLACE TABLE raw_lvcva_annual AS
+SELECT * FROM read_csv('data/processed/lvcva_annual.csv', header = true);
+
 -- Areas: one short, stable key per area (the board renamed "Boulder Strip" to "Boulder" in 2018).
-CREATE OR REPLACE TABLE dim_area (area_raw VARCHAR, area_key VARCHAR, area_name VARCHAR, in_dashboard BOOLEAN);
+-- market: 'locals' marks the areas whose casinos mostly serve residents (Boulder Strip, North Las Vegas,
+-- and the rest of the county outside the Strip, downtown, Laughlin and Mesquite).
+CREATE OR REPLACE TABLE dim_area (area_raw VARCHAR, area_key VARCHAR, area_name VARCHAR, in_dashboard BOOLEAN, market VARCHAR);
 INSERT INTO dim_area VALUES
-    ('Statewide',                            'statewide', 'Nevada statewide',     true),
-    ('Clark County',                         'clark',     'Clark County',         false),
-    ('Clark County Las Vegas Strip Area',    'strip',     'Las Vegas Strip',      true),
-    ('Clark County Downtown Las Vegas Area', 'downtown',  'Downtown Las Vegas',   true),
-    ('Clark County Boulder Strip Area',      'boulder',   'Boulder Strip',        false),
-    ('Clark County Boulder Area',            'boulder',   'Boulder Strip',        false),
-    ('Clark County North Las Vegas Area',    'north_lv',  'North Las Vegas',      false),
-    ('Clark County Laughlin Area',           'laughlin',  'Laughlin',             false),
-    ('Clark County Mesquite Area',           'mesquite',  'Mesquite',             false),
-    ('Washoe County Reno Area',              'reno',      'Reno',                 false),
-    ('Washoe County Sparks Area',            'sparks',    'Sparks',               false);
+    ('Statewide',                            'statewide', 'Nevada statewide',     true, 'statewide'),
+    ('Clark County',                         'clark',     'Clark County',         false, 'county'),
+    ('Clark County Las Vegas Strip Area',    'strip',     'Las Vegas Strip',      true, 'tourist'),
+    ('Clark County Downtown Las Vegas Area', 'downtown',  'Downtown Las Vegas',   true, 'tourist'),
+    ('Clark County Boulder Strip Area',      'boulder',   'Boulder Strip',        false, 'locals'),
+    ('Clark County Boulder Area',            'boulder',   'Boulder Strip',        false, 'locals'),
+    ('Clark County North Las Vegas Area',    'north_lv',  'North Las Vegas',      false, 'locals'),
+    ('Clark County Laughlin Area',           'laughlin',  'Laughlin',             false, 'tourist'),
+    ('Clark County Mesquite Area',           'mesquite',  'Mesquite',             false, 'tourist'),
+    ('Washoe County Reno Area',              'reno',      'Reno',                 false, 'other'),
+    ('Washoe County Sparks Area',            'sparks',    'Sparks',               false, 'other'),
+    ('Clark County Balance Of County',       'clark_rest', 'Rest of Clark County (incl. Henderson)', false, 'locals');
 -- Areas not listed keep their printed name as the key (see stg_* below).
 
 -- Games: one canonical name and a group for the dashboard. Fixes names the parser
