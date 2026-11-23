@@ -5,41 +5,6 @@
   // iOS Safari only shows :active (press) styles when the page listens for touches.
   document.addEventListener("touchstart", () => {}, { passive: true });
 
-  // ---- card spotlight follows the pointer; a tap or click anywhere else clears it ----
-  const cards = [...document.querySelectorAll(".card")];
-  cards.forEach((card) => {
-    const light = (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      card.style.setProperty("--my", `${e.clientY - r.top}px`);
-      card.classList.add("lit");
-    };
-    card.addEventListener("pointermove", light);
-    card.addEventListener("pointerdown", light);
-    card.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") card.classList.remove("lit"); });
-  });
-  document.addEventListener("pointerdown", (e) => {
-    cards.forEach((card) => { if (!card.contains(e.target)) card.classList.remove("lit"); });
-  });
-  // Coming back with the Back button restores the page as it was left; start unlit.
-  addEventListener("pageshow", () => cards.forEach((card) => card.classList.remove("lit")));
-
-  // ---- link chips: tell the border glint where each chip sits in the row ----
-  const linkRow = document.querySelector(".links");
-  if (linkRow) {
-    const place = () => {
-      const row = linkRow.getBoundingClientRect();
-      const chips = [...linkRow.querySelectorAll("a")];
-      const right = Math.max(...chips.map((a) => a.getBoundingClientRect().right));
-      linkRow.style.setProperty("--span", `${right - row.left}px`);
-      linkRow.querySelectorAll("a").forEach((a) =>
-        a.style.setProperty("--off", `${a.getBoundingClientRect().left - row.left}px`));
-    };
-    place();
-    addEventListener("resize", place);
-    document.fonts && document.fonts.ready.then(place);
-  }
-
   // ---- code blocks: fold / expand ----
   const LABELS = {
     preview: (n) => `Show all ${n} lines`,

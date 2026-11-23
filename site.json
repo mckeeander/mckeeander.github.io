@@ -20,6 +20,8 @@
       "notebook": "projects/bechdel/notebooks/bechdel_portfolio.ipynb",
       "title": "What 798 Films Say About Representation and Revenue",
       "summary": "Films that pass the Bechdel test look no different at the box office until you account for the smaller budgets they're given. Then they earn about 22% more.",
+      "stat": "+21.7%",
+      "stat_label": "domestic gross at the same budget and year",
       "tags": [
         "Regression",
         "Clustering",
@@ -60,22 +62,16 @@
   ],
   "credits": [
     {
-      "role": "Headings",
-      "font": "Instrument Sans",
-      "by": "Rodrigo Fuenzalida & Jordan Egstad",
-      "url": "https://fonts.google.com/specimen/Instrument+Sans"
+      "role": "Type",
+      "font": "Archivo",
+      "by": "Omnibus-Type",
+      "url": "https://fonts.google.com/specimen/Archivo"
     },
     {
-      "role": "Writing",
-      "font": "Spectral",
-      "by": "Jean-Baptiste Levée of Production Type",
-      "url": "https://fonts.google.com/specimen/Spectral"
-    },
-    {
-      "role": "Interface",
-      "font": "Hanken Grotesk",
-      "by": "Alfredo Marco Pradil",
-      "url": "https://fonts.google.com/specimen/Hanken+Grotesk"
+      "role": "Code",
+      "font": "JetBrains Mono",
+      "by": "JetBrains",
+      "url": "https://fonts.google.com/specimen/JetBrains+Mono"
     }
   ]
 }

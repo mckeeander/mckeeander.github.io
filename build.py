@@ -291,8 +291,7 @@ def build_project(project, site, drafts):
                     f'<script src="{KATEX}/contrib/auto-render.min.js" defer></script>']
 
     lang_label = {"python": "Python", "r": "R"}.get(language, language)
-    tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in project.get("tags", [])
-                   if t.lower() != lang_label.lower())
+    tags = tag_list(t for t in project.get("tags", []) if t.lower() != lang_label.lower())
     page = render(
         "project.html",
         title=esc(project["title"]),
@@ -300,6 +299,7 @@ def build_project(project, site, drafts):
         summary=esc(project.get("summary", "")),
         slug=slug,
         tags=tags,
+        stat=stat_html(project, "proj-stat"),
         date=esc(project.get("date", "")),
         language={"python": "Python", "r": "R"}.get(language, language),
         toc=toc_html,
@@ -313,6 +313,19 @@ def build_project(project, site, drafts):
     print(f"  built projects/{slug}/  ({outputs.charts} charts, {outputs.figures} images)")
 
 
+def tag_list(tags):
+    return "".join(f'<span class="tag">{esc(t)}</span>' for t in tags)
+
+
+def stat_html(project, cls):
+    """The project's headline number, if site.json gives one."""
+    if not project.get("stat"):
+        return ""
+    label = project.get("stat_label")
+    lab = f'<span class="stat-label">{esc(label)}</span>' if label else ""
+    return f'<p class="{cls}"><span class="stat-value">{esc(project["stat"])}</span>{lab}</p>'
+
+
 def credits_html(site):
     parts = [f'{esc(c["role"])} set in <a class="credit" href="{esc(c["url"])}" target="_blank" rel="noopener">'
              f'{esc(c["font"])}</a> by {esc(c["by"])}' for c in site.get("credits", [])]
@@ -321,15 +334,15 @@ def credits_html(site):
 
 def build_home(site, projects):
     cards = []
-    for i, p in enumerate(projects):
-        tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in p.get("tags", []))
+    for p in projects:
         draft = '<span class="tag tag-draft">Draft</span>' if p.get("draft") else ""
         cards.append(f"""
-<a class="card reveal" href="projects/{p['slug']}/" style="--i:{i}">
-  <div class="card-tags">{draft}{tags}</div>
+<a class="entry" href="projects/{p['slug']}/">
+  <div class="entry-meta"><span class="entry-tags">{draft}{tag_list(p.get("tags", []))}</span><span>{esc(p.get('date', ''))}</span></div>
   <h3>{esc(p['title'])}</h3>
-  <p>{esc(p.get('summary', ''))}</p>
-  <div class="card-foot"><span>{esc(p.get('date', ''))}</span><span class="card-go">Read the project <span aria-hidden="true">&rarr;</span></span></div>
+  {stat_html(p, "entry-stat")}
+  <p class="entry-sum">{esc(p.get('summary', ''))}</p>
+  <span class="entry-go">Read the project <span aria-hidden="true">&rarr;</span></span>
 </a>""")
     if not cards:
         cards.append('<p class="empty">First project coming soon.</p>')
@@ -345,14 +358,16 @@ def build_home(site, projects):
         f'<li><span class="edu-degree">{linked(e["degree"], e.get("url"))}</span>'
         f'<span class="edu-school">{linked(e["school"], e.get("school_url"))}</span>'
         f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
-        + (f'<span class="edu-note">Minor{linked(e["minor"], e.get("minor_url"), "edu-chip")}</span>' if e.get("minor") else "")
+        + (f'<span class="edu-note">Minor {linked(e["minor"], e.get("minor_url"), "edu-chip")}</span>' if e.get("minor") else "")
         + "</li>"
         for e in site.get("education", []))
-    edu = (f'<section class="home-section edu-section" aria-labelledby="edu-h">'
-           f'<h2 id="edu-h" class="section-label">Education</h2>'
-           f'<div class="edu-card"><ul class="edu">{edu}</ul></div></section>') if edu else ""
-    page = render("home.html", credits=credits_html(site), name=esc(site["name"]), role=esc(site.get("role", "")),
-                  bio=bio, education=edu, links=links, cards="".join(cards), count=len(projects))
+    edu = (f'<section class="cell-edu" aria-labelledby="edu-h">'
+           f'<h2 id="edu-h" class="kicker">Education</h2><ul class="edu">{edu}</ul></section>') if edu else ""
+    # The name is set one word per line, poster style.
+    name_lines = "".join(f"<span>{esc(w)}</span>" for w in site["name"].split())
+    page = render("home.html", credits=credits_html(site), name=esc(site["name"]), name_lines=name_lines,
+                  role=esc(site.get("role", "")), bio=bio, education=edu, links=links,
+                  cards="".join(cards), count=len(projects))
     (OUT / "index.html").write_text(page)
     print("  built index.html")
 

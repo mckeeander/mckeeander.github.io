@@ -11,6 +11,8 @@ My data science portfolio. Each project page is built from a Jupyter notebook: m
      "title": "…", "summary": "…", "tags": ["…"], "date": "2026-11" }
    ```
    Add `"draft": true` to keep it off the live site while you work on it.
+   Optionally add a headline number, shown large on the home page and in the project's opening:
+   `"stat": "+21.7%", "stat_label": "domestic gross at the same budget and year"`.
 3. Push to `main`. The GitHub Action builds the site and publishes it.
 
 ## Cell options
@@ -28,7 +30,7 @@ Put these on the first lines of a code cell:
 
 Code cells longer than 18 lines start as a preview with "Show all lines".
 
-Charts: Altair charts become interactive and pick up the site's dark theme automatically. For matplotlib, use `plt.style.use("portfolio.mplstyle")` (in `notebooks/`). Math in markdown (`$r$`, `$$…$$`) is rendered with KaTeX.
+Charts: Altair charts become interactive and pick up the site's paper theme automatically (colors hard-coded for the old dark theme are mapped to the new palette). For matplotlib, use `plt.style.use("portfolio.mplstyle")` (in `notebooks/`). Math in markdown (`$r$`, `$$…$$`) is rendered with KaTeX.
 
 ## Previewing locally
 
