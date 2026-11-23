@@ -366,15 +366,24 @@ def build_home(site, projects):
             return f"<span{attrs}>{esc(text)}</span>"
         return f'<a{attrs} href="{esc(url)}" target="_blank" rel="noopener">{esc(text)}</a>'
 
-    edu = "".join(
-        f'<li><span class="edu-degree">{linked(e["degree"], e.get("url"))}</span>'
-        f'<span class="edu-school">{linked(e["school"], e.get("school_url"))}</span>'
-        f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
-        + (f'<span class="edu-note">Minor in {linked(e["minor"], e.get("minor_url"))}</span>' if e.get("minor") else "")
-        + "</li>"
-        for e in site.get("education", []))
-    edu = (f'<section class="cell-edu" aria-labelledby="edu-h">'
-           f'<h2 id="edu-h" class="kicker">Education</h2><ul class="edu">{edu}</ul></section>') if edu else ""
+    def degree(e):
+        # "M.S. Data Science" -> letters "M.S." and field "Data Science"
+        letters, _, field = e["degree"].partition(" ")
+        school = e.get("school_short") or e["school"]
+        lines = [f'{linked(school, e.get("school_url"))}<span class="edu-sep" aria-hidden="true"> · </span>'
+                 f'<span class="edu-year">{esc(e.get("year", ""))}</span>']
+        if e.get("minor"):
+            lines.append(f'Minor in {linked(e.get("minor_short") or e["minor"], e.get("minor_url"))}')
+        head = f'<span class="edu-ab">{esc(letters)}</span><span class="edu-field">{esc(field)}</span>'
+        if e.get("url"):
+            head = f'<a class="edu-head" href="{esc(e["url"])}" target="_blank" rel="noopener">{head}</a>'
+        else:
+            head = f'<span class="edu-head">{head}</span>'
+        return "<li>" + head + "".join(f'<span class="edu-line">{l}</span>' for l in lines) + "</li>"
+
+    edu = "".join(degree(e) for e in site.get("education", []))
+    edu = (f'<section class="poster-edu" aria-labelledby="edu-h">'
+           f'<h2 id="edu-h" class="poster-kicker">Education</h2><ul class="edu">{edu}</ul></section>') if edu else ""
     # The name is set one word per line, poster style.
     name_lines = "".join(f"<span>{esc(w)}</span>" for w in site["name"].split())
     page = render("home.html", credits=credits_html(site), name=esc(site["name"]), name_lines=name_lines,

@@ -31,6 +31,8 @@
   --c-attr: #116329;
 
   --sans: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Display face for poster-sized type only: the name, project titles, big numbers, section numbers. */
+  --display: "Big Shoulders Display", "Archivo", ui-sans-serif, system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --rule: 2px solid var(--ink);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -86,8 +88,8 @@ a { color: var(--blue); text-decoration: none; }
 @media (min-width: 700px) { .poster { padding: 32px 0 48px; } }
 .poster-name {
   margin: 40px 0 28px;
-  font-weight: 900; font-stretch: 62%; text-transform: uppercase;
-  font-size: clamp(92px, 27vw, 350px); line-height: 0.8; letter-spacing: -0.005em;
+  font-family: var(--display); font-weight: 900; text-transform: uppercase;
+  font-size: clamp(96px, 28vw, 360px); line-height: 0.86; letter-spacing: 0;
 }
 .poster-name span { display: block; }
 @media (min-width: 700px) { .poster-name { margin: 56px 0 36px; } }
@@ -103,28 +105,33 @@ a { color: var(--blue); text-decoration: none; }
 .links a:hover, .links a:active { background: var(--on-blue); color: var(--blue); }
 
 /* The board below: projects take the wide column, education the narrow one beside it. */
-.board { display: grid; padding-top: 0; padding-bottom: 72px; }
-.board > section { padding: 28px 0 8px; border-top: var(--rule); }
+/* The board below the poster belongs to the projects. */
+.board { padding-bottom: 72px; }
+.board > section { padding: 28px 0 8px; }
 .board .kicker { margin: 0 0 4px; }
-@media (min-width: 900px) {
-  .board { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
-  .board > .cell-edu { grid-column: 1; grid-row: 1; padding-right: 32px; }
-  .board > .cell-work { grid-column: 2; grid-row: 1; padding-left: 32px; border-left: var(--rule); }
-}
 
-.edu { list-style: none; margin: 12px 0 0; padding: 0; }
-.edu li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 2px; padding: 14px 0; border-top: 1px solid var(--ink); }
-.edu-degree { grid-column: 1; grid-row: 1; font-weight: 700; font-size: 17px; line-height: 1.3; }
-.edu-year { grid-column: 2; grid-row: 1; align-self: baseline; text-align: right; white-space: nowrap; font: 500 13px var(--mono); color: var(--muted); }
-.edu-school { grid-column: 1 / -1; color: var(--ink-2); font-size: 15px; line-height: 1.4; }
-.edu-note { grid-column: 1 / -1; color: var(--ink-2); font-size: 15px; line-height: 1.4; }
+/* Education sits in the poster under the bio: one column per degree, led by its letters. */
+.poster-edu { margin-top: 36px; }
+@media (min-width: 700px) { .poster-edu { margin-top: 48px; } }
+.poster-kicker { margin: 0 0 10px; font: 700 12px/1.3 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; color: var(--on-blue-2); }
+.edu { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 2px solid var(--on-blue); }
+.edu li { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 14px 14px 4px 0; }
+.edu li + li { padding-left: 14px; border-left: 1px solid rgba(255, 255, 255, 0.5); }
+@media (min-width: 700px) { .edu li { padding: 18px 28px 4px 0; } .edu li + li { padding-left: 28px; } }
+.edu-head { display: flex; flex-direction: column; gap: 6px; color: inherit; }
+.edu-ab { font-weight: 900; font-stretch: 62%; font-size: clamp(56px, 9vw, 104px); line-height: 0.8; letter-spacing: 0; }
+.edu-field { font-weight: 700; font-size: clamp(15px, 1.7vw, 19px); line-height: 1.25; text-wrap: balance; }
+.edu-line { font-size: 14px; line-height: 1.4; color: var(--on-blue-2); }
+.edu-year { font: 500 13px var(--mono); }
 .edu a { color: inherit; }
-.edu-degree a:hover, .edu-school a:hover, .edu-note a:hover { color: var(--blue); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a.edu-head:hover .edu-field, .edu-line a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+@media (max-width: 420px) { .edu-sep { display: none; } .edu-year { display: block; } }
 
 /* Project entries: on hover the entry floods with cobalt, like the poster above. */
 .entries { display: grid; gap: 16px; margin-top: 14px; }
+@media (min-width: 860px) { .entries { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; } }
 .entry {
-  position: relative; isolation: isolate; overflow: hidden; display: grid; gap: 12px;
+  position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; gap: 12px;
   padding: 18px 20px 22px; color: var(--ink); background: var(--panel); border: var(--rule);
   transition: color 0.2s;
 }
@@ -135,7 +142,7 @@ a { color: var(--blue); text-decoration: none; }
 }
 .entry-meta { color: var(--muted); transition: color 0.2s; }
 .entry-tags { display: flex; flex-wrap: wrap; gap: 4px 0; }
-.entry-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 6px; }
+.entry-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: auto; padding-top: 6px; }
 .entry-date { font: 500 13px var(--mono); color: var(--muted); transition: color 0.2s; }
 /* The slash trails each tag, so a wrapped line never starts with one. */
 .entry-tags .tag:not(:last-child)::after { content: "/"; margin: 0 8px; opacity: 0.5; }
@@ -194,14 +201,14 @@ a { color: var(--blue); text-decoration: none; }
 .meta span:empty { display: none; }
 .proj-poster h1 {
   margin: 36px 0 28px; max-width: 15ch;
-  font-weight: 900; font-stretch: 66%; text-transform: uppercase;
-  font-size: clamp(46px, 8.4vw, 112px); line-height: 0.9; letter-spacing: 0; text-wrap: balance;
+  font-family: var(--display); font-weight: 900; text-transform: uppercase;
+  font-size: clamp(50px, 9vw, 124px); line-height: 0.92; letter-spacing: 0; text-wrap: balance;
 }
 .proj-split { display: grid; gap: 28px; border-top: 2px solid var(--on-blue); padding-top: 24px; }
 @media (min-width: 860px) { .proj-split { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 48px; align-items: end; } }
 .lede { margin: 0; max-width: 46ch; font-weight: 500; font-size: clamp(18px, 2vw, 22px); line-height: 1.4; text-wrap: pretty; }
 .proj-stat { margin: 0; display: grid; gap: 8px; }
-.proj-stat .stat-value { font-weight: 900; font-stretch: 62%; font-size: clamp(88px, 10vw, 140px); line-height: 0.8; font-variant-numeric: tabular-nums; }
+.proj-stat .stat-value { font-family: var(--display); font-weight: 900; font-size: clamp(96px, 11vw, 152px); line-height: 0.82; font-variant-numeric: tabular-nums; }
 .proj-stat .stat-label { font-weight: 600; font-size: 15px; line-height: 1.3; color: var(--on-blue-2); max-width: 26ch; }
 
 .proj-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 48px; padding-bottom: 96px; }
@@ -231,7 +238,7 @@ a { color: var(--blue); text-decoration: none; }
   font-weight: 800; font-stretch: 72%; text-transform: uppercase;
   font-size: clamp(30px, 4.4vw, 42px); line-height: 1; text-wrap: balance;
 }
-.prose h2::before { content: counter(sec, decimal-leading-zero); color: var(--blue); }
+.prose h2::before { content: counter(sec, decimal-leading-zero); color: var(--blue); font-family: var(--display); font-weight: 900; font-size: 1.18em; }
 .prose h3 { margin: 44px 0 12px; font-weight: 800; font-size: 21px; line-height: 1.25; letter-spacing: -0.005em; text-wrap: balance; }
 .prose p, .prose ul, .prose ol { margin: 0 0 22px; color: var(--ink-2); }
 .prose p, .prose li, .prose blockquote { font-size: 17px; line-height: 1.68; text-wrap: pretty; }
@@ -326,7 +333,7 @@ a { color: var(--blue); text-decoration: none; }
 /* A single-number result reads like a poster figure. */
 .out-result { display: inline-flex; flex-direction: column; gap: 6px; align-self: flex-start; padding: 2px 0 2px 18px; border-left: 6px solid var(--blue); }
 .result-label { font: 700 12px/1.3 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
-.result-value { font-weight: 900; font-stretch: 62%; font-size: 64px; line-height: 0.85; color: var(--blue); font-variant-numeric: tabular-nums; }
+.result-value { font-family: var(--display); font-weight: 900; font-size: 68px; line-height: 0.85; color: var(--blue); font-variant-numeric: tabular-nums; }
 
 figure { margin: 0; }
 figcaption { padding: 10px 0 0; font-size: 14px; line-height: 1.45; color: var(--muted); }

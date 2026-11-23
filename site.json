@@ -61,7 +61,8 @@
       "school": "Bellevue University",
       "year": "Expected 2028",
       "url": "https://www.bellevue.edu/programs/masters-degrees/data-science/online/",
-      "school_url": "https://www.bellevue.edu/"
+      "school_url": "https://www.bellevue.edu/",
+      "school_short": "Bellevue University"
     },
     {
       "degree": "B.F.A. Communication Design",
@@ -70,12 +71,20 @@
       "minor": "Human-Computer Interaction",
       "url": "https://samfoxschool.washu.edu/academics/college-of-art/bfa-ba-in-studio-art-and-design/communication-design",
       "minor_url": "https://samfoxschool.washu.edu/academics/college-of-art/minors/hci",
-      "school_url": "https://samfoxschool.washu.edu/"
+      "school_url": "https://samfoxschool.washu.edu/",
+      "school_short": "WashU Sam Fox School",
+      "minor_short": "HCI"
     }
   ],
   "credits": [
     {
-      "role": "Type",
+      "role": "Display",
+      "font": "Big Shoulders Display",
+      "by": "Patric King",
+      "url": "https://fonts.google.com/specimen/Big+Shoulders+Display"
+    },
+    {
+      "role": "Text",
       "font": "Archivo",
       "by": "Omnibus-Type",
       "url": "https://fonts.google.com/specimen/Archivo"

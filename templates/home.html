@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#2340ff">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Big+Shoulders+Display:wght@800;900&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <script>
   // Back/forward: let the browser's own gesture animate; skip the page fade.
@@ -31,12 +31,12 @@
       <div class="bio">{{bio}}</div>
       <nav class="links" aria-label="Elsewhere">{{links}}</nav>
     </div>
+    {{education}}
   </div>
 </header>
 
 <main class="band">
   <div class="wrap board">
-    {{education}}
     <section class="cell-work" aria-labelledby="projects-h">
       <h2 id="projects-h" class="kicker">Projects</h2>
       <div class="entries">{{cards}}</div>
