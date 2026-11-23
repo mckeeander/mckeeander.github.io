@@ -7,8 +7,7 @@
 <meta name="description" content="{{summary}}">
 <meta property="og:title" content="{{title}}">
 <meta property="og:description" content="{{summary}}">
-<meta name="theme-color" content="#111111">
-<link rel="preload" href="../../assets/fonts/big-shoulders-display-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="theme-color" content="#efede6">
 <link rel="preload" href="../../assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/site.css">
 {{head_extra}}
@@ -32,9 +31,11 @@
 </div>
 
 <header class="proj-poster">
-  <div class="wrap">
+  <div class="wrap poster-in">
+    <span class="deco deco-dots" aria-hidden="true"></span>
+    <span class="deco deco-slab" aria-hidden="true"></span>
     <div class="poster-row"><span class="proj-tags">{{tags}}</span></div>
-    <h1>{{title}}</h1>
+    <h1 aria-label="{{title}}">{{title_lines}}</h1>
     <div class="proj-split">
       <div class="proj-intro">
         <p class="lede">{{summary}}</p>

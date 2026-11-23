@@ -328,6 +328,7 @@ def build_project(project, site, drafts):
     page = render(
         "project.html",
         title=esc(project["title"]),
+        title_lines="".join(f"<span>{esc(l)}</span>" for l in (project.get("title_lines") or split_lines(project["title"], 3))),
         site_name=esc(site["name"]),
         summary=esc(project.get("summary", "")),
         slug=slug,
@@ -365,6 +366,22 @@ def raise_sections(blocks, raised):
     return "\n".join(out)
 
 
+def split_lines(text, n):
+    """Split a title into n lines as even in length as possible, for the stepped project titles."""
+    from itertools import combinations
+    words = text.split()
+    if len(words) <= n:
+        return words
+    best = None
+    for cuts in combinations(range(1, len(words)), n - 1):
+        edges = (0,) + cuts + (len(words),)
+        lines = [" ".join(words[edges[i]:edges[i + 1]]) for i in range(n)]
+        score = (max(map(len, lines)), -min(map(len, lines)))
+        if best is None or score < best[0]:
+            best = (score, lines)
+    return best[1]
+
+
 def tag_list(tags):
     return "".join(f'<span class="tag">{esc(t)}</span>' for t in tags)
 
@@ -386,10 +403,11 @@ def credits_html(site):
 
 def build_home(site, projects):
     cards = []
-    for p in projects:
+    for i, p in enumerate(projects, 1):
         draft = '<span class="tag tag-draft">Draft</span>' if p.get("draft") else ""
         cards.append(f"""
 <a class="entry" href="projects/{p['slug']}/">
+  <span class="entry-n" aria-hidden="true">{i:02d}</span>
   <div class="entry-meta entry-tags">{draft}{tag_list(p.get("tags", []))}</div>
   <h3>{esc(p['title'])}</h3>
   <p class="entry-sum">{esc(p.get('summary', ''))}</p>
@@ -398,7 +416,12 @@ def build_home(site, projects):
     if not cards:
         cards.append('<p class="empty">First project coming soon.</p>')
     links = "".join(f'<a href="{esc(l["url"])}" rel="me noopener">{esc(l["label"])}</a>' for l in site.get("links", []))
-    bio = "".join(f"<p>{esc(p)}</p>" for p in site.get("bio", []))
+    if site.get("bio_lines"):
+        # The bio set in steps, one line each; *words* between asterisks are highlighted.
+        steps = "".join("<span>" + re.sub(r"\*(.+?)\*", r"<em>\1</em>", esc(l)) + "</span>" for l in site["bio_lines"])
+        bio = f'<p class="bio bio-steps">{steps}</p>'
+    else:
+        bio = '<div class="bio">' + "".join(f"<p>{esc(p)}</p>" for p in site.get("bio", [])) + "</div>"
     def linked(text, url, cls=""):
         attrs = f' class="{cls}"' if cls else ""
         if not url:

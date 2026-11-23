@@ -5,7 +5,8 @@
   const root = document.getElementById("dashboard");
   if (!root) return;
 
-  const BLUE = "#2340ff", ORANGE = "#eb6834", MUTED = "#6b6a66", INK = "#111111";
+  // Site palette (Basel): green leads, ink answers. Names kept from the earlier cobalt theme.
+  const BLUE = "#00934f", ORANGE = "#0c0c0c", MUTED = "#66645e", INK = "#0c0c0c";
   const SLOTS = ["Multi-denomination slots", "Penny slots", "High-limit slots ($5+)", "Other slots"];
   const TABLES = ["Baccarat", "Blackjack", "Craps"];
   const AREA_NAME = { strip: "Las Vegas Strip", downtown: "Downtown Las Vegas", statewide: "Nevada statewide" };

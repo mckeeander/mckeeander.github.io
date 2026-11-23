@@ -15,7 +15,14 @@ My data science portfolio. Each project page is built from a Jupyter notebook: m
    `"stat": "+21.7%", "stat_label": "domestic gross at the same budget and year"`.
    To lift a section onto a raised platform (the page's takeaway, say), list its heading id:
    `"raised": ["what-it-adds-up-to"]`. The id is the heading in lower case with hyphens.
-   A numbered list inside a raised section gets large blue numbers.
+   A numbered list inside a raised section gets large green numbers.
+   Project titles are set in three stepped lines, split automatically; to choose the breaks yourself,
+   add `"title_lines": ["What drives", "Las Vegas", "Strip revenue"]`.
+
+## Home page bio
+
+`bio_lines` in `site.json` sets the bio in steps, one line each. Words between asterisks are
+highlighted: `"with a *designer's eye.*"`. Without `bio_lines`, the `bio` paragraphs are used.
 3. Push to `main`. The GitHub Action builds the site and publishes it.
 
 ## Cell options

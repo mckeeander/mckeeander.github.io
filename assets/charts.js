@@ -1,23 +1,31 @@
-// Paper theme for every Altair / Vega-Lite chart on the site.
-// Categorical colours start with the site's cobalt, then the light steps of a palette
-// checked for colour-blind separation on the chart panel (#fbfaf8 / #f2f1ee). Use them in order.
-// Slots 2-5 sit below 3:1 contrast on paper, so give those series labels or tooltips.
+// Paper theme for every Altair / Vega-Lite chart on the site (Basel: ink and one spot green).
+// Categorical order: the site's green, then ink, then hues checked for colour-blind separation
+// against the green on the chart surface. Orange is left out on purpose: next to this green it
+// fails the red-green check. Slots 4-5 sit below 3:1 on paper, so give those series labels.
 (() => {
-  const CATEGORY = ["#2340ff", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"];
-  const SEQUENTIAL = ["#cde2fb", "#b7d3f6", "#9ec5f4", "#86b6ef", "#6da7ec", "#5598e7", "#3987e5", "#2a78d6", "#256abf", "#1c5cab", "#184f95", "#104281"];
-  const DIVERGING = ["#eb6834", "#c79a86", "#bdbbb5", "#8b97d6", "#2340ff"];
+  const GREEN = "#00934f", INK = "#0c0c0c";
+  const CATEGORY = [GREEN, INK, "#1d5bff", "#eda100", "#e87ba4", "#6250d6", "#e34948"];
+  // One-hue green ramp, light to dark, for magnitude.
+  const SEQUENTIAL = ["#dcf1e5", "#bfe6d1", "#9fd9bb", "#7ccda4", "#58bf8b", "#2fae70", "#00934f", "#007f44", "#006b3a", "#00572f", "#004425"];
+  const DIVERGING = ["#1d5bff", "#8ea6ec", "#c9c6bd", "#7ccda4", GREEN];
 
-  const INK = "#111111", INK_2 = "#3d3c39", MUTED = "#6b6a66", GRID = "#e2e0da", DOMAIN = "#111111", PANEL = "#fbfaf8";
+  const INK_2 = "#33322e", MUTED = "#66645e", GRID = "#dedbd2", DOMAIN = INK, PANEL = "#efede6";
   const SANS = "Archivo, ui-sans-serif, system-ui, sans-serif";
   const MONO = "JetBrains Mono, ui-monospace, monospace";
 
-  // Notebooks written for the old dark site hard-code its colours. Map them to this theme
-  // so older charts stay readable on paper. New charts can leave colour to the theme.
+  // Notebooks written for the earlier dark and cobalt themes hard-code their colours.
+  // Map them onto this theme so those charts stay consistent. New charts can leave colour to the theme.
   const RECOLOR = {
-    "#3987e5": CATEGORY[0], "#d95926": CATEGORY[1], "#199e70": CATEGORY[2], "#c98500": CATEGORY[3],
-    "#d55181": CATEGORY[4], "#0ca30c": CATEGORY[5], "#9085e9": CATEGORY[6], "#e66767": CATEGORY[7],
+    // dark theme
+    "#3987e5": GREEN, "#d95926": INK, "#199e70": CATEGORY[2], "#c98500": CATEGORY[3],
+    "#d55181": CATEGORY[4], "#0ca30c": CATEGORY[2], "#9085e9": CATEGORY[5], "#e66767": CATEGORY[6],
+    "#86b6ef": "#7ccda4", "#5598e7": "#2fae70", "#2a78d6": GREEN, "#1c5cab": "#006b3a",
     "#e8e9ec": INK, "#dfe3ea": INK, "#a9adb8": INK_2, "#747a87": MUTED, "#5b606b": MUTED,
     "#3a3f4a": DOMAIN, "#252932": GRID, "#1a1d23": PANEL, "#121419": PANEL, "#15171c": PANEL,
+    // cobalt theme
+    "#2340ff": GREEN, "#eb6834": INK, "#1baf7a": CATEGORY[2], "#008300": CATEGORY[2],
+    "#6a7cff": "#2fae70", "#a3aeff": "#7ccda4", "#d3d8ff": "#bfe6d1", "#b9b6ad": "#b5b1a6",
+    "#111111": INK, "#3d3c39": INK_2, "#6b6a66": MUTED, "#fbfaf8": PANEL, "#e2e0da": GRID,
   };
   const recolor = (v) => {
     if (typeof v === "string") return RECOLOR[v.toLowerCase()] || v;

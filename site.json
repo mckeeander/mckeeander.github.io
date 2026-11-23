@@ -4,6 +4,12 @@
   "bio": [
     "I'm a data analyst with a designer's eye. I find what the numbers are really saying, then design it so anyone can see."
   ],
+  "bio_lines": [
+    "I'm a data analyst",
+    "with a *designer's eye.*",
+    "I find what the numbers are really saying,",
+    "then design it so anyone can see."
+  ],
   "links": [
     {
       "label": "LinkedIn",
@@ -88,19 +94,13 @@
   ],
   "credits": [
     {
-      "role": "Display",
-      "font": "Big Shoulders Display",
-      "by": "Patric King",
-      "url": "https://fonts.google.com/specimen/Big+Shoulders+Display"
-    },
-    {
-      "role": "Text",
+      "role": "Type",
       "font": "Archivo",
       "by": "Omnibus-Type",
       "url": "https://fonts.google.com/specimen/Archivo"
     },
     {
-      "role": "Code",
+      "role": "Labels",
       "font": "JetBrains Mono",
       "by": "JetBrains",
       "url": "https://fonts.google.com/specimen/JetBrains+Mono"
