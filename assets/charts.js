@@ -102,6 +102,10 @@
   addEventListener("scroll", hideTip, { passive: true });
   document.addEventListener("pointerdown", (e) => { if (!e.target.closest(".chart")) hideTip(); });
 
+  // Page-specific dashboards (e.g. projects/vegas-gaming/dashboard) draw their own specs
+  // with the same look: window.siteChart.config(width) is this theme sized to a container.
+  window.siteChart = { config: (w) => sized(w), recolor };
+
   const start = () => document.querySelectorAll("[data-chart]").forEach(draw);
   if (window.vegaEmbed) start(); else addEventListener("load", start);
 })();
