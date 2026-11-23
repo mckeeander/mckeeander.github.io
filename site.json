@@ -36,7 +36,7 @@
       "slug": "vegas-gaming",
       "notebook": "projects/vegas-gaming/notebooks/vegas_analysis.ipynb",
       "title": "What Drives Las Vegas Strip Revenue",
-      "summary": "Sixteen years of state casino reports, parsed and checked: the Strip earns a third more than in 2019 from fewer visitors, slots now carry the business, and baccarat explains most of the monthly noise.",
+      "summary": "Sixteen years of state casino reports, parsed and checked. After inflation the Strip earns about 6% more than in 2019, gaming per visitor is back to early-2010s levels, slots now carry the business, and baccarat explains most of the monthly noise.",
       "tags": [
         "SQL",
         "Time series",
@@ -46,7 +46,11 @@
       "date": "Fall 2026",
       "raised": [
         "what-it-adds-up-to"
-      ]
+      ],
+      "dashboard": "projects/vegas-gaming/dashboard",
+      "dashboard_data": "projects/vegas-gaming/data/dashboard",
+      "stat": "+6%",
+      "stat_label": "Strip win vs 2019, after inflation"
     },
     {
       "slug": "template-demo",

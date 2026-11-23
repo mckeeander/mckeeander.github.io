@@ -1,0 +1,54 @@
+<section class="dash wrap" id="dashboard" aria-labelledby="dash-title">
+  <div class="dash-panel">
+    <div class="dash-head">
+      <div>
+        <p class="dash-eyebrow">Dashboard</p>
+        <h2 id="dash-title" class="dash-title">Las Vegas gaming, month by month</h2>
+        <p class="dash-asof" data-asof>Loading the latest month…</p>
+      </div>
+      <div class="dash-controls" role="group" aria-label="Dashboard filters">
+        <div class="seg" data-control="area" role="radiogroup" aria-label="Area">
+          <button type="button" role="radio" aria-checked="true" data-value="strip">Strip</button>
+          <button type="button" role="radio" aria-checked="false" data-value="downtown">Downtown</button>
+          <button type="button" role="radio" aria-checked="false" data-value="statewide">Nevada</button>
+        </div>
+        <div class="seg" data-control="range" role="radiogroup" aria-label="Time range">
+          <button type="button" role="radio" aria-checked="false" data-value="24">2 yrs</button>
+          <button type="button" role="radio" aria-checked="true" data-value="84">7 yrs</button>
+          <button type="button" role="radio" aria-checked="false" data-value="all">All</button>
+        </div>
+        <div class="seg" data-control="dollars" role="radiogroup" aria-label="Dollars">
+          <button type="button" role="radio" aria-checked="true" data-value="real">2025 $</button>
+          <button type="button" role="radio" aria-checked="false" data-value="nominal">Then-year $</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpis" data-kpis aria-live="polite"></div>
+
+    <div class="dash-grid">
+      <figure class="dash-card dash-wide">
+        <figcaption class="dash-card-title" data-title="trend">Win per month</figcaption>
+        <div class="dash-chart" data-chart-slot="trend"></div>
+        <p class="dash-note" data-note="trend"></p>
+      </figure>
+      <figure class="dash-card">
+        <figcaption class="dash-card-title">Where the money comes from</figcaption>
+        <div class="dash-chart" data-chart-slot="mix"></div>
+        <p class="dash-note">Share of win over the selected range, by game group.</p>
+      </figure>
+      <figure class="dash-card">
+        <figcaption class="dash-card-title">Busy and slow months</figcaption>
+        <div class="dash-chart" data-chart-slot="season"></div>
+        <p class="dash-note">Each month against its year's average (1.0), across normal years. Lines show the range.</p>
+      </figure>
+      <figure class="dash-card dash-wide">
+        <figcaption class="dash-card-title">Baccarat: how much the house kept</figcaption>
+        <div class="dash-chart" data-chart-slot="baccarat"></div>
+        <p class="dash-note">Strip only. Monthly hold (dots) against its trailing two-year average (line); a few high-stakes players can swing it by millions.</p>
+      </figure>
+    </div>
+
+    <p class="dash-foot">Sources: Nevada Gaming Control Board monthly revenue reports; LVCVA visitor statistics; BLS CPI-U for 2025 dollars. Visitors are for all of Las Vegas. Built from the SQL model described below.</p>
+  </div>
+</section>

@@ -26,6 +26,13 @@ python scripts/build_db.py        # DuckDB model + data tests + dashboard JSON
 
 `build_db.py` writes `dashboard/*.json` (column-oriented) for the website.
 
+## Dashboard (`../dashboard/`)
+
+`dashboard.html` (markup), `dashboard.css` and `dashboard.js` are copied next to the project page by the
+site's `build.py` (site.json: `"dashboard"` and `"dashboard_data"`), along with `data/dashboard/*.json`.
+The page reads `area_monthly`, `strip_tourism`, `seasonality`, `baccarat` and `dash_game_mix` (a compact,
+nested game-mix file) and draws with the site's chart theme (`window.siteChart` in `assets/charts.js`).
+
 ## Files in `processed/`
 
 | File | Grain | Contents |

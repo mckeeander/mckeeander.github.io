@@ -80,6 +80,19 @@ def main():
         data = {"columns": cols, "rows": rows}
         (EXPORT / f"{name}.json").write_text(json.dumps(data, separators=(",", ":")))
         print(f"exported {name}.json ({len(rows)} rows)")
+
+    # Compact game mix for the dashboard: one month list, then per area and game group an
+    # array of win in whole $ thousands (null = no game detail that month).
+    months = [clean(r[0]) for r in con.execute("SELECT month FROM dim_month ORDER BY month").fetchall()]
+    idx = {m: i for i, m in enumerate(months)}
+    areas = {}
+    for month, area, group, win in con.execute(
+            "SELECT month, area_key, game_group, win FROM v_game_mix "
+            "WHERE area_key IN ('statewide','strip','downtown')").fetchall():
+        arr = areas.setdefault(area, {}).setdefault(group, [None] * len(months))
+        arr[idx[clean(month)]] = round(win / 1000)
+    (EXPORT / "dash_game_mix.json").write_text(json.dumps({"months": months, "areas": areas}, separators=(",", ":")))
+    print(f"exported dash_game_mix.json ({len(months)} months)")
     return 0
 
 

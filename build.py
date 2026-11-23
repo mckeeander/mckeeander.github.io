@@ -307,6 +307,22 @@ def build_project(project, site, drafts):
         scripts += [f'<script src="{KATEX}/katex.min.js" defer></script>',
                     f'<script src="{KATEX}/contrib/auto-render.min.js" defer></script>']
 
+    dashboard = ""
+    if project.get("dashboard"):
+        # A project can carry a dashboard: dashboard.html (fragment), .css and .js in one folder,
+        # plus a folder of JSON it reads. They're copied next to the page and shown above the write-up.
+        dash_dir = ROOT / project["dashboard"]
+        dashboard = (dash_dir / "dashboard.html").read_text()
+        for name in ("dashboard.css", "dashboard.js"):
+            shutil.copy(dash_dir / name, out_dir / name)
+        if project.get("dashboard_data"):
+            shutil.copytree(ROOT / project["dashboard_data"], out_dir / "data", dirs_exist_ok=True)
+        head_extra += '<link rel="stylesheet" href="dashboard.css">'
+        if not outputs.charts:
+            scripts += [f'<script src="{u}" defer></script>' for u in VEGA.values()]
+            scripts.append('<script src="../../assets/charts.js" defer></script>')
+        scripts.append('<script src="dashboard.js" defer></script>')
+
     lang_label = {"python": "Python", "r": "R"}.get(language, language)
     tags = tag_list(t for t in project.get("tags", []) if t.lower() != lang_label.lower())
     page = render(
@@ -322,6 +338,7 @@ def build_project(project, site, drafts):
         toc=toc_html,
         toc_class="" if toc else "no-toc",
         body=raise_sections(blocks, project.get("raised", [])),
+        dashboard=dashboard,
         head_extra=head_extra,
         credits=credits_html(site),
         scripts="\n".join(scripts),
