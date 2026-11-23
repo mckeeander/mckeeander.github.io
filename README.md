@@ -13,6 +13,9 @@ My data science portfolio. Each project page is built from a Jupyter notebook: m
    Add `"draft": true` to keep it off the live site while you work on it.
    Optionally add a headline number, shown large on the home page and in the project's opening:
    `"stat": "+21.7%", "stat_label": "domestic gross at the same budget and year"`.
+   To lift a section onto a raised platform (the page's takeaway, say), list its heading id:
+   `"raised": ["what-it-adds-up-to"]`. The id is the heading in lower case with hyphens.
+   A numbered list inside a raised section gets large blue numbers.
 3. Push to `main`. The GitHub Action builds the site and publishes it.
 
 ## Cell options

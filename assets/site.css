@@ -237,7 +237,7 @@ a.edu-head:hover .edu-field, .edu-line a:hover { text-decoration: underline; tex
 
 /* prose */
 .prose { font-size: 17px; max-width: 680px; }
-.prose > :first-child { margin-top: 0; }
+.prose > :first-child:not(h2) { margin-top: 0; }
 .prose h2 {
   display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: baseline;
   margin: 80px 0 22px; padding-top: 14px; border-top: var(--rule); counter-increment: sec;
@@ -283,6 +283,23 @@ a.edu-head:hover .edu-field, .edu-line a:hover { text-decoration: underline; tex
 .prose .hl pre { margin: 0; padding: 16px 18px; overflow-x: auto; font: 13.5px/1.6 var(--mono); color: var(--c-name); }
 .prose img { max-width: 100%; }
 .katex { font-size: 1.05em; }
+
+/* Raised sections: a page's takeaway lifted onto a platform with a hard ink shadow.
+   Chosen per project in site.json ("raised"). */
+.raised {
+  margin: 80px 10px 72px 0; padding: 24px 26px 4px;
+  background: var(--panel); border: var(--rule); box-shadow: 10px 10px 0 var(--ink);
+}
+@media (max-width: 640px) { .raised { margin-right: 6px; padding: 20px 18px 2px; box-shadow: 6px 6px 0 var(--ink); } }
+.raised .prose > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.raised .prose { max-width: none; }
+/* A numbered list in a raised section becomes the findings: big blue numbers, ruled rows. */
+.raised ol { list-style: none; padding: 0; counter-reset: finding; }
+.raised ol > li { counter-increment: finding; position: relative; margin: 0; padding: 14px 0 14px 56px; border-top: 1px solid var(--hair); }
+.raised ol > li:first-child { border-top: 0; padding-top: 4px; }
+.raised ol > li::before { content: counter(finding); position: absolute; left: 0; top: 14px; font-family: var(--display); font-stretch: 62%; font-weight: 900; font-size: 40px; line-height: 0.9; color: var(--blue); }
+.raised ol > li:first-child::before { top: 4px; }
+@media (max-width: 640px) { .raised ol > li { padding-left: 38px; } .raised ol > li::before { font-size: 34px; } }
 
 /* cells */
 .cell { margin: 12px 0 40px; display: flex; flex-direction: column; gap: 12px; }

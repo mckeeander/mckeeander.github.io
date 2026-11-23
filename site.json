@@ -27,7 +27,10 @@
         "Clustering",
         "Classification"
       ],
-      "date": "Summer 2026"
+      "date": "Summer 2026",
+      "raised": [
+        "recommendations"
+      ]
     },
     {
       "slug": "vegas-gaming",
@@ -40,7 +43,10 @@
         "Forecasting",
         "Data pipeline"
       ],
-      "date": "Fall 2026"
+      "date": "Fall 2026",
+      "raised": [
+        "what-it-adds-up-to"
+      ]
     },
     {
       "slug": "template-demo",

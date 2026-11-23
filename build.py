@@ -278,7 +278,11 @@ def build_project(project, site, drafts):
             body, tokens, has_math = md_to_html(source)
             uses_math |= has_math
             toc += [t for t in tokens if t["level"] == 2]
-            blocks.append(f'<div class="prose reveal">{body}</div>')
+            # One prose block per section, so a section can be raised on its own
+            # even when it shares a notebook cell with the sections around it.
+            for part in re.split(r"(?=<h2[\s>])", body):
+                if part.strip():
+                    blocks.append(f'<div class="prose reveal">{part}</div>')
         elif cell["cell_type"] == "code":
             opts, code = parse_options(source)
             if opts.get("skip"):
@@ -317,13 +321,31 @@ def build_project(project, site, drafts):
         language={"python": "Python", "r": "R"}.get(language, language),
         toc=toc_html,
         toc_class="" if toc else "no-toc",
-        body="\n".join(blocks),
+        body=raise_sections(blocks, project.get("raised", [])),
         head_extra=head_extra,
         credits=credits_html(site),
         scripts="\n".join(scripts),
     )
     (out_dir / "index.html").write_text(page)
     print(f"  built projects/{slug}/  ({outputs.charts} charts, {outputs.figures} images)")
+
+
+def raise_sections(blocks, raised):
+    """Wrap each section listed in site.json's "raised" (by heading id) in a platform,
+    from its heading up to the next section heading."""
+    out, open_ = [], False
+    for block in blocks:
+        m = re.match(r'<div class="prose[^"]*">\s*<h2 id="([^"]+)"', block)
+        if m and open_:
+            out.append("</section>")
+            open_ = False
+        if m and m.group(1) in raised:
+            out.append('<section class="raised">')
+            open_ = True
+        out.append(block)
+    if open_:
+        out.append("</section>")
+    return "\n".join(out)
 
 
 def tag_list(tags):
