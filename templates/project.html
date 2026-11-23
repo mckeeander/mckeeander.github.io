@@ -34,10 +34,13 @@
 
 <header class="proj-poster">
   <div class="wrap">
-    <div class="poster-row"><span class="proj-tags">{{tags}}</span><span class="meta"><span>{{date}}</span><span>{{language}}</span></span></div>
+    <div class="poster-row"><span class="proj-tags">{{tags}}</span></div>
     <h1>{{title}}</h1>
     <div class="proj-split">
-      <p class="lede">{{summary}}</p>
+      <div class="proj-intro">
+        <p class="lede">{{summary}}</p>
+        <p class="proj-meta meta"><span>{{date}}</span><span>{{language}}</span></p>
+      </div>
       {{stat}}
     </div>
   </div>
