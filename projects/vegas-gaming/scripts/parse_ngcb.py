@@ -30,7 +30,7 @@ HEAD_WORDS = {"LOC'S": "locations", "LOC*": "locations", "UNITS": "units", "AMOU
               "CHANGE": "pct_change", "CHG": "pct_change", "PERCENT": "win_pct"}
 MONTHS = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
           "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"]
-TOL = 3  # $000 rounding tolerance when summing rows
+TOL = 5  # $000: each line is rounded to the nearest thousand, so long sums can drift a few thousand
 
 # One canonical name per game across both layouts and the years.
 CANON = {
