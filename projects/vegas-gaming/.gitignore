@@ -1,1 +1,3 @@
 data/raw/
+data/vegas.duckdb
+data/vegas.duckdb.wal

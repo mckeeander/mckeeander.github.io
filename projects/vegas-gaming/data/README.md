@@ -11,7 +11,19 @@ python scripts/fetch_ngcb.py      # download any new NGCB monthly reports
 python scripts/parse_ngcb.py      # ~15 min for all years; exits non-zero if a report fails validation
 python scripts/lvcva.py           # download and parse the LVCVA workbooks
 python scripts/crosscheck.py      # NGCB vs LVCVA gaming revenue
+python scripts/build_db.py        # DuckDB model + data tests + dashboard JSON
 ```
+
+## SQL model (`../sql/`, DuckDB)
+
+| File | What it does |
+|---|---|
+| `01_load.sql` | Loads the CSVs; lookup tables `dim_area` (stable area keys) and `dim_game` (canonical game names and dashboard groups, covering renames such as "100 Dollar" → "$100") |
+| `02_model.sql` | `dim_month` (gap-free month spine, COVID period flagged), `fct_game_month`, `fct_area_month` (NGCB totals; closure and missing months filled from the LVCVA, with a `source` column), `fct_tourism_month` |
+| `03_metrics.sql` | Dashboard views: `v_area_monthly` (YoY, rolling 12-month totals, slot share), `v_game_mix`, `v_baccarat` (hold vs. trailing 24-month average), `v_strip_tourism` (win per visitor, occupancy, ADR), `v_seasonality`, `v_kpi_latest` |
+| `04_tests.sql` | Data tests; each must return no rows or the build stops before exporting |
+
+`build_db.py` writes `dashboard/*.json` (column-oriented) for the website.
 
 ## Files in `processed/`
 

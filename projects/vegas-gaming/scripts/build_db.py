@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+"""Build the DuckDB database, run the data tests, export JSON for the dashboard.
+
+    python scripts/build_db.py
+
+Runs sql/01_load.sql, 02_model.sql and 03_metrics.sql in order, then every query in
+sql/04_tests.sql (each must return no rows), then writes data/dashboard/*.json.
+Exits non-zero if any test fails, so a bad month can't reach the dashboard.
+"""
+import json
+import math
+import re
+import sys
+from datetime import date
+from pathlib import Path
+
+import duckdb
+
+ROOT = Path(__file__).resolve().parent.parent
+DB = ROOT / "data" / "vegas.duckdb"
+EXPORT = ROOT / "data" / "dashboard"
+
+EXPORTS = {
+    "area_monthly": "SELECT * FROM v_area_monthly WHERE area_key IN ('statewide','strip','downtown') ORDER BY area_key, month",
+    "game_mix": "SELECT * FROM v_game_mix WHERE area_key IN ('statewide','strip','downtown') ORDER BY area_key, month, game_group",
+    "baccarat": "SELECT * FROM v_baccarat ORDER BY month",
+    "strip_tourism": "SELECT * FROM v_strip_tourism ORDER BY month",
+    "seasonality": "SELECT * FROM v_seasonality WHERE area_key IN ('statewide','strip','downtown') ORDER BY area_key, month_num",
+    "kpi_latest": "SELECT * FROM v_kpi_latest",
+}
+
+
+def tests(sql):
+    """Yield (name, query) pairs from a file of '-- test: name' + query blocks."""
+    for block in re.split(r"\n(?=-- test:)", sql):
+        m = re.match(r"-- test:\s*(.+?)\n(.+)", block.strip(), re.S)
+        if m:
+            yield m.group(1).strip(), m.group(2).strip().rstrip(";")
+
+
+def clean(v):
+    if isinstance(v, float):
+        return None if math.isnan(v) else round(v, 6)
+    if isinstance(v, date):
+        return v.strftime("%Y-%m")
+    return v
+
+
+def main():
+    DB.parent.mkdir(parents=True, exist_ok=True)
+    con = duckdb.connect(str(DB))
+    import os
+    os.chdir(ROOT)  # SQL reads CSVs by relative path
+    for name in ("01_load.sql", "02_model.sql", "03_metrics.sql"):
+        con.execute((ROOT / "sql" / name).read_text())
+        print(f"ran {name}")
+
+    failed = 0
+    for name, q in tests((ROOT / "sql" / "04_tests.sql").read_text()):
+        rows = con.execute(q).fetchall()
+        status = "ok" if not rows else f"FAILED ({len(rows)} rows, e.g. {rows[:3]})"
+        failed += bool(rows)
+        print(f"  test: {name}: {status}")
+    if failed:
+        print(f"{failed} test(s) failed; dashboard data not exported")
+        return 1
+
+    EXPORT.mkdir(parents=True, exist_ok=True)
+    for name, q in EXPORTS.items():
+        cur = con.execute(q)
+        cols = [d[0] for d in cur.description]
+        rows = [[clean(v) for v in r] for r in cur.fetchall()]
+        # Column-oriented: compact, and easy to turn into chart rows in the browser.
+        data = {"columns": cols, "rows": rows}
+        (EXPORT / f"{name}.json").write_text(json.dumps(data, separators=(",", ":")))
+        print(f"exported {name}.json ({len(rows)} rows)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
