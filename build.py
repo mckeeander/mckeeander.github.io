@@ -340,7 +340,6 @@ def build_home(site, projects):
 <a class="entry" href="projects/{p['slug']}/">
   <div class="entry-meta"><span class="entry-tags">{draft}{tag_list(p.get("tags", []))}</span><span>{esc(p.get('date', ''))}</span></div>
   <h3>{esc(p['title'])}</h3>
-  {stat_html(p, "entry-stat")}
   <p class="entry-sum">{esc(p.get('summary', ''))}</p>
   <span class="entry-go">Read the project <span aria-hidden="true">&rarr;</span></span>
 </a>""")
