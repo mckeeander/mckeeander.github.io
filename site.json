@@ -30,6 +30,20 @@
       "date": "Summer 2026"
     },
     {
+      "slug": "vegas-gaming",
+      "notebook": "projects/vegas-gaming/notebooks/vegas_analysis.ipynb",
+      "title": "What Drives Las Vegas Strip Revenue",
+      "summary": "Sixteen years of state casino reports, parsed and checked: the Strip earns a third more than in 2019 from fewer visitors, slots now carry the business, and baccarat explains most of the monthly noise.",
+      "tags": [
+        "SQL",
+        "Time series",
+        "Forecasting",
+        "Data pipeline"
+      ],
+      "date": "Fall 2026",
+      "draft": true
+    },
+    {
       "slug": "template-demo",
       "notebook": "notebooks/template-demo.ipynb",
       "title": "Page Template Demo",
