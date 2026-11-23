@@ -38,6 +38,16 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 76px; background: var(--paper); }
+/* Safari colours its status-bar area (and the overscroll above the page) from the root background,
+   so match it to whatever sits at the top: the cobalt poster on home, the ink bar on project pages.
+   The gradient keeps the bottom overscroll ink, under the footer. */
+html.root-home { background: var(--blue) linear-gradient(var(--blue) 50%, var(--ink) 50%); }
+html.root-project { background: var(--ink); }
+/* Newer Safari takes the colour from <body> instead, so the body carries the top colour too
+   and the paper sits on a full-width band behind the content. */
+body.home { background: var(--blue); }
+body.project { background: var(--ink); }
+.band { background: var(--paper); }
 body {
   margin: 0; overflow-x: hidden;
   background: var(--paper); color: var(--ink);
@@ -84,13 +94,12 @@ a { color: var(--blue); text-decoration: none; }
 .poster-split { display: grid; gap: 24px; }
 @media (min-width: 760px) { .poster-split { grid-template-columns: 1fr auto; align-items: end; gap: 40px; } }
 .bio p { margin: 0; max-width: 28ch; font-weight: 500; font-size: clamp(19px, 2.4vw, 25px); line-height: 1.3; text-wrap: pretty; }
-.links { display: flex; flex-wrap: wrap; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
 .links a {
   display: inline-block; padding: 11px 18px; border: 2px solid var(--on-blue); color: var(--on-blue);
   font: 700 13px/1 var(--sans); letter-spacing: 0.06em; text-transform: uppercase;
   transition: background-color 0.15s, color 0.15s;
 }
-.links a + a { border-left-width: 0; }
 .links a:hover, .links a:active { background: var(--on-blue); color: var(--blue); }
 
 /* The board below: projects take the wide column, education the narrow one beside it. */
@@ -104,60 +113,58 @@ a { color: var(--blue); text-decoration: none; }
 }
 
 .edu { list-style: none; margin: 12px 0 0; padding: 0; }
-.edu li { display: grid; gap: 2px; padding: 14px 0; border-top: 1px solid var(--ink); }
-.edu-degree { font-weight: 700; font-size: 17px; line-height: 1.3; }
-.edu-school { color: var(--ink-2); font-size: 15px; line-height: 1.4; }
-.edu-year { font: 500 13px var(--mono); color: var(--muted); order: -1; }
-.edu-note { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.edu li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 2px; padding: 14px 0; border-top: 1px solid var(--ink); }
+.edu-degree { grid-column: 1; grid-row: 1; font-weight: 700; font-size: 17px; line-height: 1.3; }
+.edu-year { grid-column: 2; grid-row: 1; align-self: baseline; text-align: right; white-space: nowrap; font: 500 13px var(--mono); color: var(--muted); }
+.edu-school { grid-column: 1 / -1; color: var(--ink-2); font-size: 15px; line-height: 1.4; }
+.edu-note { grid-column: 1 / -1; color: var(--ink-2); font-size: 15px; line-height: 1.4; }
 .edu a { color: inherit; }
-.edu-degree a:hover, .edu-school a:hover { color: var(--blue); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.edu-chip {
-  display: inline-block; padding: 1px 8px; border: 1.5px solid var(--ink); color: var(--ink);
-  font-size: 13px; line-height: 1.5; transition: background-color 0.15s, color 0.15s, border-color 0.15s;
-}
-a.edu-chip:hover, a.edu-chip:focus-visible { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+.edu-degree a:hover, .edu-school a:hover, .edu-note a:hover { color: var(--blue); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 
 /* Project entries: on hover the entry floods with cobalt, like the poster above. */
-.entries { display: grid; }
+.entries { display: grid; gap: 16px; margin-top: 14px; }
 .entry {
-  position: relative; isolation: isolate; display: grid; gap: 12px;
-  padding: 18px 0 30px; color: var(--ink);
+  position: relative; isolation: isolate; overflow: hidden; display: grid; gap: 12px;
+  padding: 18px 20px 22px; color: var(--ink); background: var(--panel); border: var(--rule);
   transition: color 0.2s;
 }
-.entry + .entry { border-top: 1px solid var(--ink); }
+@media (min-width: 700px) { .entry { padding: 22px 26px 26px; } }
 .entry::before {
-  content: ""; position: absolute; z-index: -1; inset: 0 -16px; background: var(--blue);
+  content: ""; position: absolute; z-index: -1; inset: 0; background: var(--blue);
   transform: scaleY(0); transform-origin: bottom; transition: transform 0.35s var(--ease);
 }
-@media (min-width: 700px) { .entry::before { inset: 0 -20px; } }
-.entry-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; color: var(--muted); transition: color 0.2s; }
+.entry-meta { color: var(--muted); transition: color 0.2s; }
 .entry-tags { display: flex; flex-wrap: wrap; gap: 4px 0; }
-.entry-tags .tag + .tag::before { content: "/"; margin: 0 8px; opacity: 0.5; }
+.entry-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 6px; }
+.entry-date { font: 500 13px var(--mono); color: var(--muted); transition: color 0.2s; }
+/* The slash trails each tag, so a wrapped line never starts with one. */
+.entry-tags .tag:not(:last-child)::after { content: "/"; margin: 0 8px; opacity: 0.5; }
 .entry h3 {
   margin: 0; font-weight: 800; font-stretch: 72%; text-transform: uppercase;
-  font-size: clamp(30px, 4.6vw, 48px); line-height: 0.98; letter-spacing: 0; text-wrap: balance;
+  font-size: clamp(26px, 3.4vw, 36px); line-height: 1; letter-spacing: 0; text-wrap: balance;
 }
-.entry-stat { margin: 4px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
-.entry-stat .stat-value {
-  font-weight: 900; font-stretch: 62%; font-size: clamp(76px, 13vw, 132px); line-height: 0.82;
-  color: var(--blue); font-variant-numeric: tabular-nums; transition: color 0.2s;
-}
-.entry-stat .stat-label { max-width: 16ch; font-weight: 600; font-size: 15px; line-height: 1.3; color: var(--ink-2); transition: color 0.2s; }
-.entry-sum { margin: 0; max-width: 54ch; font-size: 17px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; transition: color 0.2s; }
+.entry-sum { margin: 0; max-width: 54ch; font-size: 16px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; transition: color 0.2s; }
 .entry-go {
-  justify-self: start; margin-top: 6px; padding: 10px 14px; background: var(--ink); color: var(--paper);
+  padding: 10px 14px; background: var(--ink); color: var(--paper);
   font: 700 13px/1 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; transition: background-color 0.2s, color 0.2s;
 }
 .entry-go span { display: inline-block; transition: transform 0.25s var(--ease); }
-.entry:hover, .entry:focus-visible { color: var(--on-blue); }
-.entry:hover::before, .entry:focus-visible::before { transform: scaleY(1); }
-.entry:hover :is(.entry-meta, .stat-value, .stat-label, .entry-sum),
-.entry:focus-visible :is(.entry-meta, .stat-value, .stat-label, .entry-sum) { color: var(--on-blue); }
-.entry:hover .entry-go, .entry:focus-visible .entry-go { background: var(--on-blue); color: var(--blue); }
-.entry:hover .entry-go span { transform: translateX(4px); }
+/* The cobalt flood is for mouse hover and keyboard focus only: on phones a tap would leave it stuck on. */
+.entry:focus-visible { color: var(--on-blue); }
+.entry:focus-visible::before { transform: scaleY(1); }
+.entry:focus-visible :is(.entry-meta, .entry-sum, .entry-date) { color: var(--on-blue); }
+.entry:focus-visible .entry-go { background: var(--on-blue); color: var(--blue); }
+@media (hover: hover) {
+  .entry:hover { color: var(--on-blue); }
+  .entry:hover::before { transform: scaleY(1); }
+  .entry:hover :is(.entry-meta, .entry-sum, .entry-date) { color: var(--on-blue); }
+  .entry:hover .entry-go { background: var(--on-blue); color: var(--blue); }
+  .entry:hover .entry-go span { transform: translateX(4px); }
+}
+.entry:active { border-color: var(--blue); }
 .entry:focus-visible { outline-offset: 6px; outline-color: var(--ink); }
 .tag-draft { background: #ffd23f; color: var(--ink); padding: 0 6px; margin-right: 10px; }
-.entry-tags .tag-draft + .tag::before { content: none; }
+.entry-tags .tag-draft::after { content: none !important; }
 .empty { color: var(--muted); }
 
 /* ============ footer ============ */
@@ -182,7 +189,7 @@ a.edu-chip:hover, a.edu-chip:focus-visible { background: var(--blue); border-col
 .proj-poster { padding: 28px 0 40px; }
 @media (min-width: 700px) { .proj-poster { padding: 40px 0 56px; } }
 .proj-tags { display: flex; flex-wrap: wrap; }
-.proj-tags .tag + .tag::before { content: "/"; margin: 0 8px; opacity: 0.6; }
+.proj-tags .tag:not(:last-child)::after { content: "/"; margin: 0 8px; opacity: 0.6; }
 .meta span + span::before { content: "·"; margin: 0 8px; }
 .meta span:empty { display: none; }
 .proj-poster h1 {

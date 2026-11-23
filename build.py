@@ -19,6 +19,7 @@ Code-cell options go on the first lines of a cell, Quarto-style:
 
 import argparse
 import base64
+import hashlib
 import html
 import json
 import re
@@ -51,9 +52,21 @@ esc = html.escape
 
 # ---------- templates ----------
 
+ASSET_VERSIONS = {}  # assets/<file> -> short content hash, filled in main()
+
+
 def render(template, **values):
     text = (TEMPLATES / template).read_text()
-    return re.sub(r"\{\{\s*(\w+)\s*\}\}", lambda m: str(values.get(m.group(1), "")), text)
+    text = re.sub(r"\{\{\s*(\w+)\s*\}\}", lambda m: str(values.get(m.group(1), "")), text)
+    return stamp_assets(text)
+
+
+def stamp_assets(page):
+    """Add ?v=<hash> to links to our own CSS and JS, so browsers fetch a new copy after every change
+    instead of using a cached one (GitHub Pages lets them keep files for 10 minutes)."""
+    return re.sub(r'(assets/[\w.-]+\.(?:css|js))"',
+                  lambda m: f'{m.group(1)}?v={ASSET_VERSIONS[m.group(1)]}"' if m.group(1) in ASSET_VERSIONS else m.group(0),
+                  page)
 
 
 # ---------- markdown with math kept intact ----------
@@ -338,11 +351,10 @@ def build_home(site, projects):
         draft = '<span class="tag tag-draft">Draft</span>' if p.get("draft") else ""
         cards.append(f"""
 <a class="entry" href="projects/{p['slug']}/">
-  <div class="entry-meta"><span class="entry-tags">{draft}{tag_list(p.get("tags", []))}</span><span>{esc(p.get('date', ''))}</span></div>
+  <div class="entry-meta entry-tags">{draft}{tag_list(p.get("tags", []))}</div>
   <h3>{esc(p['title'])}</h3>
-  {stat_html(p, "entry-stat")}
   <p class="entry-sum">{esc(p.get('summary', ''))}</p>
-  <span class="entry-go">Read the project <span aria-hidden="true">&rarr;</span></span>
+  <div class="entry-foot"><span class="entry-go">Read the project <span aria-hidden="true">&rarr;</span></span><span class="entry-date">{esc(p.get('date', ''))}</span></div>
 </a>""")
     if not cards:
         cards.append('<p class="empty">First project coming soon.</p>')
@@ -358,7 +370,7 @@ def build_home(site, projects):
         f'<li><span class="edu-degree">{linked(e["degree"], e.get("url"))}</span>'
         f'<span class="edu-school">{linked(e["school"], e.get("school_url"))}</span>'
         f'<span class="edu-year">{esc(e.get("year", ""))}</span>'
-        + (f'<span class="edu-note">Minor {linked(e["minor"], e.get("minor_url"), "edu-chip")}</span>' if e.get("minor") else "")
+        + (f'<span class="edu-note">Minor in {linked(e["minor"], e.get("minor_url"))}</span>' if e.get("minor") else "")
         + "</li>"
         for e in site.get("education", []))
     edu = (f'<section class="cell-edu" aria-labelledby="edu-h">'
@@ -383,6 +395,8 @@ def main():
     if OUT.exists():
         shutil.rmtree(OUT)
     shutil.copytree(ROOT / "assets", OUT / "assets")
+    for f in (ROOT / "assets").iterdir():
+        ASSET_VERSIONS[f"assets/{f.name}"] = hashlib.sha1(f.read_bytes()).hexdigest()[:8]
     (OUT / ".nojekyll").touch()
 
     for p in projects:

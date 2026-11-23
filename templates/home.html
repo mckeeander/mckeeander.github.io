@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="root-home">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,7 @@
 <body class="home">
 <header class="poster">
   <div class="wrap">
-    <div class="poster-row"><span>{{role}}</span><span>Data science portfolio</span></div>
+    <div class="poster-row"><span>{{role}}</span><span>Portfolio</span></div>
     <h1 class="poster-name" aria-label="{{name}}">{{name_lines}}</h1>
     <div class="poster-split">
       <div class="bio">{{bio}}</div>
@@ -34,12 +34,14 @@
   </div>
 </header>
 
-<main class="wrap board">
-  <section class="cell-work" aria-labelledby="projects-h">
-    <h2 id="projects-h" class="kicker">Projects</h2>
-    <div class="entries">{{cards}}</div>
-  </section>
-  {{education}}
+<main class="band">
+  <div class="wrap board">
+    {{education}}
+    <section class="cell-work" aria-labelledby="projects-h">
+      <h2 id="projects-h" class="kicker">Projects</h2>
+      <div class="entries">{{cards}}</div>
+    </section>
+  </div>
 </main>
 <footer class="foot"><div class="wrap">{{credits}}</div></footer>
 <script src="assets/site.js" defer></script>
