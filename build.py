@@ -427,7 +427,8 @@ def main():
         shutil.rmtree(OUT)
     shutil.copytree(ROOT / "assets", OUT / "assets")
     for f in (ROOT / "assets").iterdir():
-        ASSET_VERSIONS[f"assets/{f.name}"] = hashlib.sha1(f.read_bytes()).hexdigest()[:8]
+        if f.is_file():
+            ASSET_VERSIONS[f"assets/{f.name}"] = hashlib.sha1(f.read_bytes()).hexdigest()[:8]
     (OUT / ".nojekyll").touch()
 
     for p in projects:

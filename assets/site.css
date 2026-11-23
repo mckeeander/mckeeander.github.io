@@ -1,3 +1,20 @@
+/* ============ fonts ============ */
+/* Self-hosted (assets/fonts) rather than loaded from Google, so they show even where a content
+   blocker or privacy setting blocks third-party fonts. All three are variable: one file covers
+   every weight (and, for Archivo, every width). Latin subset. */
+@font-face {
+  font-family: "Archivo"; src: url("fonts/archivo-var-latin.woff2") format("woff2");
+  font-weight: 400 900; font-stretch: 62% 125%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Big Shoulders Display"; src: url("fonts/big-shoulders-display-var-latin.woff2") format("woff2");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono"; src: url("fonts/jetbrains-mono-var-latin.woff2") format("woff2");
+  font-weight: 100 800; font-style: normal; font-display: swap;
+}
+
 /* ============ tokens ============ */
 /* Poster: a cobalt field for the opening of every page, paper for reading, ink for rules and type.
    One family (Archivo) carries everything; its width axis does the work a second face would. */
