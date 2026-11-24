@@ -115,7 +115,10 @@ a { color: var(--spot-ink); text-decoration: none; }
 /* The name: the first word outlined and wide, the second solid, narrow and set in. */
 .poster { --name-top: 56px; }
 .poster-name { margin: var(--name-top) 0 0; text-transform: uppercase; line-height: 0.8; font-weight: 900; }
-.poster-name span { display: block; }
+.poster-name span { display: block; transform-origin: left center; }
+/* Each line of the name tilts a little, in opposite directions. */
+.poster-name span:first-child { transform: rotate(-1.6deg); }
+.poster-name span:nth-child(2) { transform: rotate(1.2deg); }
 .poster-name span:first-child {
   font-stretch: 125%; font-size: clamp(56px, 15.5vw, 190px); letter-spacing: -0.045em;
   color: transparent; -webkit-text-stroke: 2px var(--ink);
@@ -276,42 +279,39 @@ a.edu-card:focus-visible :is(.edu-ab, .edu-line) { color: var(--paper); mix-blen
 .progress { position: absolute; left: 0; right: 0; bottom: -5px; height: 5px; pointer-events: none; }
 .progress span { display: block; height: 100%; background: var(--spot); transform-origin: left; transform: scaleX(var(--p, 0)); }
 
-.proj-poster { padding: 28px 0 44px; }
-@media (min-width: 700px) { .proj-poster { padding: 36px 0 60px; } }
-.proj-poster .deco-dots { right: -28vw; top: -120px; width: min(84vw, 920px); }
-.proj-poster .deco-slab { right: 12%; top: 40px; width: min(12vw, 150px); height: min(26vw, 320px); }
-/* The tags sit on paper so they read over the halftone. */
-.proj-tags { position: relative; z-index: 1; display: inline-flex; flex-wrap: wrap; padding: 5px 10px 5px 0; background: var(--paper); }
+/* Project header: everything flush left; the title in stepped, separately tilted lines;
+   the headline number on a full-width band (heavy rule above, hairline below). */
+.proj-poster { padding: 40px 0 56px; }
+@media (min-width: 700px) { .proj-poster { padding: 52px 0 76px; } }
+.proj-tags { display: inline-flex; flex-wrap: wrap; }
 .proj-tags .tag:not(:last-child)::after { content: "/"; margin: 0 8px; opacity: 0.6; }
-/* The title in three stepped lines, the middle one outlined. */
 .proj-poster h1 {
-  margin: 24px 0 0; font-weight: 900; font-stretch: 66%; text-transform: uppercase;
+  margin: 34px 0 0; font-weight: 900; font-stretch: 66%; text-transform: uppercase;
   font-size: clamp(42px, 8.6vw, 112px); line-height: 0.88; text-wrap: balance;
 }
-.proj-poster h1 span { display: block; }
-.proj-poster h1 span:nth-child(2) { padding-left: var(--step); color: transparent; -webkit-text-stroke: 2px var(--ink); }
-.proj-poster h1 span:nth-child(3) { padding-left: calc(var(--step) * 2); }
-/* Phones: a bigger title that wraps onto more lines, with the dot field pushed up into the corner. */
+.proj-poster h1 span { display: block; transform-origin: left center; }
+.proj-poster h1 span:nth-child(1) { transform: rotate(-1.4deg); }
+.proj-poster h1 span:nth-child(2) { padding-left: var(--step); color: transparent; -webkit-text-stroke: 2px var(--ink); transform: rotate(1deg); }
+.proj-poster h1 span:nth-child(3) { padding-left: calc(var(--step) * 2); transform: rotate(-0.8deg); }
+.proj-poster h1 span + span { margin-top: 0.06em; }
 @media (max-width: 600px) {
   .proj-poster h1 { font-size: 12vw; line-height: 0.9; }
   .proj-poster h1 span:nth-child(2) { -webkit-text-stroke-width: 1.5px; }
-  .proj-poster .deco-dots { top: -190px; right: -48vw; width: 104vw; }
 }
-.proj-split { display: grid; gap: 28px; margin-top: 30px; padding-left: calc(var(--step) * 2); }
-@media (min-width: 900px) { .proj-split { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: end; } }
-.lede { margin: 0; max-width: 46ch; font-weight: 500; font-size: clamp(17px, 1.9vw, 21px); line-height: 1.4; text-wrap: pretty; }
-.proj-meta { margin: 14px 0 0; font: 500 11px/1.4 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-2); }
+.proj-split { display: block; margin-top: 44px; }
+.lede { margin: 0; max-width: 50ch; font-weight: 500; font-size: clamp(17px, 1.9vw, 21px); line-height: 1.45; text-wrap: pretty; }
+.proj-meta { margin: 18px 0 0; font: 500 11px/1.4 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-2); }
 .meta span + span::before { content: "·"; margin: 0 8px; }
 .meta span:empty { display: none; }
-/* The headline number on its own card. */
 .proj-stat {
-  position: relative; z-index: 1; justify-self: start; margin: 0 6px 6px 0; display: grid; gap: 10px;
-  padding: 16px 20px 18px; background: var(--panel); border: var(--rule); box-shadow: 6px 6px 0 var(--ink);
+  display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: 10px 28px;
+  margin: 40px 0 0; padding: 22px 0 20px; border-top: 6px solid var(--ink); border-bottom: 1px solid var(--ink);
 }
-.proj-stat .stat-value { font-weight: 900; font-stretch: 62%; font-size: clamp(76px, 8vw, 112px); line-height: 0.82; color: var(--spot); font-variant-numeric: tabular-nums; }
-.proj-stat .stat-label { font: 400 12px/1.5 var(--mono); color: var(--ink-2); max-width: 30ch; }
+.proj-stat .stat-value { font-weight: 900; font-stretch: 62%; font-size: min(30vw, 220px); line-height: 0.8; color: var(--spot); font-variant-numeric: tabular-nums; }
+.proj-stat .stat-label { font: 400 13px/1.5 var(--mono); color: var(--ink-2); max-width: 26ch; padding-bottom: 10px; }
+@media (max-width: 600px) { .proj-stat { grid-template-columns: 1fr; } .proj-stat .stat-label { padding-bottom: 0; } }
 
-.proj-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 40px; padding-bottom: 96px; }
+.proj-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 24px; padding-bottom: 96px; }
 @media (min-width: 1040px) { .proj-layout:not(.no-toc) { grid-template-columns: 200px minmax(0, 1fr); gap: 56px; } }
 .toc { display: none; }
 @media (min-width: 1040px) {
