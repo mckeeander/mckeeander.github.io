@@ -131,12 +131,12 @@ a { color: var(--spot-ink); text-decoration: none; }
   .poster .deco-dots { top: -20px; right: -24vw; width: 96vw; }
   .poster-name span:first-child { font-size: 19.5vw; -webkit-text-stroke-width: 1.5px; }
   .poster-name span:nth-child(2) { font-size: 27vw; margin-left: 12vw; }
-  .bio { margin-top: 80px; font-size: 21px; line-height: 1.28; }
+  .bio { margin-top: 80px; font-size: 21px; line-height: 1.42; }
   .links { margin-top: 26px; }
   .links a { padding: 14px 18px; font-size: 13px; }
 }
 
-.bio { position: relative; margin: 66px 0 0; font-weight: 600; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.2; }
+.bio { position: relative; margin: 66px 0 0; font-weight: 600; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.34; }
 .bio p { margin: 0; max-width: 32ch; }
 .bio-steps span { display: block; }
 .bio-steps span:nth-child(2) { padding-left: var(--step); }
@@ -144,7 +144,7 @@ a { color: var(--spot-ink); text-decoration: none; }
 .bio-steps span:nth-child(4) { padding-left: calc(var(--step) * 3); }
 /* The highlight: a black box tilted behind the words, which stay level. */
 .bio em { position: relative; z-index: 0; display: inline-block; margin: 0 2px 0 5px; font-style: normal; color: var(--paper); padding: 0 6px; }
-.bio em::before { content: ""; position: absolute; z-index: -1; inset: -1px -2px 1px; background: var(--ink); transform: rotate(-2deg); }
+.bio em::before { content: ""; position: absolute; z-index: -1; inset: -1px -2px -2px; background: var(--ink); transform: rotate(-2deg); }
 
 .links { display: flex; flex-wrap: wrap; margin: 24px 0 0 calc(var(--step) * 3); }
 .links a {
@@ -156,7 +156,8 @@ a { color: var(--spot-ink); text-decoration: none; }
 .links a:hover, .links a:active { background: var(--spot-ink); border-color: var(--spot-ink); color: #fff; }
 
 /* Education: one card per degree, led by its letters. */
-.poster-edu { margin-top: 40px; }
+.poster-edu { margin-top: 27px; }
+@media (max-width: 600px) { .poster-edu { margin-top: 30px; } }
 .poster-kicker { margin: 0 0 22px; padding-bottom: 7px; border-bottom: 1px solid var(--ink); color: var(--ink); }
 .edu { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
 @media (min-width: 900px) { .edu { grid-template-columns: repeat(2, minmax(0, 380px)); } }
