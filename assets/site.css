@@ -247,16 +247,15 @@ a.edu-card:focus-visible :is(.edu-ab, .edu-line) { color: var(--paper); mix-blen
 }
 .entry:focus-visible .entry-go { background: var(--ink); color: var(--paper); border-bottom-color: transparent; }
 /* Phones have no hover, so the same effects play while a finger is on the card, to show the
-   whole card is the link. They start 60ms in, so a finger that lands on a card to scroll
-   (which cancels the press) doesn't flash them; they leave at once. */
+   whole card is the link. */
 .entry, .edu-card { -webkit-tap-highlight-color: transparent; }
 @media (hover: none) {
-  .entry:active { transform: rotate(-1.2deg); transition: transform 0.18s var(--ease) 60ms; }
+  .entry:active { transform: rotate(-1.2deg); transition: transform 0.18s var(--ease); }
   .entry:nth-child(even):active { transform: rotate(1.2deg); }
-  .entry:active .entry-go { background: var(--ink); color: var(--paper); border-bottom-color: transparent; transition-delay: 60ms; }
-  .entry:active .entry-go span { transform: translateX(4px); transition-delay: 60ms; }
-  a.edu-card:active { background: var(--ink); color: var(--paper); box-shadow: 4px 4px 0 var(--spot); transition: background-color 0.12s 60ms, color 0.12s 60ms, box-shadow 0.12s 60ms; }
-  a.edu-card:active :is(.edu-ab, .edu-line) { color: var(--paper); mix-blend-mode: normal; transition: color 0.12s 60ms; }
+  .entry:active .entry-go { background: var(--ink); color: var(--paper); border-bottom-color: transparent; }
+  .entry:active .entry-go span { transform: translateX(4px); }
+  a.edu-card:active { background: var(--ink); color: var(--paper); box-shadow: 4px 4px 0 var(--spot); transition: background-color 0.12s, color 0.12s, box-shadow 0.12s; }
+  a.edu-card:active :is(.edu-ab, .edu-line) { color: var(--paper); mix-blend-mode: normal; transition: color 0.12s; }
 }
 .entry:focus-visible { outline-offset: 6px; }
 .tag-draft { background: #ffd23f; color: var(--ink); padding: 0 6px; margin-right: 10px; }
