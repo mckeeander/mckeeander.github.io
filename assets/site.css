@@ -163,13 +163,16 @@ a { color: var(--spot-ink); text-decoration: none; }
 .edu-card {
   display: flex; flex-direction: column; gap: 4px; color: var(--ink);
   padding: 14px 16px 16px; background: var(--panel); border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
-  transform: rotate(-1.5deg); transition: box-shadow 0.2s, transform 0.3s var(--ease);
+  transform: rotate(-1.5deg); transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.3s var(--ease);
 }
 .edu li + li .edu-card { transform: rotate(1.5deg); }
 /* Mouse hover only: on phones a tapped link keeps :hover, so the shadow would stay green
    after coming back from the program page. Phones get the press effect further down. */
-@media (hover: hover) { a.edu-card:hover { box-shadow: 6px 6px 0 var(--spot); } }
-a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
+@media (hover: hover) { a.edu-card:hover { background: var(--ink); color: var(--paper); box-shadow: 6px 6px 0 var(--spot); } }
+a.edu-card:focus-visible { background: var(--ink); color: var(--paper); box-shadow: 6px 6px 0 var(--spot); }
+/* Filled black, everything on the card turns paper (the green letters too, so they don't vanish). */
+@media (hover: hover) { a.edu-card:hover :is(.edu-ab, .edu-line) { color: var(--paper); mix-blend-mode: normal; } }
+a.edu-card:focus-visible :is(.edu-ab, .edu-line) { color: var(--paper); mix-blend-mode: normal; }
 @media (max-width: 600px) {
   .edu { gap: 12px; }
   .edu-card { padding: 12px 8px 14px 10px; box-shadow: 4px 4px 0 var(--ink); }
@@ -179,7 +182,7 @@ a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
 .edu-ab { font-weight: 900; font-stretch: 62%; font-size: clamp(54px, 9vw, 100px); line-height: 0.8; }
 .edu li + li .edu-ab { color: var(--spot); mix-blend-mode: multiply; }
 .edu-field { margin-top: 2px; font-weight: 700; font-size: clamp(15px, 1.7vw, 19px); line-height: 1.25; text-wrap: balance; }
-.edu-line { font: 400 12px/1.3 var(--mono); color: var(--ink-2); }
+.edu-line { font: 400 12px/1.3 var(--mono); color: var(--ink-2); transition: color 0.2s; }
 
 /* ============ projects board ============ */
 .board { padding-top: 8px; padding-bottom: 80px; }
@@ -248,7 +251,8 @@ a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
   .entry:nth-child(even):active { transform: rotate(1.2deg); }
   .entry:active .entry-go { background: var(--ink); color: var(--paper); border-bottom-color: transparent; transition-delay: 60ms; }
   .entry:active .entry-go span { transform: translateX(4px); transition-delay: 60ms; }
-  a.edu-card:active { box-shadow: 4px 4px 0 var(--spot); transition: box-shadow 0.12s 60ms; }
+  a.edu-card:active { background: var(--ink); color: var(--paper); box-shadow: 4px 4px 0 var(--spot); transition: background-color 0.12s 60ms, color 0.12s 60ms, box-shadow 0.12s 60ms; }
+  a.edu-card:active :is(.edu-ab, .edu-line) { color: var(--paper); mix-blend-mode: normal; transition: color 0.12s 60ms; }
 }
 .entry:focus-visible { outline-offset: 6px; }
 .tag-draft { background: #ffd23f; color: var(--ink); padding: 0 6px; margin-right: 10px; }
@@ -276,7 +280,8 @@ a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
 @media (min-width: 700px) { .proj-poster { padding: 36px 0 60px; } }
 .proj-poster .deco-dots { right: -28vw; top: -120px; width: min(84vw, 920px); }
 .proj-poster .deco-slab { right: 12%; top: 40px; width: min(12vw, 150px); height: min(26vw, 320px); }
-.proj-tags { display: flex; flex-wrap: wrap; }
+/* The tags sit on paper so they read over the halftone. */
+.proj-tags { position: relative; z-index: 1; display: inline-flex; flex-wrap: wrap; padding: 5px 10px 5px 0; background: var(--paper); }
 .proj-tags .tag:not(:last-child)::after { content: "/"; margin: 0 8px; opacity: 0.6; }
 /* The title in three stepped lines, the middle one outlined. */
 .proj-poster h1 {
@@ -286,17 +291,25 @@ a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
 .proj-poster h1 span { display: block; }
 .proj-poster h1 span:nth-child(2) { padding-left: var(--step); color: transparent; -webkit-text-stroke: 2px var(--ink); }
 .proj-poster h1 span:nth-child(3) { padding-left: calc(var(--step) * 2); }
-@media (max-width: 600px) { .proj-poster h1 span:nth-child(2) { -webkit-text-stroke-width: 1.5px; } }
+/* Phones: a bigger title that wraps onto more lines, with the dot field pushed up into the corner. */
+@media (max-width: 600px) {
+  .proj-poster h1 { font-size: 12vw; line-height: 0.9; }
+  .proj-poster h1 span:nth-child(2) { -webkit-text-stroke-width: 1.5px; }
+  .proj-poster .deco-dots { top: -190px; right: -48vw; width: 104vw; }
+}
 .proj-split { display: grid; gap: 28px; margin-top: 30px; padding-left: calc(var(--step) * 2); }
 @media (min-width: 900px) { .proj-split { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: end; } }
 .lede { margin: 0; max-width: 46ch; font-weight: 500; font-size: clamp(17px, 1.9vw, 21px); line-height: 1.4; text-wrap: pretty; }
 .proj-meta { margin: 14px 0 0; font: 500 11px/1.4 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-2); }
 .meta span + span::before { content: "·"; margin: 0 8px; }
 .meta span:empty { display: none; }
-.proj-stat { margin: 0; display: grid; gap: 8px; }
-.proj-stat .stat-value { font-weight: 900; font-stretch: 62%; font-size: clamp(80px, 8.5vw, 120px); line-height: 0.82; color: var(--spot); mix-blend-mode: multiply; font-variant-numeric: tabular-nums; }
-.proj-stat { position: relative; z-index: 1; }
-.proj-stat .stat-label { justify-self: start; font: 400 12px/1.5 var(--mono); color: var(--ink-2); max-width: 30ch; background: var(--paper); padding: 2px 6px 2px 0; }
+/* The headline number on its own card. */
+.proj-stat {
+  position: relative; z-index: 1; justify-self: start; margin: 0 6px 6px 0; display: grid; gap: 10px;
+  padding: 16px 20px 18px; background: var(--panel); border: var(--rule); box-shadow: 6px 6px 0 var(--ink);
+}
+.proj-stat .stat-value { font-weight: 900; font-stretch: 62%; font-size: clamp(76px, 8vw, 112px); line-height: 0.82; color: var(--spot); font-variant-numeric: tabular-nums; }
+.proj-stat .stat-label { font: 400 12px/1.5 var(--mono); color: var(--ink-2); max-width: 30ch; }
 
 .proj-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 40px; padding-bottom: 96px; }
 @media (min-width: 1040px) { .proj-layout:not(.no-toc) { grid-template-columns: 200px minmax(0, 1fr); gap: 56px; } }
@@ -340,26 +353,29 @@ a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
 .prose blockquote p { color: var(--ink); font-size: 18px; }
 .prose blockquote p:last-child { margin: 0; }
 .prose :not(pre) > code { padding: 1px 5px; font: 0.86em var(--mono); background: var(--paper-2); color: var(--ink); }
+/* Tables in the write-up sit on a card: bordered, ink shadow, a shaded header row. */
 .prose table {
-  width: 100%; margin: 4px 0 26px; border-collapse: collapse;
-  font-size: 15px; line-height: 1.5; border-top: var(--rule); border-bottom: var(--rule);
+  width: calc(100% - 6px); margin: 6px 0 30px; border-collapse: separate; border-spacing: 0;
+  font-size: 15px; line-height: 1.5; background: var(--panel); border: var(--rule); box-shadow: 6px 6px 0 var(--ink);
 }
-.prose th, .prose td { padding: 11px 12px 11px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--hair); }
+.prose th, .prose td { padding: 12px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--hair); }
 .prose tbody tr:last-child td { border-bottom: 0; }
-.prose th { color: var(--ink); font: 700 12px/1.4 var(--sans); letter-spacing: 0.07em; text-transform: uppercase; border-bottom: 1px solid var(--ink); }
+.prose th { background: var(--paper-2); color: var(--ink); font: 500 11px/1.4 var(--mono); letter-spacing: 0.18em; text-transform: uppercase; border-bottom: var(--rule); }
 .prose td { color: var(--ink-2); }
-.prose td:first-child { color: var(--ink); }
+.prose td:first-child { color: var(--ink); font-weight: 700; }
 @media (max-width: 640px) {
-  /* Narrow screens: each row becomes a block; column names label the cells. */
+  /* Phones: each row becomes its own block inside the card, headed by its first cell;
+     the column names label the other cells. */
   .prose table, .prose tbody, .prose tr, .prose td { display: block; width: auto; }
+  .prose table { margin-right: 6px; }
   .prose thead { display: none; }
-  .prose tr { padding: 14px 0; border-bottom: 1px solid var(--ink); }
+  .prose tr { padding: 0 0 14px; border-bottom: var(--rule); }
   .prose tbody tr:last-child { border-bottom: 0; }
-  .prose td { padding: 0; border: 0; }
-  .prose td:first-child { font-size: 17px; font-weight: 700; }
+  .prose td { padding: 0 14px; border: 0; }
+  .prose td:first-child { padding: 10px 14px; margin-bottom: 2px; font-size: 17px; background: var(--paper-2); border-bottom: 1px solid var(--ink); }
   .prose td[data-label]:not(:first-child)::before {
-    content: attr(data-label); display: block; margin-top: 10px; color: var(--muted);
-    font: 700 11px/1.4 var(--sans); letter-spacing: 0.07em; text-transform: uppercase;
+    content: attr(data-label); display: block; margin-top: 10px; color: var(--ink-2);
+    font: 500 10.5px/1.4 var(--mono); letter-spacing: 0.18em; text-transform: uppercase;
   }
 }
 .prose .hl { margin: 0 0 20px; background: var(--code-bg); overflow: hidden; }
@@ -405,10 +421,16 @@ a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
 .code[data-state="folded"] pre { display: none; }
 .code[data-state="folded"] .code-bar { border-bottom: 0; }
 .code[data-state="preview"] pre { max-height: 300px; overflow-y: hidden; position: relative; }
-.code[data-state="preview"] pre::after {
-  content: ""; position: sticky; display: block; left: 0; bottom: -14px; height: 72px; margin-top: -72px;
-  background: linear-gradient(transparent, var(--code-bg));
+/* The fade at the bottom of a long block is a button: clicking it shows all the lines. */
+.code { position: relative; }
+.code-more { display: none; }
+.code[data-state="preview"] .code-more {
+  display: flex; align-items: flex-end; justify-content: center; position: absolute; left: 0; right: 0; bottom: 0; height: 96px;
+  padding: 0 0 14px; border: 0; cursor: pointer; background: linear-gradient(rgba(251, 250, 247, 0), var(--code-bg) 62%);
 }
+.code-more span { padding: 7px 12px 6px; background: var(--ink); color: var(--paper); font: 500 11px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; transition: background-color 0.15s; }
+.code-more:hover span, .code-more:focus-visible span { background: var(--spot-ink); }
+.code-more:focus-visible { outline-offset: -3px; }
 
 /* pygments tokens */
 .hl .k, .hl .kd, .hl .kr, .hl .kn, .hl .kp, .hl .ow { color: var(--c-keyword); }

@@ -23,6 +23,15 @@
       toggle.setAttribute("aria-expanded", String(["expanded", "unfolded"].includes(block.dataset.state)));
     };
     paint();
+    // A long block's bottom fade is a button that shows every line.
+    if (block.dataset.state === "preview") {
+      const more = document.createElement("button");
+      more.type = "button";
+      more.className = "code-more";
+      more.innerHTML = `<span>Show all ${n} lines &darr;</span>`;
+      more.addEventListener("click", () => { block.dataset.state = "expanded"; paint(); });
+      block.append(more);
+    }
     toggle.addEventListener("click", () => {
       const was = block.dataset.state;
       block.dataset.state = NEXT[was] || was;
