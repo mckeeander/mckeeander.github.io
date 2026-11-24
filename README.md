@@ -14,6 +14,7 @@ My data science portfolio. Each project page is built from a Jupyter notebook: m
    Optionally add a headline number, shown large on the home page and in the project's opening:
    `"stat": "+21.7%", "stat_label": "domestic gross at the same budget and year"`.
    Give each project a short `"keyword"` (one word, like `"Films"`); it runs up the green strip on its home-page card.
+   `"mark"` is the number set in outline on the project page's summary card (falls back to `stat`), e.g. `"22%"`.
    To lift a section onto a raised platform (the page's takeaway, say), list its heading id:
    `"raised": ["what-it-adds-up-to"]`. The id is the heading in lower case with hyphens.
    A numbered list inside a raised section gets large green numbers.

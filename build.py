@@ -334,7 +334,8 @@ def build_project(project, site, drafts):
         slug=slug,
         tags=tags,
         stat=stat_html(project, "proj-stat"),
-        stat_mark=(f'<span class="proj-mark" aria-hidden="true">{esc(project["stat"])}</span>' if project.get("stat") else ""),
+        stat_mark=(f'<span class="proj-mark" aria-hidden="true">{esc(project.get("mark") or project["stat"])}</span>'
+                   if (project.get("mark") or project.get("stat")) else ""),
         date=esc(project.get("date", "")),
         language={"python": "Python", "r": "R"}.get(language, language),
         toc=toc_html,

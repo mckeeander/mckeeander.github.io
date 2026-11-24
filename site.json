@@ -29,6 +29,7 @@
       "summary": "Films that pass the Bechdel test look no different at the box office until you account for the smaller budgets they're given. Then they earn about 22% more.",
       "stat": "+21.7%",
       "stat_label": "domestic gross at the same budget and year",
+      "mark": "22%",
       "tags": [
         "Regression",
         "Clustering",
@@ -58,7 +59,8 @@
       "dashboard": "projects/vegas-gaming/dashboard",
       "dashboard_data": "projects/vegas-gaming/data/dashboard",
       "stat": "+6%",
-      "stat_label": "Strip win vs 2019, after inflation"
+      "stat_label": "Strip win vs 2019, after inflation",
+      "mark": "6%"
     },
     {
       "slug": "template-demo",
