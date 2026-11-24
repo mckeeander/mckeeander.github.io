@@ -164,10 +164,13 @@ a { color: var(--spot-ink); text-decoration: none; }
   transform: rotate(-1.5deg); transition: box-shadow 0.2s, transform 0.3s var(--ease);
 }
 .edu li + li .edu-card { transform: rotate(1.5deg); }
-a.edu-card:hover, a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
+/* Mouse hover only: on phones a tapped link keeps :hover, so the shadow would stay green
+   after coming back from the program page. Phones get the press effect further down. */
+@media (hover: hover) { a.edu-card:hover { box-shadow: 6px 6px 0 var(--spot); } }
+a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
 @media (max-width: 600px) {
   .edu-card { padding: 12px 12px 14px; box-shadow: 4px 4px 0 var(--ink); }
-  a.edu-card:hover, a.edu-card:focus-visible { box-shadow: 4px 4px 0 var(--spot); }
+  a.edu-card:focus-visible { box-shadow: 4px 4px 0 var(--spot); }
 }
 .edu-ab { font-weight: 900; font-stretch: 62%; font-size: clamp(54px, 9vw, 100px); line-height: 0.8; }
 .edu li + li .edu-ab { color: var(--spot); mix-blend-mode: multiply; }
@@ -223,17 +226,17 @@ a.edu-card:hover, a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); 
 .entry-go { align-self: flex-start; margin-left: -8px; padding: 5px 8px 3px; font: 500 12px/1.4 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; border-bottom: 2px solid var(--spot); }
 .entry-go span { display: inline-block; transition: transform 0.25s var(--ease); }
 /* Hovering anywhere on a card tilts it (alternate cards lean opposite ways), and the
-   "Read the project" link fills green with white text in place of its underline. */
+   "Read the project" link fills black in place of its green underline. */
 .entry { transition: transform 0.35s var(--ease); }
 .entry-go { transition: background-color 0.15s, color 0.15s, border-color 0.15s, padding 0.15s; }
 @media (hover: hover) {
   .entry:hover { transform: rotate(-1.2deg); }
   .entry:nth-child(even):hover { transform: rotate(1.2deg); }
   .entry:hover .entry-stub { flex-basis: 96px; }
-  .entry:hover .entry-go { background: var(--spot-ink); color: #fff; border-bottom-color: transparent; }
+  .entry:hover .entry-go { background: var(--ink); color: var(--paper); border-bottom-color: transparent; }
   .entry:hover .entry-go span { transform: translateX(4px); }
 }
-.entry:focus-visible .entry-go { background: var(--spot-ink); color: #fff; border-bottom-color: transparent; }
+.entry:focus-visible .entry-go { background: var(--ink); color: var(--paper); border-bottom-color: transparent; }
 /* Phones have no hover, so the same effects play while a finger is on the card, to show the
    whole card is the link. They start 60ms in, so a finger that lands on a card to scroll
    (which cancels the press) doesn't flash them; they leave at once. */
@@ -241,7 +244,7 @@ a.edu-card:hover, a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); 
 @media (hover: none) {
   .entry:active { transform: rotate(-1.2deg); transition: transform 0.18s var(--ease) 60ms; }
   .entry:nth-child(even):active { transform: rotate(1.2deg); }
-  .entry:active .entry-go { background: var(--spot-ink); color: #fff; border-bottom-color: transparent; transition-delay: 60ms; }
+  .entry:active .entry-go { background: var(--ink); color: var(--paper); border-bottom-color: transparent; transition-delay: 60ms; }
   .entry:active .entry-go span { transform: translateX(4px); transition-delay: 60ms; }
   a.edu-card:active { box-shadow: 4px 4px 0 var(--spot); transition: box-shadow 0.12s 60ms; }
 }
