@@ -407,11 +407,17 @@ def build_home(site, projects):
         draft = '<span class="tag tag-draft">Draft</span>' if p.get("draft") else ""
         cards.append(f"""
 <a class="entry" href="projects/{p['slug']}/">
-  <span class="entry-n" aria-hidden="true">{i:02d}</span>
-  <div class="entry-meta entry-tags">{draft}{tag_list(p.get("tags", []))}</div>
-  <h3>{esc(p['title'])}</h3>
-  <p class="entry-sum">{esc(p.get('summary', ''))}</p>
-  <div class="entry-foot"><span class="entry-go">Read the project <span aria-hidden="true">&rarr;</span></span><span class="entry-date">{esc(p.get('date', ''))}</span></div>
+  <div class="entry-stub">
+    <span class="entry-no" aria-hidden="true">No.</span>
+    <span class="entry-n" aria-hidden="true">{i:02d}</span>
+    <span class="entry-date">{esc(p.get('date', ''))}</span>
+  </div>
+  <div class="entry-main">
+    <div class="entry-meta entry-tags">{draft}{tag_list(p.get("tags", []))}</div>
+    <h3>{esc(p['title'])}</h3>
+    <p class="entry-sum">{esc(p.get('summary', ''))}</p>
+    <div class="entry-foot"><span class="entry-go">Read the project <span aria-hidden="true">&rarr;</span></span></div>
+  </div>
 </a>""")
     if not cards:
         cards.append('<p class="empty">First project coming soon.</p>')
