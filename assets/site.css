@@ -301,10 +301,22 @@ a.edu-card:focus-visible :is(.edu-ab, .edu-line) { color: var(--paper); mix-blen
   .proj-poster h1 { font-size: 12vw; line-height: 0.9; }
   .proj-poster h1 span:nth-child(2) { -webkit-text-stroke-width: 1.5px; }
 }
-/* The summary and date sit in a green-bordered box. */
+/* The summary and date sit on a tilted green card, with the headline number set large in
+   black outline behind the text. */
 .proj-split { display: block; margin-top: 44px; }
-.proj-intro { padding: 20px 22px 18px; background: var(--panel); border: 3px solid var(--spot); max-width: 640px; }
-@media (max-width: 600px) { .proj-intro { padding: 16px 16px 14px; } }
+.proj-intro {
+  position: relative; isolation: isolate; overflow: hidden; max-width: 640px;
+  padding: 22px 24px 20px; background: var(--spot); color: var(--ink);
+  border: var(--rule); box-shadow: 6px 6px 0 var(--ink); transform: rotate(-1.2deg);
+}
+.proj-intro .lede { position: relative; }
+.proj-intro .proj-meta { position: relative; color: var(--ink); }
+.proj-mark {
+  position: absolute; z-index: -1; right: -6px; bottom: -0.16em; pointer-events: none;
+  font-weight: 900; font-stretch: 62%; font-size: clamp(120px, 15vw, 190px); line-height: 0.8;
+  color: transparent; -webkit-text-stroke: 2px rgba(12, 12, 12, 0.42); white-space: nowrap;
+}
+@media (max-width: 600px) { .proj-intro { padding: 18px 16px 16px; margin-right: 6px; } .proj-mark { font-size: 34vw; -webkit-text-stroke-width: 1.5px; } }
 .lede { margin: 0; max-width: 50ch; font-weight: 500; font-size: clamp(17px, 1.9vw, 21px); line-height: 1.45; text-wrap: pretty; }
 .proj-meta { margin: 18px 0 0; font: 500 11px/1.4 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-2); }
 .meta span + span::before { content: "·"; margin: 0 8px; }
