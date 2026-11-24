@@ -110,9 +110,11 @@ a { color: var(--spot-ink); text-decoration: none; }
 /* ============ home ============ */
 .poster { padding: 22px 0 48px; }
 @media (min-width: 700px) { .poster { padding: 30px 0 64px; } }
-.poster .deco-slab { left: 44%; top: 110px; width: min(27vw, 320px); height: min(54vw, 620px); }
+/* The slab starts a little above the name, so it pokes out over the top of the first word. */
+.poster .deco-slab { left: 44%; top: calc(var(--name-top) + 36px); width: min(27vw, 320px); height: min(54vw, 620px); }
 /* The name: the first word outlined and wide, the second solid, narrow and set in. */
-.poster-name { margin: 34px 0 0; text-transform: uppercase; line-height: 0.8; font-weight: 900; }
+.poster { --name-top: 56px; }
+.poster-name { margin: var(--name-top) 0 0; text-transform: uppercase; line-height: 0.8; font-weight: 900; }
 .poster-name span { display: block; }
 .poster-name span:first-child {
   font-stretch: 125%; font-size: clamp(56px, 15.5vw, 190px); letter-spacing: -0.045em;
@@ -121,18 +123,15 @@ a { color: var(--spot-ink); text-decoration: none; }
 .poster-name span:nth-child(2) { margin-left: min(14vw, 170px); font-stretch: 62%; font-size: clamp(78px, 21vw, 262px); letter-spacing: -0.01em; }
 /* Phones: the name fills the width, and the bio and links get more room and size to match. */
 @media (max-width: 600px) {
-  .poster-name { margin-top: 44px; }
+  .poster { --name-top: 64px; }
   .poster-name span:first-child { font-size: 19.5vw; -webkit-text-stroke-width: 1.5px; }
   .poster-name span:nth-child(2) { font-size: 27vw; margin-left: 12vw; }
-  .bio { margin-top: 48px; font-size: 21px; line-height: 1.28; }
-  .bio::before { top: -20px; }
-  .links { margin-top: 32px; }
+  .bio { margin-top: 62px; font-size: 21px; line-height: 1.28; }
+  .links { margin-top: 44px; }
   .links a { padding: 14px 18px; font-size: 13px; }
 }
 
-/* A hairline runs the full width just above the bio. */
-.bio { position: relative; margin: 34px 0 0; font-weight: 600; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.2; }
-.bio::before { content: ""; position: absolute; left: -100vw; right: -100vw; top: -14px; border-top: 1px solid var(--ink); }
+.bio { position: relative; margin: 52px 0 0; font-weight: 600; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.2; }
 .bio p { margin: 0; max-width: 32ch; }
 .bio-steps span { display: block; }
 .bio-steps span:nth-child(2) { padding-left: var(--step); }
@@ -140,7 +139,7 @@ a { color: var(--spot-ink); text-decoration: none; }
 .bio-steps span:nth-child(4) { padding-left: calc(var(--step) * 3); }
 .bio em { font-style: normal; background: var(--ink); color: var(--paper); padding: 0 5px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 
-.links { display: flex; flex-wrap: wrap; margin: 22px 0 0 calc(var(--step) * 3); }
+.links { display: flex; flex-wrap: wrap; margin: 38px 0 0 calc(var(--step) * 3); }
 .links a {
   display: inline-block; padding: 9px 13px; border: 2px solid var(--ink); color: var(--ink);
   font: 500 12px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase;
@@ -150,7 +149,7 @@ a { color: var(--spot-ink); text-decoration: none; }
 .links a:hover, .links a:active { background: var(--spot-ink); border-color: var(--spot-ink); color: #fff; }
 
 /* Education: one column per degree, led by its letters under a heavy rule. */
-.poster-edu { margin-top: 52px; }
+.poster-edu { margin-top: 40px; }
 .poster-kicker { margin: 0 0 10px; color: var(--ink); }
 .edu { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
 @media (min-width: 900px) { .edu { grid-template-columns: repeat(2, minmax(0, 380px)); } }
@@ -194,20 +193,14 @@ a.edu-head:hover .edu-field, .edu-line a:hover { text-decoration: underline; tex
   background: var(--paper); border: 2px solid var(--ink);
 }
 .entry-stub::before { top: -14px; clip-path: inset(50% 0 0 0); }
-.entry-stub::after { bottom: -14px; clip-path: inset(0 0 50% 0); }
+/* The bottom notch is filled ink: it reads as a hole showing the card's shadow underneath. */
+.entry-stub::after { bottom: -14px; clip-path: inset(0 0 50% 0); background: var(--ink); }
 .entry-no { font: 600 10px/1.3 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); }
 .entry-n { font-weight: 900; font-stretch: 62%; font-size: 58px; line-height: 0.8; color: #fff; }
 .entry-date { writing-mode: vertical-rl; transform: rotate(180deg); font: 600 11px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
 .entry-main {
-  position: relative; isolation: isolate; overflow: hidden; flex: 1; min-width: 0;
+  flex: 1; min-width: 0;
   display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px;
-}
-/* A halftone patch fading in the corner, echoing the opener. */
-.entry-main::before {
-  content: ""; position: absolute; z-index: -1; right: -70px; top: -70px; width: 260px; height: 260px;
-  background: radial-gradient(circle, var(--ink) 2.2px, transparent 2.6px) 0 0 / 11px 11px;
-  -webkit-mask: radial-gradient(circle, #000 0, transparent 65%); mask: radial-gradient(circle, #000 0, transparent 65%);
-  opacity: 0.5;
 }
 @media (max-width: 480px) { .entry-stub { flex-basis: 68px; } .entry-n { font-size: 46px; } .entry-main { padding: 16px 16px 18px; } }
 .entry-meta { color: var(--ink-2); }
