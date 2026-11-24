@@ -234,6 +234,17 @@ a.edu-card:hover, a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); 
   .entry:hover .entry-go span { transform: translateX(4px); }
 }
 .entry:focus-visible .entry-go { background: var(--spot-ink); color: #fff; border-bottom-color: transparent; }
+/* Phones have no hover, so the same effects play while a finger is on the card, to show the
+   whole card is the link. They start 60ms in, so a finger that lands on a card to scroll
+   (which cancels the press) doesn't flash them; they leave at once. */
+.entry, .edu-card { -webkit-tap-highlight-color: transparent; }
+@media (hover: none) {
+  .entry:active { transform: rotate(-1.2deg); transition: transform 0.18s var(--ease) 60ms; }
+  .entry:nth-child(even):active { transform: rotate(1.2deg); }
+  .entry:active .entry-go { background: var(--spot-ink); color: #fff; border-bottom-color: transparent; transition-delay: 60ms; }
+  .entry:active .entry-go span { transform: translateX(4px); transition-delay: 60ms; }
+  a.edu-card:active { box-shadow: 4px 4px 0 var(--spot); transition: box-shadow 0.12s 60ms; }
+}
 .entry:focus-visible { outline-offset: 6px; }
 .tag-draft { background: #ffd23f; color: var(--ink); padding: 0 6px; margin-right: 10px; }
 .entry-tags .tag-draft::after { content: none !important; }
