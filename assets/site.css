@@ -124,6 +124,8 @@ a { color: var(--spot-ink); text-decoration: none; }
 /* Phones: the name fills the width, and the bio and links get more room and size to match. */
 @media (max-width: 600px) {
   .poster { --name-top: 64px; }
+  /* The dot field sits higher and a little smaller, behind the name, so the tagline lands on clear paper. */
+  .poster .deco-dots { top: -20px; right: -24vw; width: 96vw; }
   .poster-name span:first-child { font-size: 19.5vw; -webkit-text-stroke-width: 1.5px; }
   .poster-name span:nth-child(2) { font-size: 27vw; margin-left: 12vw; }
   .bio { margin-top: 62px; font-size: 21px; line-height: 1.28; }
