@@ -131,12 +131,12 @@ a { color: var(--spot-ink); text-decoration: none; }
   .poster .deco-dots { top: -20px; right: -24vw; width: 96vw; }
   .poster-name span:first-child { font-size: 19.5vw; -webkit-text-stroke-width: 1.5px; }
   .poster-name span:nth-child(2) { font-size: 27vw; margin-left: 12vw; }
-  .bio { margin-top: 62px; font-size: 21px; line-height: 1.28; }
-  .links { margin-top: 44px; }
+  .bio { margin-top: 80px; font-size: 21px; line-height: 1.28; }
+  .links { margin-top: 26px; }
   .links a { padding: 14px 18px; font-size: 13px; }
 }
 
-.bio { position: relative; margin: 52px 0 0; font-weight: 600; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.2; }
+.bio { position: relative; margin: 66px 0 0; font-weight: 600; font-size: clamp(18px, 2.2vw, 23px); line-height: 1.2; }
 .bio p { margin: 0; max-width: 32ch; }
 .bio-steps span { display: block; }
 .bio-steps span:nth-child(2) { padding-left: var(--step); }
@@ -144,7 +144,7 @@ a { color: var(--spot-ink); text-decoration: none; }
 .bio-steps span:nth-child(4) { padding-left: calc(var(--step) * 3); }
 .bio em { font-style: normal; background: var(--ink); color: var(--paper); padding: 0 5px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 
-.links { display: flex; flex-wrap: wrap; margin: 38px 0 0 calc(var(--step) * 3); }
+.links { display: flex; flex-wrap: wrap; margin: 24px 0 0 calc(var(--step) * 3); }
 .links a {
   display: inline-block; padding: 9px 13px; border: 2px solid var(--ink); color: var(--ink);
   font: 500 12px/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase;
@@ -199,7 +199,7 @@ a.edu-card:focus-visible :is(.edu-ab, .edu-line) { color: var(--paper); mix-blen
 }
 .entry-stub {
   position: relative; flex: 0 0 84px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-  padding: 16px 6px; background: var(--spot); border-right: 2px dashed var(--ink); text-align: center;
+  padding: 0 6px 16px; background: var(--spot); border-right: 2px dashed var(--ink); text-align: center;
   transition: flex-basis 0.3s var(--ease);
 }
 /* Half-circle notches where the perforation meets the card's top and bottom edges. */
@@ -211,7 +211,7 @@ a.edu-card:focus-visible :is(.edu-ab, .edu-line) { color: var(--paper); mix-blen
 /* The bottom notch is filled ink: it reads as a hole showing the card's shadow underneath. */
 .entry-stub::after { bottom: -14px; clip-path: inset(0 0 50% 0); background: var(--ink); }
 /* The stub names the project: a keyword at the top (from site.json "keyword"), the date at the bottom. */
-.entry-key { writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 900; font-stretch: 62%; font-size: 42px; line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase; color: #fff; }
+.entry-key { margin-top: auto; margin-bottom: auto; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 900; font-stretch: 62%; font-size: 42px; line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase; color: #fff; }
 @media (max-width: 480px) { .entry-key { font-size: 36px; } }
 .entry-date { writing-mode: vertical-rl; transform: rotate(180deg); font: 600 11px/1.3 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
 .entry-main {
