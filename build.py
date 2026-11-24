@@ -435,19 +435,18 @@ def build_home(site, projects):
         return f'<a{attrs} href="{esc(url)}" target="_blank" rel="noopener">{esc(text)}</a>'
 
     def degree(e):
-        # "M.S. Data Science" -> letters "M.S." and field "Data Science"
+        # "M.S. Data Science" -> letters "M.S." and field "Data Science".
+        # The whole card is one link, to the program's page; the text inside is plain.
         letters, _, field = e["degree"].partition(" ")
         school = e.get("school_short") or e["school"]
-        lines = [f'{linked(school, e.get("school_url"))}<span class="edu-sep" aria-hidden="true"> · </span>'
-                 f'<span class="edu-year">{esc(e.get("year", ""))}</span>']
+        lines = [f'{esc(school)}<span class="edu-sep" aria-hidden="true"> · </span><span class="edu-year">{esc(e.get("year", ""))}</span>']
         if e.get("minor"):
-            lines.append(f'Minor in {linked(e.get("minor_short") or e["minor"], e.get("minor_url"))}')
-        head = f'<span class="edu-ab">{esc(letters)}</span><span class="edu-field">{esc(field)}</span>'
+            lines.append(f'Minor in {esc(e.get("minor_short") or e["minor"])}')
+        inner = (f'<span class="edu-ab">{esc(letters)}</span><span class="edu-field">{esc(field)}</span>'
+                 + "".join(f'<span class="edu-line">{l}</span>' for l in lines))
         if e.get("url"):
-            head = f'<a class="edu-head" href="{esc(e["url"])}" target="_blank" rel="noopener">{head}</a>'
-        else:
-            head = f'<span class="edu-head">{head}</span>'
-        return "<li>" + head + "".join(f'<span class="edu-line">{l}</span>' for l in lines) + "</li>"
+            return f'<li><a class="edu-card" href="{esc(e["url"])}" target="_blank" rel="noopener">{inner}</a></li>'
+        return f'<li><div class="edu-card">{inner}</div></li>'
 
     edu = "".join(degree(e) for e in site.get("education", []))
     edu = (f'<section class="poster-edu" aria-labelledby="edu-h">'
