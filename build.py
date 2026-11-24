@@ -439,9 +439,12 @@ def build_home(site, projects):
         # The whole card is one link, to the program's page; the text inside is plain.
         letters, _, field = e["degree"].partition(" ")
         school = e.get("school_short") or e["school"]
-        lines = [f'{esc(school)}<span class="edu-sep" aria-hidden="true"> · </span><span class="edu-year">{esc(e.get("year", ""))}</span>']
+        # Two lines: the school, then the minor (if any) and the year.
+        year = esc(e.get("year", ""))
+        second = year
         if e.get("minor"):
-            lines.append(f'Minor in {esc(e.get("minor_short") or e["minor"])}')
+            second = f'Minor in {esc(e.get("minor_short") or e["minor"])}<span class="edu-sep" aria-hidden="true"> · </span>{year}'
+        lines = [esc(school), second]
         inner = (f'<span class="edu-ab">{esc(letters)}</span><span class="edu-field">{esc(field)}</span>'
                  + "".join(f'<span class="edu-line">{l}</span>' for l in lines))
         if e.get("url"):

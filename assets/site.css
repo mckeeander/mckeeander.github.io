@@ -171,15 +171,15 @@ a { color: var(--spot-ink); text-decoration: none; }
 @media (hover: hover) { a.edu-card:hover { box-shadow: 6px 6px 0 var(--spot); } }
 a.edu-card:focus-visible { box-shadow: 6px 6px 0 var(--spot); }
 @media (max-width: 600px) {
-  .edu-card { padding: 12px 12px 14px; box-shadow: 4px 4px 0 var(--ink); }
+  .edu { gap: 12px; }
+  .edu-card { padding: 12px 8px 14px 10px; box-shadow: 4px 4px 0 var(--ink); }
+  .edu .edu-line { font-size: 11.5px; }
   a.edu-card:focus-visible { box-shadow: 4px 4px 0 var(--spot); }
 }
 .edu-ab { font-weight: 900; font-stretch: 62%; font-size: clamp(54px, 9vw, 100px); line-height: 0.8; }
 .edu li + li .edu-ab { color: var(--spot); mix-blend-mode: multiply; }
 .edu-field { margin-top: 2px; font-weight: 700; font-size: clamp(15px, 1.7vw, 19px); line-height: 1.25; text-wrap: balance; }
 .edu-line { font: 400 12px/1.5 var(--mono); color: var(--ink-2); }
-.edu-year { font: inherit; }
-@media (max-width: 420px) { .edu-sep { display: none; } .edu-year { display: block; } }
 
 /* ============ projects board ============ */
 .board { padding-top: 8px; padding-bottom: 80px; }
