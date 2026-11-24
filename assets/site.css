@@ -142,7 +142,9 @@ a { color: var(--spot-ink); text-decoration: none; }
 .bio-steps span:nth-child(2) { padding-left: var(--step); }
 .bio-steps span:nth-child(3) { padding-left: calc(var(--step) * 2); }
 .bio-steps span:nth-child(4) { padding-left: calc(var(--step) * 3); }
-.bio em { font-style: normal; background: var(--ink); color: var(--paper); padding: 0 5px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* The highlight: a black box tilted behind the words, which stay level. */
+.bio em { position: relative; z-index: 0; display: inline-block; margin: 0 2px 0 5px; font-style: normal; color: var(--paper); padding: 0 6px; }
+.bio em::before { content: ""; position: absolute; z-index: -1; inset: -1px -2px 1px; background: var(--ink); transform: rotate(-2deg); }
 
 .links { display: flex; flex-wrap: wrap; margin: 24px 0 0 calc(var(--step) * 3); }
 .links a {
