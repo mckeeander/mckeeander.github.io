@@ -25,6 +25,7 @@
       "slug": "bechdel",
       "notebook": "projects/bechdel/notebooks/bechdel_portfolio.ipynb",
       "title": "What 798 Films Say About Representation and Revenue",
+      "keyword": "Films",
       "summary": "Films that pass the Bechdel test look no different at the box office until you account for the smaller budgets they're given. Then they earn about 22% more.",
       "stat": "+21.7%",
       "stat_label": "domestic gross at the same budget and year",
@@ -42,6 +43,7 @@
       "slug": "vegas-gaming",
       "notebook": "projects/vegas-gaming/notebooks/vegas_analysis.ipynb",
       "title": "What Drives Las Vegas Strip Revenue",
+      "keyword": "Vegas",
       "summary": "Sixteen years of state casino reports, parsed and checked. After inflation the Strip earns about 6% more than in 2019, gaming per visitor is back to early-2010s levels, slots now carry the business, and baccarat explains most of the monthly noise.",
       "tags": [
         "SQL",
@@ -62,6 +64,7 @@
       "slug": "template-demo",
       "notebook": "notebooks/template-demo.ipynb",
       "title": "Page Template Demo",
+      "keyword": "Demo",
       "summary": "A sample notebook with made-up data, showing how prose, code, numbers, tables and charts look on a project page.",
       "tags": [
         "Template",

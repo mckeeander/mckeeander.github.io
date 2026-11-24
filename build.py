@@ -408,8 +408,7 @@ def build_home(site, projects):
         cards.append(f"""
 <a class="entry" href="projects/{p['slug']}/">
   <div class="entry-stub">
-    <span class="entry-no" aria-hidden="true">No.</span>
-    <span class="entry-n" aria-hidden="true">{i:02d}</span>
+    <span class="entry-key" aria-hidden="true">{esc(p.get('keyword', ''))}</span>
     <span class="entry-date">{esc(p.get('date', ''))}</span>
   </div>
   <div class="entry-main">
