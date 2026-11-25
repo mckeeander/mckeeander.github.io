@@ -4,7 +4,8 @@
     python scripts/fetch_extra.py
 
 Writes to data/processed/:
-  cpi_monthly.csv        CPI-U, U.S. city average, not seasonally adjusted (BLS series CUUR0000SA0)
+  cpi_monthly.csv        CPI-U, U.S. city average, not seasonally adjusted (BLS series CUUR0000SA0);
+                         2010 on from the BLS API, 1989-2009 from a mirror checked against it
   clark_population.csv   Census Bureau county population estimates, Clark County NV (vintages 2020 and 2025)
   lvcva_annual.csv       LVCVA "Las Vegas Historic Tourism Statistics" 1970 on (visitors, conventions, rooms, occupancy)
 Raw downloads go to data/raw/extra/ (not committed).
@@ -21,6 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw" / "extra"
 OUT = ROOT / "data" / "processed"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; portfolio-data-pipeline; +https://mckeeander.github.io)"}
+CPI_MIRROR = "https://raw.githubusercontent.com/datasets/cpi-us/main/data/cpiai.csv"
 BLS = "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear={a}&endyear={b}"
 CENSUS = {
     "co-est2020-alldata.csv": ("https://www2.census.gov/programs-surveys/popest/datasets/2010-2020/counties/totals/co-est2020-alldata.csv", range(2010, 2020)),
@@ -45,9 +47,24 @@ def cpi():
                     rows[f"{x['year']}-{x['period'][1:]}"] = float(x["value"])
                 except ValueError:
                     pass  # unpublished month (e.g. Oct 2025, federal shutdown); interpolated in SQL
+    rows.update(cpi_backfill(rows))
     with (OUT / "cpi_monthly.csv").open("w", newline="") as f:
         w = csv.writer(f); w.writerow(["month", "cpi_u"]); w.writerows(sorted(rows.items()))
     return len(rows)
+
+
+def cpi_backfill(bls_rows):
+    """CPI-U for 1989-2009, so the annual Gaming Abstract (fiscal years from July 1989) can be
+    deflated. Taken from the datasets/cpi-us mirror of the same BLS series (CUUR0000SA0), and
+    used only after checking that it matches BLS exactly in every month both cover."""
+    text = get(CPI_MIRROR).decode()
+    (RAW / "cpi_us_mirror.csv").write_text(text)
+    mirror = {r["Date"][:7]: float(r["Index"]) for r in csv.DictReader(text.splitlines())}
+    overlap = [m for m in bls_rows if m in mirror]
+    bad = [m for m in overlap if abs(mirror[m] - bls_rows[m]) > 0.0005]
+    if not overlap or bad:
+        raise SystemExit(f"CPI mirror disagrees with BLS in {len(bad)} of {len(overlap)} months: {bad[:3]}")
+    return {m: v for m, v in mirror.items() if "1989-01" <= m < "2010-01"}
 
 
 def population():

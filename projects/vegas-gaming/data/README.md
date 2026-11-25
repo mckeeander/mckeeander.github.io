@@ -12,6 +12,9 @@ python scripts/parse_ngcb.py      # ~15 min for all years; exits non-zero if a r
 python scripts/lvcva.py           # download and parse the LVCVA workbooks
 python scripts/crosscheck.py      # NGCB vs LVCVA gaming revenue
 python scripts/fetch_extra.py     # CPI, Clark County population, LVCVA annual history
+python scripts/fetch_abstract.py  # NGCB Gaming Abstract PDFs, FY1990 on
+python scripts/parse_abstract.py  # Strip income statement by year (OCR for FY1990-2017; needs tesseract)
+python scripts/visitor_profile.py # LVCVA Visitor Profile Study summary tables, 2003 on
 python scripts/build_db.py        # DuckDB model + data tests + dashboard JSON
 ```
 
@@ -42,9 +45,11 @@ nested game-mix file) and draws with the site's chart theme (`window.siteChart` 
 | `ngcb_checks.csv` | month × area | result of every validation check |
 | `lvcva_monthly.csv` | month | visitors, convention attendance, room inventory, occupancy (all / weekend / midweek / Strip / downtown), ADR, RevPAR, room nights, air passengers, gaming revenue (Clark County, Strip, downtown, Boulder); `*_flag` = `r` revised or `e` estimate, as printed |
 | `crosscheck.csv` | month × area | NGCB total gaming vs. the LVCVA's gaming revenue |
-| `cpi_monthly.csv` | month | CPI-U, U.S. city average, not seasonally adjusted (BLS CUUR0000SA0); Oct 2025 was never published and is interpolated in SQL |
+| `cpi_monthly.csv` | month | CPI-U, U.S. city average, not seasonally adjusted (BLS CUUR0000SA0), 1989 on. 2010 on from the BLS API; 1989–2009 from the datasets/cpi-us mirror of the same series, used only after it matches BLS in every overlapping month. Oct 2025 was never published and is interpolated in SQL |
 | `clark_population.csv` | year | Census Bureau population estimates, Clark County (vintage 2020 for 2010–19, vintage 2025 for 2020–25) |
 | `lvcva_annual.csv` | year | LVCVA Historic Tourism Statistics, 1970 on: visitors, convention attendance, room inventory, occupancy |
+| `abstract_strip.csv` | fiscal year | NGCB Gaming Abstract, Las Vegas Strip casinos with $1M+ gaming revenue: revenue by department (gaming, rooms, food, beverage, other) as printed, contra revenue (comps) by department from FY2019, casino comps, and casino and rooms departmental income. `method` says how the year was read |
+| `visitor_profile.csv` | year | LVCVA Visitor Profile Study: share of visitors who gambled, trip gambling budget (among gamblers), trip spending on food and drink, shopping and shows, lodging per night (nominal dollars). No survey in 2020 |
 
 ## Sources
 
@@ -53,6 +58,32 @@ nested game-mix file) and draws with the site's chart theme (`window.siteChart` 
   thousands of dollars; "win" is gaming revenue before expenses.
 - **LVCVA, Monthly visitor statistics workbooks** (Las Vegas sheet). Jan 2019 – Sep 2026.
   Monthly figures before 2019 are only published as annual summaries.
+
+- **Nevada Gaming Control Board, Gaming Abstract** (annual summary of licensees' financial
+  statements). FY1990 – FY2025, 36 reports; fiscal years run July–June. The group used is
+  "Clark County – Las Vegas Strip Area, gaming revenue of $1,000,000 and over" (37–54
+  licensees a year). FY1990–2017 are scanned images; FY2018 on are text.
+- **LVCVA, Las Vegas Visitor Profile Study** (annual survey of about 3,600 visitors). Summary
+  tables from the 2006, 2011, 2016, 2021 and 2024 reports (Nevada State Library archive) and
+  the 2025 matrix spreadsheet (lvcva.com). From 2022 an online component was added to the
+  in-person interviews.
+
+## Gaming Abstract: OCR checks and the accounting change
+
+A scanned year is accepted only if the OCR reading passes checks the page makes possible:
+the five departments sum exactly to the printed total, each matches its printed percent
+(to 0.1 point), and departmental income plus departmental expenses equal revenue. Totals are
+tried largest first, because OCR more often adds or drops a leading digit than invents one.
+A value that fails is left blank, not guessed.
+
+From FY2019 casinos follow ASC 606: the retail value of comps is subtracted from each
+department's revenue ("contra revenue") instead of being booked as a casino expense. The
+printed gaming share drops from 34% to 27% in one year as a result. `v_strip_departments`
+adds the contra amounts back so every year is on the old basis. On that basis, Abstract gaming
+revenue comes to 91–99% of the monthly reports' Strip win in every fiscal year both cover
+(FY2011 on); the gap is casinos outside the Abstract group. A data test keeps it within 10%.
+Comps themselves are valued differently after the change (closer to retail), so comps as a
+share of win are compared within each basis, not across FY2019.
 
 ## Validation
 

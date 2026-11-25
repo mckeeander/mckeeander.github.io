@@ -178,3 +178,54 @@ SELECT year(month) AS year,
        stddev(hold) AS hold_sd, min(hold) AS hold_min, max(hold) AS hold_max,
        sum(baccarat_win) AS baccarat_win, count(*) AS n_months
 FROM b GROUP BY ALL;
+
+-- ---------- Is the Strip still a gambling town? (Gaming Abstract + Visitor Profile) ----------
+
+-- Inflation by fiscal year (July-June, named for the June) and calendar year, in 2025 dollars.
+-- Built from raw CPI rather than dim_cpi because the Abstract starts in 1989, before the month spine.
+CREATE OR REPLACE VIEW v_cpi_annual AS
+WITH m AS (SELECT CAST(month || '-01' AS DATE) AS month, cpi_u FROM raw_cpi),
+base AS (SELECT avg(cpi_u) AS cpi_2025 FROM m WHERE year(month) = 2025)
+SELECT 'fiscal' AS basis, year(month + INTERVAL 6 MONTH) AS year, (SELECT cpi_2025 FROM base) / avg(cpi_u) AS to_2025_dollars
+FROM m GROUP BY ALL HAVING count(*) >= 11
+UNION ALL
+SELECT 'calendar', year(month), (SELECT cpi_2025 FROM base) / avg(cpi_u)
+FROM m GROUP BY ALL HAVING count(*) >= 11;
+
+-- One row per fiscal year. From FY2019 (ASC 606) the board reports comps as "contra revenue",
+-- taken out of each department's revenue; before that, comps were a casino expense and
+-- departments booked revenue gross. Adding the contra amounts back puts every year on the
+-- old (gross) basis, so shares are comparable across the whole period.
+CREATE OR REPLACE VIEW v_strip_departments AS
+SELECT a.fy, a.licensees, a.method,
+       a.gaming / a.total                                                       AS gaming_share_reported,
+       a.gaming + a.contra_gaming                                               AS gaming,
+       a.rooms + a.contra_rooms                                                 AS rooms,
+       a.food + a.contra_food                                                   AS food,
+       a.beverage + a.contra_beverage                                           AS beverage,
+       a.other + a.contra_other                                                 AS other,
+       a.total + a.contra_gaming + a.contra_rooms + a.contra_food + a.contra_beverage + a.contra_other AS total,
+       (a.gaming + a.contra_gaming) /
+           (a.total + a.contra_gaming + a.contra_rooms + a.contra_food + a.contra_beverage + a.contra_other) AS gaming_share,
+       a.casino_comps / (a.gaming + a.contra_gaming)                            AS comps_share_of_win,
+       a.casino_dept_income, a.rooms_dept_income,
+       c.to_2025_dollars
+FROM raw_abstract_strip a
+LEFT JOIN v_cpi_annual c ON c.basis = 'fiscal' AND c.year = a.fy;
+
+-- The same in 2025 dollars, by department (long form for charts).
+CREATE OR REPLACE VIEW v_strip_departments_real AS
+SELECT fy, dept, value * to_2025_dollars AS real_revenue, value / total AS share
+FROM v_strip_departments
+UNPIVOT (value FOR dept IN (gaming, rooms, food, beverage, other));
+
+-- Visitor Profile with dollar amounts in 2025 dollars.
+CREATE OR REPLACE VIEW v_visitor_profile AS
+SELECT v.year, v.gambled_pct, v.source,
+       v.gambling_budget * c.to_2025_dollars AS real_gambling_budget,
+       v.food_drink * c.to_2025_dollars      AS real_food_drink,
+       v.shopping * c.to_2025_dollars        AS real_shopping,
+       v.shows * c.to_2025_dollars           AS real_shows,
+       v.lodging_night * c.to_2025_dollars   AS real_lodging_night
+FROM raw_visitor_profile v
+LEFT JOIN v_cpi_annual c ON c.basis = 'calendar' AND c.year = v.year;

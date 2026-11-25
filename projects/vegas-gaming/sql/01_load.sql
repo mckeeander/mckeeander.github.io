@@ -19,6 +19,12 @@ CREATE OR REPLACE TABLE raw_population AS
 SELECT * FROM read_csv('data/processed/clark_population.csv', header = true);
 CREATE OR REPLACE TABLE raw_lvcva_annual AS
 SELECT * FROM read_csv('data/processed/lvcva_annual.csv', header = true);
+-- Gaming Abstract: the Strip's annual income statement by department, FY1990 on (parse_abstract.py).
+CREATE OR REPLACE TABLE raw_abstract_strip AS
+SELECT * FROM read_csv('data/processed/abstract_strip.csv', header = true);
+-- LVCVA Visitor Profile Study: gambling and spending per visitor, 2003 on (visitor_profile.py).
+CREATE OR REPLACE TABLE raw_visitor_profile AS
+SELECT * FROM read_csv('data/processed/visitor_profile.csv', header = true);
 
 -- Areas: one short, stable key per area (the board renamed "Boulder Strip" to "Boulder" in 2018).
 -- market: 'locals' marks the areas whose casinos mostly serve residents (Boulder Strip, North Las Vegas,
