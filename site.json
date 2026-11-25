@@ -43,14 +43,14 @@
     {
       "slug": "vegas-gaming",
       "notebook": "projects/vegas-gaming/notebooks/vegas_analysis.ipynb",
-      "title": "What Drives Las Vegas Strip Revenue",
+      "title": "Is Las Vegas Still a Gambling Town?",
       "keyword": "Vegas",
-      "summary": "Sixteen years of state casino reports, parsed and checked. After inflation, the Strip earns about 6% more than in 2019. Gaming per visitor is back to early-2010s levels, slots now carry the business, and baccarat drives about half the month-to-month swings.",
+      "summary": "Gambling's share of Strip casino revenue fell from 58% to 35% between 1990 and 2015, then stopped falling. The board's newer 26% figure is mostly an accounting change. The rooms now earn the profit.",
       "tags": [
+        "OCR",
         "SQL",
-        "Time series",
-        "Forecasting",
-        "Data pipeline"
+        "Data pipeline",
+        "Financial statements"
       ],
       "date": "Fall 2026",
       "raised": [
@@ -58,9 +58,14 @@
       ],
       "dashboard": "projects/vegas-gaming/dashboard",
       "dashboard_data": "projects/vegas-gaming/data/dashboard",
-      "stat": "+6%",
-      "stat_label": "Strip win vs 2019, after inflation",
-      "mark": "6%"
+      "stat": "35%",
+      "stat_label": "of Strip casino revenue still comes from gambling",
+      "mark": "35%",
+      "title_lines": [
+        "Is Las Vegas",
+        "still a gambling",
+        "town?"
+      ]
     },
     {
       "slug": "template-demo",
