@@ -26,7 +26,7 @@
       "notebook": "projects/bechdel/notebooks/bechdel_portfolio.ipynb",
       "title": "What 798 Films Say About Representation and Revenue",
       "keyword": "Films",
-      "summary": "Films that pass the Bechdel test look no different at the box office. Account for their smaller budgets, and they earn about 22% more.",
+      "summary": "Films that pass the Bechdel test look no different at the box office until you account for the smaller budgets they're given. Then they earn about 22% more.",
       "stat": "+21.7%",
       "stat_label": "domestic gross at the same budget and year",
       "mark": "22%",
