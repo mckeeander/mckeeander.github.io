@@ -57,3 +57,16 @@
 .dash-note:empty { display: none; }
 .dash-foot { margin: 14px 0 0; font: 400 12px/1.45 var(--sans); color: #5f5e5a; }
 .dash-empty { display: grid; place-items: center; min-height: 160px; font: 500 13px var(--mono); color: #6b6a66; border: 1px dashed #b9b6ad; }
+
+/* Second section (monthly gaming) inside the same panel. */
+.dash-subhead { margin-top: 28px; padding-top: 18px; border-top: 3px solid var(--ink); }
+.dash-subtitle {
+  margin: 0; font-family: var(--display); font-stretch: 62%; font-weight: 900; text-transform: uppercase;
+  font-size: clamp(24px, 3.2vw, 34px); line-height: 0.92; color: var(--ink);
+}
+.kpis-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 760px) {
+  .kpis-3 { grid-template-columns: minmax(0, 1fr); }
+  .kpis-3 .kpi { padding-left: 0; border-left: 0; }
+  .kpis-3 .kpi + .kpi { border-top: 1px solid var(--ink); }
+}

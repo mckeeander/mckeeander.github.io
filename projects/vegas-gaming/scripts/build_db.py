@@ -33,6 +33,10 @@ EXPORTS = {
     "strip_rooms_annual": "SELECT * FROM v_strip_rooms_annual ORDER BY year",
     "table_economics": "SELECT * FROM v_table_economics ORDER BY game, year",
     "baccarat_by_year": "SELECT * FROM v_baccarat_by_year ORDER BY year",
+    # Gaming Abstract, one row per fiscal year, consistent (pre-ASC 606) basis, nominal dollars.
+    "strip_departments": """SELECT fy, gaming, rooms, food, beverage, other, total, gaming_share,
+                            casino_dept_income, rooms_dept_income, to_2025_dollars
+                            FROM v_strip_departments ORDER BY fy""",
 }
 
 

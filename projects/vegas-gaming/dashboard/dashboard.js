@@ -1,6 +1,7 @@
-// Las Vegas gaming dashboard. Reads the JSON the SQL model exports (data/*.json next to this
-// file) and draws four linked views with Vega-Lite, styled by the site's chart theme
-// (window.siteChart from assets/charts.js). Filters: area, time range, dollars.
+// Las Vegas dashboard. Reads the JSON the SQL model exports (data/*.json next to this file) and
+// draws with Vega-Lite, styled by the site's chart theme (window.siteChart from assets/charts.js).
+// Top: the Strip's revenue and departmental income by department, fiscal years from 1990 (Gaming
+// Abstract; view: dollars, share or growth). Below: monthly gaming win (filters: area, range, dollars).
 (() => {
   const root = document.getElementById("dashboard");
   if (!root) return;
@@ -10,20 +11,23 @@
   const SLOTS = ["Multi-denomination slots", "Penny slots", "High-limit slots ($5+)", "Other slots"];
   const TABLES = ["Baccarat", "Blackjack", "Craps"];
   const AREA_NAME = { strip: "Las Vegas Strip", downtown: "Downtown Las Vegas", statewide: "Nevada statewide" };
-  const state = { area: "strip", range: "84", dollars: "real" };
+  const state = { area: "strip", range: "84", dollars: "real", view: "dollars" };
+  const DEPTS = ["gaming", "rooms", "food", "beverage", "other"];
+  const DEPT_NAME = { gaming: "Gaming", rooms: "Rooms", food: "Food", beverage: "Beverage", other: "Other (shows, retail, etc.)" };
+  const DEPT_COLOR = ["#00934f", "#0c0c0c", "#1d5bff", "#eda100", "#b5b1a6"];
   let D = null;
 
   // ---------- data ----------
   const rowsOf = (j) => j.rows.map((r) => Object.fromEntries(j.columns.map((c, i) => [c, r[i]])));
   const load = (name) => fetch(`data/${name}.json`).then((r) => { if (!r.ok) throw new Error(name); return r.json(); });
 
-  Promise.all(["area_monthly", "strip_tourism", "seasonality", "baccarat", "dash_game_mix"].map(load))
-    .then(([area, tour, season, bac, mix]) => {
-      D = { area: rowsOf(area), tour: rowsOf(tour), season: rowsOf(season), bac: rowsOf(bac), mix };
+  Promise.all(["area_monthly", "dash_game_mix", "strip_departments"].map(load))
+    .then(([area, mix, depts]) => {
+      D = { area: rowsOf(area), mix, depts: rowsOf(depts) };
       bind();
       render();
     })
-    .catch((e) => { root.querySelector("[data-asof]").textContent = "The dashboard data didn't load."; console.error(e); });
+    .catch((e) => { root.querySelectorAll("[data-asof], [data-asof-year]").forEach((el) => { el.textContent = "The dashboard data didn't load."; }); console.error(e); });
 
   // ---------- controls ----------
   function bind() {
@@ -77,9 +81,6 @@
     const r19 = rows.filter((r) => r.month.startsWith("2019") && r.slots_win != null);
     const share19 = sum(r19, (r) => r.slots_win) / sum(r19, (r) => r.total_win);
 
-    const t = D.tour.filter((r) => r.visitors != null);
-    const tLast12 = t.slice(-12), tPrior12 = t.slice(-24, -12);
-    const vis = sum(tLast12, (r) => r.visitors), visPrior = sum(tPrior12, (r) => r.visitors);
 
     const dollars = state.dollars === "real" ? "2025 dollars" : "then-year dollars";
     const tiles = [
@@ -89,14 +90,90 @@
         sub: `${change(sum(last12, val) / sum(prior12, val) - 1)} vs prior 12 · ${dollars}` },
       { label: "Slot share, last 12 months", value: pct(share, 0),
         sub: isFinite(share19) ? `2019: ${pct(share19, 0)}` : "" },
-      { label: "Las Vegas visitors, 12 months", value: `${(vis / 1e6).toFixed(1)}M`,
-        sub: `${change(vis / visPrior - 1)} vs prior 12 · citywide` },
     ];
     root.querySelector("[data-kpis]").innerHTML = tiles.map((k) =>
       `<div class="kpi"><p class="kpi-label">${k.label}</p><p class="kpi-value">${k.value}</p><p class="kpi-sub">${k.sub}</p></div>`
     ).join("");
     root.querySelector("[data-asof]").textContent =
       `${AREA_NAME[state.area]} · data through ${monthName(last.month)} · updated monthly`;
+  }
+
+  // ---------- departments (annual, Gaming Abstract) ----------
+  const real = (r, k) => (r[k] == null ? null : r[k] * r.to_2025_dollars);
+
+  function yearKpis() {
+    const rows = D.depts, first = rows[0], last = rows[rows.length - 1];
+    const nonGaming = (r) => real(r, "total") - real(r, "gaming");
+    const times = (a, b) => `${(a / b).toFixed(1)}×`;
+    const tiles = [
+      { label: `Gaming share, FY${last.fy}`, value: pct(last.gaming_share, 0), sub: `FY${first.fy}: ${pct(first.gaming_share, 0)}` },
+      { label: `Gaming revenue, FY${last.fy}`, value: fmtB(real(last, "gaming")),
+        sub: `${times(real(last, "gaming"), real(first, "gaming"))} FY${first.fy} · 2025 $` },
+      { label: `Everything else, FY${last.fy}`, value: fmtB(nonGaming(last)),
+        sub: `${times(nonGaming(last), nonGaming(first))} FY${first.fy} · 2025 $` },
+      { label: `Rooms vs. casino income`, value: `${fmtB(real(last, "rooms_dept_income"))}`,
+        sub: `casino: ${fmtB(real(last, "casino_dept_income"))} · FY${last.fy}` },
+    ];
+    root.querySelector("[data-kpis-year]").innerHTML = tiles.map((k) =>
+      `<div class="kpi"><p class="kpi-label">${k.label}</p><p class="kpi-value">${k.value}</p><p class="kpi-sub">${k.sub}</p></div>`
+    ).join("");
+    root.querySelector("[data-asof-year]").textContent =
+      `Las Vegas Strip · fiscal years ${first.fy}–${last.fy} · updated yearly`;
+  }
+
+  function depts() {
+    const rows = D.depts, base = rows[0], view = state.view;
+    const data = [];
+    rows.forEach((r) => DEPTS.forEach((k, i) => {
+      const v = real(r, k);
+      data.push({ fy: r.fy, dept: DEPT_NAME[k], order: i,
+        dollars: v / 1e9, share: r[k] / r.total, growth: (v / real(base, k)) * 100 });
+    }));
+    const xAxis = { field: "fy", type: "quantitative", title: "Fiscal year",
+      axis: { format: "d", labelAngle: 0, values: [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025] }, scale: { nice: false } };
+    const color = { field: "dept", type: "nominal", title: null, sort: DEPTS.map((k) => DEPT_NAME[k]),
+      scale: { domain: DEPTS.map((k) => DEPT_NAME[k]), range: DEPT_COLOR }, legend: { orient: "top", columns: 3 } };
+    const tip = [{ field: "fy", type: "quantitative", title: "Fiscal year", format: "d" }, { field: "dept", title: "Department" },
+      { field: "dollars", type: "quantitative", title: "Revenue ($B, 2025)", format: ".2f" },
+      { field: "share", type: "quantitative", title: "Share", format: ".1%" },
+      { field: "growth", type: "quantitative", title: `Index (FY${base.fy} = 100)`, format: ",.0f" }];
+    const title = root.querySelector('[data-title="depts"]'), note = root.querySelector('[data-note="depts"]');
+    const covid = " FY2020–21 are the COVID closure and reopening.";
+    if (view === "growth") {
+      title.textContent = `Revenue growth since FY${base.fy}, by department`;
+      note.textContent = `Each department's revenue in 2025 dollars, indexed so FY${base.fy} = 100. A line at 300 means three times the FY${base.fy} level.` + covid;
+      return draw("depts", { height: 300, data: { values: data }, layer: [
+        { mark: { type: "rule", strokeDash: [4, 4], color: MUTED }, encoding: { y: { datum: 100 } } },
+        { mark: { type: "line", strokeWidth: 2.4, point: { size: 22, filled: true } },
+          encoding: { x: xAxis, y: { field: "growth", type: "quantitative", title: `Index (FY${base.fy} = 100)` },
+                      color, strokeWidth: { condition: { test: "datum.dept === 'Gaming'", value: 3.4 }, value: 2 }, tooltip: tip } },
+      ] });
+    }
+    const share = view === "share";
+    title.textContent = share ? "Each department's share of Strip casino revenue" : "Strip casino revenue by department, 2025 dollars";
+    note.textContent = (share ? "Share of each fiscal year's revenue." : "Revenue in 2025 dollars, stacked.") +
+      " Gaming is green; everything else is what grew." + covid;
+    return draw("depts", { height: 300, data: { values: data },
+      mark: { type: "area" },
+      encoding: { x: xAxis,
+        y: { field: share ? "share" : "dollars", type: "quantitative", stack: share ? "normalize" : "zero",
+             title: share ? null : "$B (2025 dollars)", axis: share ? { format: "%" } : {} },
+        color, order: { field: "order", type: "quantitative" }, tooltip: tip } });
+  }
+
+  function profit() {
+    const data = [];
+    D.depts.forEach((r) => [["casino_dept_income", "Casino"], ["rooms_dept_income", "Rooms"]].forEach(([k, name]) =>
+      data.push({ fy: r.fy, dept: name, income: real(r, k) == null ? null : real(r, k) / 1e9 })));
+    return draw("profit", { height: 220, data: { values: data },
+      mark: { type: "line", strokeWidth: 2.4, point: { size: 22, filled: true } },
+      encoding: {
+        x: { field: "fy", type: "quantitative", title: null, axis: { format: "d", labelAngle: 0, values: [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025] }, scale: { nice: false } },
+        y: { field: "income", type: "quantitative", title: "$B (2025 dollars)" },
+        color: { field: "dept", type: "nominal", title: null, scale: { domain: ["Casino", "Rooms"], range: [BLUE, INK] }, legend: { orient: "top" } },
+        tooltip: [{ field: "fy", type: "quantitative", format: "d", title: "Fiscal year" }, { field: "dept", title: "Department" },
+                  { field: "income", type: "quantitative", format: ".2f", title: "Income ($B, 2025)" }],
+      } });
   }
 
   // ---------- charts ----------
@@ -177,49 +254,9 @@
     });
   }
 
-  function season() {
-    const data = D.season.filter((r) => r.area_key === state.area);
-    const order = data.map((d) => d.month_name);
-    return draw("season", {
-      height: 200, data: { values: data },
-      layer: [
-        { mark: { type: "rule", strokeDash: [4, 4], color: MUTED }, encoding: { y: { datum: 1 } } },
-        { mark: { type: "rule", color: MUTED, strokeWidth: 2 },
-          encoding: { x: { field: "month_name", type: "nominal", sort: order, title: null, axis: { labelAngle: 0, labelExpr: "slice(datum.label, 0, 1)" } },
-                      y: { field: "index_min", type: "quantitative", title: null, scale: { zero: false } }, y2: { field: "index_max" } } },
-        { mark: { type: "point", filled: true, size: 70, color: BLUE },
-          encoding: { x: { field: "month_name", type: "nominal", sort: order }, y: { field: "index", type: "quantitative" },
-                      tooltip: [{ field: "month_name", title: "Month" }, { field: "index", type: "quantitative", format: ".2f", title: "Average" },
-                                { field: "index_min", type: "quantitative", format: ".2f", title: "Lowest" },
-                                { field: "index_max", type: "quantitative", format: ".2f", title: "Highest" }] } },
-      ],
-    });
-  }
-
-  function baccarat() {
-    const months = new Set(inRange(D.area.filter((r) => r.area_key === "strip")).map((r) => r.month));
-    const data = D.bac.filter((r) => months.has(r.month)).map((r) => ({
-      month: `${r.month}-01`, hold: r.hold, avg: r.hold_trailing_24m, win_m: r.baccarat_win / 1e6 }));
-    return draw("baccarat", {
-      height: 200, data: { values: data },
-      layer: [
-        { mark: { type: "line", color: INK, strokeWidth: 2 },
-          encoding: { x: { field: "month", type: "temporal", timeUnit: "yearmonth", title: null,
-                           axis: data.length > 30 ? { format: "%Y", labelAngle: 0, values: years(data) } : { format: "%b %Y", labelAngle: 0, tickCount: 6 } },
-                      y: { field: "avg", type: "quantitative", title: "Hold", axis: { format: "%" } } } },
-        { mark: { type: "circle", size: data.length > 60 ? 28 : 60, color: ORANGE, opacity: 0.9 },
-          encoding: { x: { field: "month", type: "temporal", timeUnit: "yearmonth" }, y: { field: "hold", type: "quantitative" },
-                      tooltip: [{ field: "month", type: "temporal", timeUnit: "yearmonth", format: "%b %Y", title: "Month" },
-                                { field: "hold", type: "quantitative", format: ".1%", title: "Hold" },
-                                { field: "avg", type: "quantitative", format: ".1%", title: "2-year average" },
-                                { field: "win_m", type: "quantitative", format: ",.0f", title: "Baccarat win ($M)" }] } },
-      ],
-    });
-  }
-
   function render() {
     if (!D || !window.vegaEmbed) return;
-    kpis(); trend(); mix(); season(); baccarat();
+    yearKpis(); depts(); profit(); kpis(); trend(); mix();
   }
   addEventListener("load", render);
 })();

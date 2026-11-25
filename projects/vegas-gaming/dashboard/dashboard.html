@@ -3,10 +3,40 @@
     <div class="dash-head">
       <div>
         <p class="dash-eyebrow">Dashboard</p>
-        <h2 id="dash-title" class="dash-title">Las Vegas gaming, month by month</h2>
+        <h2 id="dash-title" class="dash-title">Gambling and everything else on the Strip</h2>
+        <p class="dash-asof" data-asof-year>Loading…</p>
+      </div>
+      <div class="dash-controls" role="group" aria-label="Revenue view">
+        <div class="seg" data-control="view" role="radiogroup" aria-label="Show revenue as">
+          <button type="button" role="radio" aria-checked="true" data-value="dollars">Dollars</button>
+          <button type="button" role="radio" aria-checked="false" data-value="share">Share</button>
+          <button type="button" role="radio" aria-checked="false" data-value="growth">Growth</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpis" data-kpis-year aria-live="polite"></div>
+
+    <div class="dash-grid">
+      <figure class="dash-card dash-wide">
+        <figcaption class="dash-card-title" data-title="depts">Strip casino revenue by department</figcaption>
+        <div class="dash-chart" data-chart-slot="depts"></div>
+        <p class="dash-note" data-note="depts"></p>
+      </figure>
+      <figure class="dash-card dash-wide">
+        <figcaption class="dash-card-title">Departmental income: casino vs. rooms</figcaption>
+        <div class="dash-chart" data-chart-slot="profit"></div>
+        <p class="dash-note">Revenue minus each department's own costs, before overhead, in 2025 dollars. Gaps are scanned years that couldn't be read and checked.</p>
+      </figure>
+    </div>
+
+    <div class="dash-head dash-subhead">
+      <div>
+        <p class="dash-eyebrow">Month by month</p>
+        <h3 class="dash-subtitle">Gaming win</h3>
         <p class="dash-asof" data-asof>Loading the latest month…</p>
       </div>
-      <div class="dash-controls" role="group" aria-label="Dashboard filters">
+      <div class="dash-controls" role="group" aria-label="Gaming filters">
         <div class="seg" data-control="area" role="radiogroup" aria-label="Area">
           <button type="button" role="radio" aria-checked="true" data-value="strip">Strip</button>
           <button type="button" role="radio" aria-checked="false" data-value="downtown">Downtown</button>
@@ -24,7 +54,7 @@
       </div>
     </div>
 
-    <div class="kpis" data-kpis aria-live="polite"></div>
+    <div class="kpis kpis-3" data-kpis aria-live="polite"></div>
 
     <div class="dash-grid">
       <figure class="dash-card dash-wide">
@@ -32,23 +62,13 @@
         <div class="dash-chart" data-chart-slot="trend"></div>
         <p class="dash-note" data-note="trend"></p>
       </figure>
-      <figure class="dash-card">
-        <figcaption class="dash-card-title">Where the money comes from</figcaption>
+      <figure class="dash-card dash-wide">
+        <figcaption class="dash-card-title">Where the gaming money comes from</figcaption>
         <div class="dash-chart" data-chart-slot="mix"></div>
         <p class="dash-note">Share of win over the selected range, by game group.</p>
       </figure>
-      <figure class="dash-card">
-        <figcaption class="dash-card-title">Busy and slow months</figcaption>
-        <div class="dash-chart" data-chart-slot="season"></div>
-        <p class="dash-note">Each month against its year's average (1.0), across normal years. Lines show the range.</p>
-      </figure>
-      <figure class="dash-card dash-wide">
-        <figcaption class="dash-card-title">Baccarat: how much the house kept</figcaption>
-        <div class="dash-chart" data-chart-slot="baccarat"></div>
-        <p class="dash-note">Strip only. Monthly hold (dots) against its trailing two-year average (line); a few high-stakes players can swing it by millions.</p>
-      </figure>
     </div>
 
-    <p class="dash-foot">Sources: Nevada Gaming Control Board monthly revenue reports; LVCVA visitor statistics; BLS CPI-U for 2025 dollars. Visitors are for all of Las Vegas. Built from the SQL model described below.</p>
+    <p class="dash-foot">Sources: Nevada Gaming Control Board, Gaming Abstract (annual, Strip casinos with $1M+ gaming revenue, fiscal years July–June) and monthly revenue reports; BLS CPI-U for 2025 dollars. Department figures add comps back to gaming so every year is on the same accounting basis, as explained below. Built from the SQL model described below.</p>
   </div>
 </section>
