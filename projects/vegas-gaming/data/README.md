@@ -50,6 +50,8 @@ nested game-mix file) and draws with the site's chart theme (`window.siteChart` 
 | `lvcva_annual.csv` | year | LVCVA Historic Tourism Statistics, 1970 on: visitors, convention attendance, room inventory, occupancy |
 | `abstract_strip.csv` | fiscal year | NGCB Gaming Abstract, Las Vegas Strip casinos with $1M+ gaming revenue: revenue by department (gaming, rooms, food, beverage, other) as printed, contra revenue (comps) by department from FY2019, casino comps, and casino and rooms departmental income. `method` says how the year was read |
 | `visitor_profile.csv` | year | LVCVA Visitor Profile Study: share of visitors who gambled, trip gambling budget (among gamblers), trip spending on food and drink, shopping and shows, lodging per night (nominal dollars). No survey in 2020 |
+| `visitor_generations.csv` | generation | LVCVA Visitor Profile 2025 matrix: share of visitors, share who gambled, gambling budget, hours gambled per day and non-gaming spending per trip, for Gen Z, Millennials, Gen X and Boomers |
+| `visitor_age_2015_2025.csv` | age group | Share of visitors who gambled in 2015 and 2025, from the 2025 report's "Evolving Visitor Profile" table. OCR'd (the page's text layer is unreadable); each row's printed change must equal 2025 minus 2015 |
 
 ## Sources
 

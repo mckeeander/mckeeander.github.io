@@ -25,6 +25,11 @@ SELECT * FROM read_csv('data/processed/abstract_strip.csv', header = true);
 -- LVCVA Visitor Profile Study: gambling and spending per visitor, 2003 on (visitor_profile.py).
 CREATE OR REPLACE TABLE raw_visitor_profile AS
 SELECT * FROM read_csv('data/processed/visitor_profile.csv', header = true);
+-- Visitor Profile 2025 by generation, and share who gambled by age group in 2015 and 2025.
+CREATE OR REPLACE TABLE raw_visitor_generations AS
+SELECT * FROM read_csv('data/processed/visitor_generations.csv', header = true);
+CREATE OR REPLACE TABLE raw_visitor_age AS
+SELECT * FROM read_csv('data/processed/visitor_age_2015_2025.csv', header = true);
 
 -- Areas: one short, stable key per area (the board renamed "Boulder Strip" to "Boulder" in 2018).
 -- market: 'locals' marks the areas whose casinos mostly serve residents (Boulder Strip, North Las Vegas,

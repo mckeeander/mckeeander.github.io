@@ -54,3 +54,10 @@ WHERE NOT EXISTS (SELECT 1 FROM v_cpi_annual c WHERE c.basis = 'calendar' AND c.
 
 -- test: Visitor Profile shares are believable
 SELECT year, gambled_pct FROM raw_visitor_profile WHERE gambled_pct NOT BETWEEN 0.5 AND 1;
+
+-- test: the four generations cover (nearly) all 2025 visitors
+SELECT sum(share_of_visitors) FROM raw_visitor_generations HAVING abs(sum(share_of_visitors) - 1) > 0.02;
+
+-- test: five age groups, each with believable shares who gambled
+SELECT count(*) FROM raw_visitor_age HAVING count(*) <> 5
+UNION ALL SELECT 1 FROM raw_visitor_age WHERE gambled_2015 NOT BETWEEN 0.4 AND 1 OR gambled_2025 NOT BETWEEN 0.4 AND 1;
